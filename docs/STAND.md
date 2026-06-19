@@ -8,9 +8,10 @@
 > (alleen lab-testleiders), en de eerste fundamentkeuze gemaakt: ADR-0001 (privacy) = geen
 > persoonsgegevens in de app, bestand-gebaseerd.
 >
-> **▶️ HERVATTEN**: nog geen code. Volgende stap = intake afmaken (correctheid/verificatie) en de
-> stack-/hosting-ADR (volgt uit ADR-0001: client-side, statisch). Git is nog niet geïnitialiseerd
-> (dag-0-taak, §9). Lees eerst [`docs/decisions/0001-privacy-architectuur.md`](./decisions/0001-privacy-architectuur.md).
+> **▶️ HERVATTEN**: fundament-intake compleet (ADR-0001 t/m 0005), git lokaal geïnitialiseerd.
+> Volgende stap = bouwfase starten: GitHub-repo (publiek, `Nolles15`) aanmaken, Vite+React+TS
+> scaffolden, en als eerste slice de rekenkern naar TS porten mét de §11-muren (Actions-test-gate,
+> branch protection, secret-scan). Lees de ADR's in volgorde; ADR-0005 voor de muren-opzet.
 
 ## 1. Doel
 
@@ -26,6 +27,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0002 (verificatiestrategie rekenkern) — Geaccepteerd.
 - ADR-0003 (premisse en scope) — Geaccepteerd.
 - ADR-0004 (stack: Vite + React + TypeScript) — Geaccepteerd.
+- ADR-0005 (hosting/repo: GitHub publiek + Pages) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Nog geen applicatiecode.**
 
@@ -54,9 +56,9 @@ zonder dat de app persoonsgegevens bewaart.
 
 ## 6. Open beslissingen
 
-- **Hosting & repo-remote** — waar host je de statische app, en waar leeft de repo (GitHub/GitLab)
-  — dat bepaalt waar de §11-muren (branch protection, secret-scan, CI-gate) komen. Trigger: nu.
 - **PDF-aanpak** — client-side (jsPDF/html2canvas) vs anders. Trigger: bij de export-feature.
+- **Tolerantie testfixtures** — hoe strak moeten de drempels matchen (ADR-0002). Trigger: bij het
+  schrijven van de eerste fixture-tests.
 - **Testfixtures aanleveren** — 2–3 echte testdatasets + huidige-tool-uitkomsten (ADR-0002).
   Trigger: nodig vóór de rekenkern "af" heet.
 - **Auth / centrale opslag (V3)** — bewust uitgesteld; heroverweegt ADR-0001 indien nodig.
