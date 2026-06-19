@@ -42,29 +42,50 @@ function App() {
     <div className="app">
       <Header />
       <main className="app-main">
-        <Intake
-          sport={sport}
-          deelnemer={deelnemer}
-          testmeta={testmeta}
-          onDeelnemerChange={setDeelnemer}
-          onTestMetaChange={setTestmeta}
-        />
-        <Invoerpaneel
-          sport={sport}
-          rust={rust}
-          rijen={rijen}
-          onSportChange={setSport}
-          onRustChange={setRust}
-          onRijenChange={setRijen}
-        />
         <section className="paneel">
-          <h2>Lactaatcurve &amp; drempels</h2>
+          <header className="paneel__kop">
+            <span className="paneel__nr">1</span>
+            <h2>Intake</h2>
+          </header>
+          <Intake
+            sport={sport}
+            deelnemer={deelnemer}
+            testmeta={testmeta}
+            onDeelnemerChange={setDeelnemer}
+            onTestMetaChange={setTestmeta}
+          />
+        </section>
+
+        <section className="paneel">
+          <header className="paneel__kop">
+            <span className="paneel__nr">2</span>
+            <h2>Meetpunten</h2>
+          </header>
+          <Invoerpaneel
+            sport={sport}
+            rust={rust}
+            rijen={rijen}
+            onSportChange={setSport}
+            onRustChange={setRust}
+            onRijenChange={setRijen}
+          />
+        </section>
+
+        <section className="paneel">
+          <header className="paneel__kop">
+            <span className="paneel__nr">3</span>
+            <h2>Lactaatcurve &amp; drempels</h2>
+          </header>
           <AnalyseControls config={config} graadAdvies={analyse.graadAdvies} onChange={setConfig} />
           <Grafiek sport={sport} analyse={analyse} />
           <Resultaten sport={sport} analyse={analyse} />
         </section>
+
         <section className="paneel">
-          <h2>Trainingszones</h2>
+          <header className="paneel__kop">
+            <span className="paneel__nr">4</span>
+            <h2>Trainingszones</h2>
+          </header>
           <Zones sport={sport} analyse={analyse} />
         </section>
       </main>
