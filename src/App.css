@@ -58,6 +58,12 @@
   border-radius: var(--radius);
   padding: var(--ruimte-4);
 }
+.paneel + .paneel {
+  margin-top: var(--ruimte-4);
+}
+.paneel > h2 {
+  margin-bottom: var(--ruimte-3);
+}
 
 .paneel__tekst {
   color: var(--kleur-tekst-zwak);
@@ -236,4 +242,55 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ---- Resultaten ---- */
+.leeg-melding {
+  color: var(--kleur-tekst-zwak);
+  padding: var(--ruimte-4) 0;
+  text-align: center;
+}
+
+.resultaten {
+  margin-top: var(--ruimte-3);
+}
+.resultaten__tabel {
+  width: 100%;
+  border-collapse: collapse;
+}
+.resultaten__tabel th,
+.resultaten__tabel td {
+  text-align: left;
+  padding: var(--ruimte-2) var(--ruimte-1);
+  border-bottom: 1px solid var(--kleur-rand);
+}
+.resultaten__tabel th {
+  font-weight: bold;
+}
+.drempel-sub {
+  display: block;
+  font-weight: normal;
+  font-size: 0.8rem;
+  color: var(--kleur-tekst-zwak);
+}
+.resultaten__meta {
+  margin-top: var(--ruimte-2);
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.9rem;
+}
+
+.waarschuwingen {
+  list-style: none;
+  margin: var(--ruimte-3) 0 0;
+  padding: var(--ruimte-2) var(--ruimte-3);
+  background: #fff8e6;
+  border: 1px solid var(--hanze-geel);
+  border-radius: var(--radius);
+}
+.waarschuwingen li {
+  color: #6b5200;
+  font-size: 0.9rem;
+}
+.waarschuwingen li + li {
+  margin-top: var(--ruimte-1);
 }

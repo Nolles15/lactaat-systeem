@@ -9,11 +9,10 @@
 > naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. Header- en invoerpaneel-slice zijn af en live. Volgende UI-slice =
-> **grafiek + drempels** (lactaatcurve met polyfit + LT1/LT2/OBLA-referentielijnen) — die triggert
-> meteen de Recharts v2-vs-v3-keuze. Daarna zones → PDF. Geparkeerde keuzes: zone-model
-> (briefing 3.5 vs simpel), Recharts v2 vs v3, PDF-aanpak. Rekenkern-fixtures wachten op 2–3 echte
-> testdatasets (ADR-0002).
+> merge = automatische deploy. Grafiek + drempels-slice is af en live (lactaatcurve, LT1/LT2/OBLA,
+> R², fail-visible randen). Volgende UI-slice = **trainingszones** — die triggert de zone-model-keuze
+> (briefing 3.5 vs simpel). Daarna PDF-export. Geparkeerde keuzes: zone-model, PDF-aanpak,
+> chart lazy-loaden (bundel ~554 KB). Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
 
 ## 1. Doel
 
@@ -31,6 +30,8 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0004 (stack: Vite + React + TypeScript) — Geaccepteerd.
 - ADR-0005 (hosting/repo: GitHub publiek + Pages) — Geaccepteerd.
 - ADR-0006 (UI-werkwijze: code-first + gecentraliseerd Hanze-thema) — Geaccepteerd.
+- ADR-0007 (grafiek-library: Recharts v3) — Geaccepteerd.
+- ADR-0008 (ruststap = baseline, niet in de fit) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -44,6 +45,9 @@ zonder dat de app persoonsgegevens bewaart.
   lopen=min/km → km/u via rekenkern), rij toevoegen/verwijderen, fail-visible validatie
   (`src/lib/invoer.ts` met 8 tests). State leeft in `App` voor de volgende slices.
   - Feedback verwerkt: vaste **ruststap** (intensiteit 0) bovenaan; bij lopen **pace én km/u** getoond.
+- **Grafiek + drempels-slice**: `src/lib/analyse.ts` (polyfit + graadkeuze + R² + LT1/LT2/OBLA +
+  fail-visible randen, 4 tests). Recharts v3-grafiek (curve, scatter, D-max-lijn, referentielijnen)
+  + resultatentabel met waarschuwingen. Live.
 
 ## 3. Tech-stack — kort
 
@@ -71,10 +75,10 @@ zonder dat de app persoonsgegevens bewaart.
 
 ## 6. Open beslissingen
 
-- **Ruststap in de fit?** — telt de ruststap (intensiteit 0) mee in de polynoom-fit, of dient hij
-  alleen als baseline voor LT1? Domeinkeuze. Trigger: bij de grafiek/drempel-slice.
 - **Layout/prominentie review** — eigenaar heeft vragen over hoe prominent het invoerscherm komt;
   vormgeving bewust uitgesteld (ADR-0006 maakt restyle goedkoop). Logo + huisstijl: akkoord.
+- **Chart lazy-loaden** — Recharts maakt de bundel ~554 KB; later code-splitten. Trigger: als
+  laadtijd merkbaar wordt.
 - **Zone-model** — de uitgebreide briefing-tabel 3.5 (A1/A2/A2+/B/C met −10% en midpoints) vs een
   simpeler model. Domeinkeuze met ADR. Trigger: vóór de zones-slice.
 - **Recharts v2 vs v3** — v2 is end-of-life; v3 heeft API-wijzigingen. Trigger: bij de grafiek-slice.
