@@ -9,10 +9,11 @@
 > naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. Header-slice (logo + Hanze-thema) is af en live. Volgende UI-slice =
-> **invoerpaneel** (tabel met meetpunten + sport-toggle fietsen/lopen). Daarna grafiek → drempels →
-> zones → PDF. Geparkeerde keuzes: zone-model (briefing 3.5 vs simpel), Recharts v2 vs v3,
-> PDF-aanpak. Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
+> merge = automatische deploy. Header- en invoerpaneel-slice zijn af en live. Volgende UI-slice =
+> **grafiek + drempels** (lactaatcurve met polyfit + LT1/LT2/OBLA-referentielijnen) — die triggert
+> meteen de Recharts v2-vs-v3-keuze. Daarna zones → PDF. Geparkeerde keuzes: zone-model
+> (briefing 3.5 vs simpel), Recharts v2 vs v3, PDF-aanpak. Rekenkern-fixtures wachten op 2–3 echte
+> testdatasets (ADR-0002).
 
 ## 1. Doel
 
@@ -39,6 +40,9 @@ zonder dat de app persoonsgegevens bewaart.
   https://nolles15.github.io/lactaat-systeem/
 - **Header-slice**: Hanze-logo + huisstijl-thema (tokens in `src/index.css`), app-shell, titel
   gefixt. Scaffold-demo en ongebruikte assets verwijderd.
+- **Invoerpaneel-slice**: meetpunten-tabel (intensiteit + lactaat), sport-toggle (fietsen=Watt /
+  lopen=min/km → km/u via rekenkern), rij toevoegen/verwijderen, fail-visible validatie
+  (`src/lib/invoer.ts` met 8 tests). State leeft in `App` voor de volgende slices.
 
 ## 3. Tech-stack — kort
 
