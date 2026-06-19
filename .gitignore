@@ -1,0 +1,8 @@
+# Secrets — nooit committen (CLAUDE.md §9)
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
