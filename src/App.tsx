@@ -3,6 +3,7 @@ import { Header } from './components/Header'
 import { Invoerpaneel, legeRijen, type Rij } from './components/Invoerpaneel'
 import { Grafiek } from './components/Grafiek'
 import { Resultaten } from './components/Resultaten'
+import { Zones } from './components/Zones'
 import { analyseer } from './lib/analyse'
 import { parseIntensiteit, parseLactaat } from './lib/invoer'
 import type { Point, SportType } from './lib/types'
@@ -37,6 +38,10 @@ function App() {
           <h2>Lactaatcurve &amp; drempels</h2>
           <Grafiek sport={sport} analyse={analyse} />
           <Resultaten sport={sport} analyse={analyse} />
+        </section>
+        <section className="paneel">
+          <h2>Trainingszones</h2>
+          <Zones sport={sport} analyse={analyse} />
         </section>
       </main>
       <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>
