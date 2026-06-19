@@ -1,7 +1,7 @@
 // Invoer-helpers: parsen/valideren van wat de testleider intikt, naar de rekeneenheid.
 // Pure functies, los testbaar — zodat de validatie hard te verifiëren is (ADR-0002).
 
-import { paceToKmh } from './rekenkern'
+import { paceToKmh, kmhToPace } from './rekenkern'
 import type { SportType } from './types'
 
 // "m:ss" of "mm:ss", seconden 0–59.
@@ -33,6 +33,16 @@ export function parseIntensiteit(sport: SportType, raw: string): number | null {
   }
   const n = Number(s.replace(',', '.'))
   return Number.isFinite(n) && n > 0 ? n : null
+}
+
+/**
+ * Toon een intensiteit leesbaar: Watt (fietsen) of pace + km/u (lopen, beide; feedback).
+ */
+export function formatIntensiteit(sport: SportType, x: number): string {
+  if (sport === 'running') {
+    return `${kmhToPace(x)} /km (${x.toFixed(1).replace('.', ',')} km/u)`
+  }
+  return `${Math.round(x)} W`
 }
 
 /** Parse een lactaatwaarde (mmol/L). Komma of punt toegestaan. null = ongeldig. */
