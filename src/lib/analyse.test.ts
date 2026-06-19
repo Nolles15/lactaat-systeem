@@ -83,6 +83,18 @@ describe('analyseer', () => {
     expect(a.hr.lt2!).toBeGreaterThan(110)
     expect(a.hr.lt2!).toBeLessThan(185)
   })
+
+  it('sluit een meetpunt uit de fit (wel zichtbaar, niet meegerekend)', () => {
+    const metOutlier = [
+      ...stappen,
+      { x: 225, y: 12, uitgesloten: true }, // uitbijter, uitgesloten
+    ]
+    const a = analyseer({ rust: 1.0, stappen: metOutlier, config: cfg() })
+    expect(a.uitgeslotenPunten).toHaveLength(1)
+    expect(a.uitgeslotenPunten[0]).toEqual({ x: 225, y: 12 })
+    expect(a.r2!).toBeGreaterThan(0.999) // fit blijft glad zonder de uitbijter
+    expect(a.meetpunten).toHaveLength(7) // rust + 6 meetellende stappen
+  })
 })
 
 describe('interpoleerOpX', () => {

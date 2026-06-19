@@ -13,10 +13,11 @@ export interface Rij {
   intensiteit: string
   lactaat: string
   hf: string
+  uitgesloten: boolean
 }
 
 export function legeRijen(n: number): Rij[] {
-  return Array.from({ length: n }, () => ({ intensiteit: '', lactaat: '', hf: '' }))
+  return Array.from({ length: n }, () => ({ intensiteit: '', lactaat: '', hf: '', uitgesloten: false }))
 }
 
 interface Props {
@@ -39,8 +40,11 @@ export function Invoerpaneel({
 }: Props) {
   const updateRij = (i: number, veld: keyof Rij, waarde: string) =>
     onRijenChange(rijen.map((r, idx) => (idx === i ? { ...r, [veld]: waarde } : r)))
-  const voegRijToe = () => onRijenChange([...rijen, { intensiteit: '', lactaat: '', hf: '' }])
+  const voegRijToe = () =>
+    onRijenChange([...rijen, { intensiteit: '', lactaat: '', hf: '', uitgesloten: false }])
   const verwijderRij = (i: number) => onRijenChange(rijen.filter((_, idx) => idx !== i))
+  const setUitgesloten = (i: number, val: boolean) =>
+    onRijenChange(rijen.map((r, idx) => (idx === i ? { ...r, uitgesloten: val } : r)))
 
   const rustWaarde = parseLactaat(rust)
   const rustOk = rust.trim() === '' || rustWaarde !== null
@@ -81,6 +85,7 @@ export function Invoerpaneel({
             <th>{intensiteitLabel(sport)}</th>
             <th>Lactaat (mmol/L)</th>
             <th>HF (bpm)</th>
+            <th className="col-fit">In fit</th>
             <th className="col-actie">
               <span className="sr-only">Acties</span>
             </th>
@@ -109,6 +114,7 @@ export function Invoerpaneel({
               {rustHoog && <span className="veld-waarschuwing">controleer: &gt; {LACTAAT_MAX}</span>}
             </td>
             <td></td>
+            <td className="col-fit"></td>
             <td className="col-actie"></td>
           </tr>
 
@@ -122,7 +128,7 @@ export function Invoerpaneel({
             const afgeleid = ingevoerd !== null ? intensiteitAfgeleid(sport, ingevoerd) : null
             const hfOk = rij.hf.trim() === '' || parseHartslag(rij.hf) !== null
             return (
-              <tr key={i}>
+              <tr key={i} className={rij.uitgesloten ? 'rij-uitgesloten' : undefined}>
                 <td className="col-nr">{i + 1}</td>
                 <td>
                   <input
@@ -159,6 +165,14 @@ export function Invoerpaneel({
                     aria-invalid={!hfOk}
                   />
                   {!hfOk && <span className="veld-fout">ongeldig</span>}
+                </td>
+                <td className="col-fit">
+                  <input
+                    type="checkbox"
+                    checked={!rij.uitgesloten}
+                    onChange={(e) => setUitgesloten(i, !e.target.checked)}
+                    aria-label={`Stap ${i + 1} meenemen in de fit`}
+                  />
                 </td>
                 <td className="col-actie">
                   <button

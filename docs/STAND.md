@@ -16,8 +16,9 @@
 > apparatuur-stub), in-sessie model in `src/lib/sessie.ts` (ADR-0012). **Slice C1 is af en live**:
 > instelbare analyse (Modified-Dmax standaard + Dmax, OBLA 2/3/4, LT1-delta, graad/AIC-advies) +
 > uitleg-blok met "Meer informatie"-link (ADR-0011). **C2 is af en live**: optionele HF-kolom + HR
-> bij de drempels. Volgende: **C-outlier** (meetpunt uitsluiten), daarna **Slice D**
-> (layout-herontwerp). Geparkeerd tot na het datamodel/design: PDF-rapport en JSON-opslag (zie §6).
+> bij de drempels. **C-outlier is af en live**: meetpunt uit de fit sluiten (toggle per rij; punt
+> blijft zichtbaar als open marker). Daarmee is **Slice C compleet**. Volgende = **Slice D**
+> (top-tier layout-herontwerp). Geparkeerd tot na datamodel/design: PDF-rapport en JSON-opslag (§6).
 
 ## 1. Doel
 
@@ -69,6 +70,8 @@ zonder dat de app persoonsgegevens bewaart.
   algemene bron — vervangbaar). 32 tests. Live.
 - **Slice C2 — hartslag**: optionele HF-kolom per meetstap; HR bij LT1/LT2/OBLA geïnterpoleerd
   (`interpoleerOpX`), HR-kolom in de resultaten (alleen als HF ingevuld). 34 tests. Live.
+- **Slice C-outlier**: toggle "In fit" per meetstap; uitgesloten punten tellen niet in de fit maar
+  blijven zichtbaar (open marker) — `analyse.uitgeslotenPunten`. 35 tests. Live. (Slice C compleet.)
 
 ## 3. Tech-stack — kort
 
