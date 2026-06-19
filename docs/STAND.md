@@ -9,10 +9,10 @@
 > naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. Volgende stap = UI-slices (header+logo → invoerpaneel → grafiek →
-> drempels → zones → PDF). Klein restant: paginatitel staat nog op `scaffold` (fix in header-slice).
-> Geparkeerde keuzes: zone-model (briefing 3.5 vs simpel), Recharts v2 vs v3, PDF-aanpak.
-> Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
+> merge = automatische deploy. Header-slice (logo + Hanze-thema) is af en live. Volgende UI-slice =
+> **invoerpaneel** (tabel met meetpunten + sport-toggle fietsen/lopen). Daarna grafiek → drempels →
+> zones → PDF. Geparkeerde keuzes: zone-model (briefing 3.5 vs simpel), Recharts v2 vs v3,
+> PDF-aanpak. Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
 
 ## 1. Doel
 
@@ -29,13 +29,16 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0003 (premisse en scope) — Geaccepteerd.
 - ADR-0004 (stack: Vite + React + TypeScript) — Geaccepteerd.
 - ADR-0005 (hosting/repo: GitHub publiek + Pages) — Geaccepteerd.
+- ADR-0006 (UI-werkwijze: code-first + gecentraliseerd Hanze-thema) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
   protection op `main` (strict, enforce_admins, PR vereist).
 - Repo: https://github.com/Nolles15/lactaat-systeem (publiek).
 - **Deploy-pijplijn live**: merge naar `main` → GitHub Pages. URL:
-  https://nolles15.github.io/lactaat-systeem/ (toont nu het Vite-skelet).
+  https://nolles15.github.io/lactaat-systeem/
+- **Header-slice**: Hanze-logo + huisstijl-thema (tokens in `src/index.css`), app-shell, titel
+  gefixt. Scaffold-demo en ongebruikte assets verwijderd.
 
 ## 3. Tech-stack — kort
 
