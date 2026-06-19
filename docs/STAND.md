@@ -9,10 +9,12 @@
 > naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. Trainingszones-slice is af en live (drempelzones + 5-zone model).
-> Volgende (laatste minimum-item, briefing §7) = **PDF-export**. Geparkeerde keuzes/polish:
-> PDF-aanpak, tooltip opschonen (toont soms curve-overschot), chart lazy-loaden (bundel ~554 KB),
-> layout/prominentie-review. Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
+> merge = automatische deploy. De app is **functioneel compleet** (invoer → curve → drempels →
+> zones), live op https://nolles15.github.io/lactaat-systeem/. **Bewust gepauzeerd** zodat de
+> eigenaar het totaal kan beoordelen. **PDF-export én JSON-opslag zijn bewust geparkeerd** tot het
+> datamodel + design vaststaan (zie §6 — beide hangen aan keuzes die nog niet rijp zijn). Volgende
+> sessie: ofwel een design-/datamodel-ronde, ofwel de kleine niet-gekoppelde polish (tooltip,
+> lazy-load). Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
 
 ## 1. Doel
 
@@ -54,8 +56,8 @@ zonder dat de app persoonsgegevens bewaart.
 
 ## 3. Tech-stack — kort
 
-- **Vite + React + TypeScript**, Recharts voor de grafiek (ADR-0004). Client-side, geen backend,
-  statisch hostbaar (ADR-0001). Hosting-platform nog te kiezen.
+- **Vite + React + TypeScript**, Recharts v3 voor de grafiek (ADR-0004/0007). Client-side, geen
+  backend, statisch (ADR-0001). Gehost op GitHub Pages, CI + muren op GitHub (ADR-0005).
 
 ## 4. Fundament-status (CLAUDE.md §1/§6)
 
@@ -70,11 +72,16 @@ zonder dat de app persoonsgegevens bewaart.
 
 ## 5. Vervolg-prioriteiten
 
-1. **Fundament afmaken**: intake stap 3 (correctheid + verificatie van de rekenlogica), git vanaf
-   dag 0, stack-/hosting-ADR, CI-test-gate + branch protection + secret-scan (§11-muren).
-2. **Opschoning/architectuur**: projectstructuur, JSON-schema (uit de TS-types), datamodel-ADR.
-3. **Features (klein gefaseerd)**: invoer → rekenkern → grafiek → drempels → zones → export
-   (JSON + PDF). Daarna V2 (deelnemersbeheer, CSV, HF/RPE, vergelijken).
+Fundament + muren + deploy staan; de minimum-app (invoer → curve → drempels → zones) is live.
+Resterend, bewust in deze volgorde:
+
+1. **Design-/datamodel-ronde** (eigenaar): welke gegevens, layout, en wat er in het rapport hoort.
+   Hier hangen PDF én persistence aan — daarom geparkeerd (zie §6).
+2. **V2-velden die het datamodel stabiliseren**: deelnemergegevens, HF/RPE, CSV-import,
+   vergelijken. Pas hierna is het datamodel rijp.
+3. **PDF-export + JSON-opslag/inladen** — in één keer, op een stabiel datamodel (JSON mét
+   `versie`-veld).
+4. **Niet-gekoppelde polish** (mag tussendoor): tooltip opschonen, grafiek lazy-loaden.
 
 ## 6. Open beslissingen
 
@@ -84,8 +91,13 @@ zonder dat de app persoonsgegevens bewaart.
   laadtijd merkbaar wordt.
 - **Tooltip opschonen** — toont soms een derde, verwarrende waarde (curve-overschot/extrapolatie).
   Trigger: bij een polish-ronde van de grafiek.
-- **Recharts v2 vs v3** — v2 is end-of-life; v3 heeft API-wijzigingen. Trigger: bij de grafiek-slice.
-- **PDF-aanpak** — client-side (jsPDF/html2canvas) vs anders. Trigger: bij de export-feature.
+- **PDF-export — GEPARKEERD** tot een design-/inhoudsronde (welke gegevens, layout, branding;
+  evt. via Claude Design). Meest ontwerp-afhankelijke deliverable → nu bouwen = weggegooid werk.
+  Aanpak-opties besproken (jsPDF+html2canvas / jsPDF programmatisch / print-stylesheet); nog niet
+  gekozen. Client-side verplicht (ADR-0001).
+- **JSON-opslag/inladen — GEPARKEERD** tot het datamodel stabiel is. Reden: het bestandsformaat
+  groeit mee met elke modelwijziging (deelnemer/HF/RPE…) → bouw het in één keer, **mét een
+  `versie`-veld** zodat oude exports blijven werken. Past op de bestand-gebaseerde premisse (ADR-0001).
 - **Tolerantie testfixtures** — hoe strak moeten de drempels matchen (ADR-0002). Trigger: bij het
   schrijven van de eerste fixture-tests.
 - **Testfixtures aanleveren** — 2–3 echte testdatasets + huidige-tool-uitkomsten (ADR-0002).
