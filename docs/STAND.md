@@ -23,6 +23,7 @@ zonder dat de app persoonsgegevens bewaart.
 
 - Startkit-documenten (CLAUDE.md, START.md, deze STAND, ADR-proces).
 - ADR-0001 (privacy-architectuur) — Geaccepteerd.
+- ADR-0002 (verificatiestrategie rekenkern) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Nog geen applicatiecode.**
 
@@ -37,8 +38,8 @@ zonder dat de app persoonsgegevens bewaart.
 - [ ] Monitoring / health-check
 - [ ] Verplichte CI-test-gate (+ branch protection = muur, §11)
 - [x] Backups — belegd buiten de app: beheerde Hanze-schijf is system of record (ADR-0001)
-- [ ] Correctheid + fail-visible-strategie (rekenlogica heeft verificatie nodig)
-- [ ] Verificatie-aanpak (hoe weet ik dat een wijziging klopt vóór deploy)
+- [x] Correctheid + fail-visible-strategie — ADR-0002 (oracle + zichtbare randen)
+- [x] Verificatie-aanpak — ADR-0002: CI-fixtures uit echte testen; gate + branch protection
 - [x] Privacy — ADR-0001: geen persoonsgegevens in de app, bestand-gebaseerd
 
 ## 5. Vervolg-prioriteiten
@@ -54,6 +55,6 @@ zonder dat de app persoonsgegevens bewaart.
 - **ADR-0002 premisse** — premisse formeel vastleggen (incl. succescriterium).
 - **Stack & hosting** — React behouden of niet; bouwtool; statische host. Trigger: vóór eerste code.
 - **PDF-aanpak** — client-side (jsPDF/html2canvas) vs anders. Trigger: bij de export-feature.
-- **Rekenkern-verificatie** — hoe LT1/LT2/OBLA/D-max getest worden (referentiecases). Trigger: vóór
-  de rekenlogica "af" heet.
+- **Testfixtures aanleveren** — 2–3 echte testdatasets + huidige-tool-uitkomsten (ADR-0002).
+  Trigger: nodig vóór de rekenkern "af" heet.
 - **Auth / centrale opslag (V3)** — bewust uitgesteld; heroverweegt ADR-0001 indien nodig.
