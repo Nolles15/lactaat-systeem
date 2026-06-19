@@ -20,6 +20,7 @@ const GROEN = '#628c5f'
 const PAARS = '#9e6697'
 const GEEL = '#caa500'
 const RAND = '#e3e4de'
+const GRIJS = '#9aa0a6'
 
 function xTick(sport: SportType, x: number): string {
   // Rust (x=0) hoort niet op de intensiteit-as; pace van 0 km/u is oneindig.
@@ -45,7 +46,7 @@ export function Grafiek({ sport, analyse }: Props) {
 
   return (
     <ResponsiveContainer width="100%" height={360}>
-      <ComposedChart data={curve} margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
+      <ComposedChart data={curve} margin={{ top: 36, right: 24, bottom: 24, left: 8 }}>
         <CartesianGrid stroke={RAND} />
         <XAxis
           type="number"
@@ -73,7 +74,7 @@ export function Grafiek({ sport, analyse }: Props) {
             { x: dmaxStart.x, y: dmaxStart.y },
             { x: dmaxEind.x, y: dmaxEind.y },
           ]}
-          stroke={PAARS}
+          stroke={GRIJS}
           strokeDasharray="4 4"
         />
         <Line
@@ -87,13 +88,25 @@ export function Grafiek({ sport, analyse }: Props) {
         />
         <Scatter data={scatterPunten} dataKey="y" fill={BLAUW} name="Meting" isAnimationActive={false} />
         {drempels.lt1 && (
-          <ReferenceLine x={drempels.lt1.x} stroke={GROEN} label={{ value: 'LT1', fill: GROEN, position: 'top' }} />
+          <ReferenceLine
+            x={drempels.lt1.x}
+            stroke={GROEN}
+            label={{ value: 'LT1', fill: GROEN, position: 'top', offset: 6, fontWeight: 'bold', fontSize: 12 }}
+          />
         )}
         {drempels.lt2 && (
-          <ReferenceLine x={drempels.lt2.x} stroke={PAARS} label={{ value: 'LT2', fill: PAARS, position: 'bottom' }} />
+          <ReferenceLine
+            x={drempels.lt2.x}
+            stroke={PAARS}
+            label={{ value: 'LT2', fill: PAARS, position: 'top', offset: 22, fontWeight: 'bold', fontSize: 12 }}
+          />
         )}
         {drempels.obla && (
-          <ReferenceLine x={drempels.obla.x} stroke={GEEL} label={{ value: 'OBLA', fill: GEEL, position: 'top' }} />
+          <ReferenceLine
+            x={drempels.obla.x}
+            stroke={GEEL}
+            label={{ value: 'OBLA', fill: GEEL, position: 'top', offset: 6, fontWeight: 'bold', fontSize: 12 }}
+          />
         )}
       </ComposedChart>
     </ResponsiveContainer>
