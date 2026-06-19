@@ -43,6 +43,7 @@ zonder dat de app persoonsgegevens bewaart.
 - **Invoerpaneel-slice**: meetpunten-tabel (intensiteit + lactaat), sport-toggle (fietsen=Watt /
   lopen=min/km → km/u via rekenkern), rij toevoegen/verwijderen, fail-visible validatie
   (`src/lib/invoer.ts` met 8 tests). State leeft in `App` voor de volgende slices.
+  - Feedback verwerkt: vaste **ruststap** (intensiteit 0) bovenaan; bij lopen **pace én km/u** getoond.
 
 ## 3. Tech-stack — kort
 
@@ -70,6 +71,10 @@ zonder dat de app persoonsgegevens bewaart.
 
 ## 6. Open beslissingen
 
+- **Ruststap in de fit?** — telt de ruststap (intensiteit 0) mee in de polynoom-fit, of dient hij
+  alleen als baseline voor LT1? Domeinkeuze. Trigger: bij de grafiek/drempel-slice.
+- **Layout/prominentie review** — eigenaar heeft vragen over hoe prominent het invoerscherm komt;
+  vormgeving bewust uitgesteld (ADR-0006 maakt restyle goedkoop). Logo + huisstijl: akkoord.
 - **Zone-model** — de uitgebreide briefing-tabel 3.5 (A1/A2/A2+/B/C met −10% en midpoints) vs een
   simpeler model. Domeinkeuze met ADR. Trigger: vóór de zones-slice.
 - **Recharts v2 vs v3** — v2 is end-of-life; v3 heeft API-wijzigingen. Trigger: bij de grafiek-slice.

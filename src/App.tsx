@@ -6,6 +6,7 @@ import './App.css'
 
 function App() {
   const [sport, setSport] = useState<SportType>('cycling')
+  const [rust, setRust] = useState('')
   const [rijen, setRijen] = useState<Rij[]>(() => legeRijen(5))
 
   return (
@@ -14,8 +15,10 @@ function App() {
       <main className="app-main">
         <Invoerpaneel
           sport={sport}
+          rust={rust}
           rijen={rijen}
           onSportChange={setSport}
+          onRustChange={setRust}
           onRijenChange={setRijen}
         />
       </main>
