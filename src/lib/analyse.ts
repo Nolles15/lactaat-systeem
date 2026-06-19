@@ -37,12 +37,19 @@ export interface Analyse {
   drempels: Drempels
   lt2Methode: LT2Methode
   lt2Lijn: { start: Point; eind: Point } | null // de gebruikte (Mod)Dmax-lijn
+  hr: { lt1: number | null; lt2: number | null; obla: number | null } // HR bij de drempels (bpm)
   waarschuwingen: string[]
+}
+
+export interface StapInput {
+  x: number // intensiteit (W of km/u)
+  y: number // lactaat (mmol/L)
+  hf?: number | null // hartslag (bpm), optioneel
 }
 
 export interface AnalyseInput {
   rust: number | null
-  stappen: Point[] // {x: intensiteit (W of km/u), y: lactaat} — alleen meetellende stappen
+  stappen: StapInput[] // alleen meetellende stappen
   config: AnalyseConfig
 }
 
@@ -86,6 +93,20 @@ export function kiesGraadAIC(xs: number[], ys: number[]): number | null {
   return beste
 }
 
+/** Lineaire interpolatie van v op positie x; null buiten het bereik of < 2 punten. */
+export function interpoleerOpX(punten: { x: number; v: number }[], x: number): number | null {
+  if (punten.length < 2) return null
+  const p = [...punten].sort((a, b) => a.x - b.x)
+  if (x < p[0].x || x > p[p.length - 1].x) return null
+  for (let i = 1; i < p.length; i++) {
+    if (x <= p[i].x) {
+      const t = (x - p[i - 1].x) / (p[i].x - p[i - 1].x)
+      return p[i - 1].v + t * (p[i].v - p[i - 1].v)
+    }
+  }
+  return p[p.length - 1].v
+}
+
 /** x van het meetpunt vlak vóór de eerste duidelijke lactaatstijging (>drempel t.o.v. vorige). */
 function eersteStijgingX(xs: number[], ys: number[], drempel = 0.4): number {
   for (let i = 1; i < ys.length; i++) {
@@ -121,6 +142,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
       drempels: { lt1: null, lt2: null, obla: null },
       lt2Methode: config.lt2Methode,
       lt2Lijn: null,
+      hr: { lt1: null, lt2: null, obla: null },
       waarschuwingen,
     }
   }
@@ -152,6 +174,14 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
     obla: findOBLA(coef, x0, x1, config.oblaNiveau),
   }
 
+  // Hartslag bij de drempels: interpoleer over de stappen met een HF-waarde (ADR-0011).
+  const hfPunten = gesorteerd.filter((s) => s.hf != null).map((s) => ({ x: s.x, v: s.hf as number }))
+  const hr = {
+    lt1: drempels.lt1 ? interpoleerOpX(hfPunten, drempels.lt1.x) : null,
+    lt2: drempels.lt2 ? interpoleerOpX(hfPunten, drempels.lt2.x) : null,
+    obla: drempels.obla ? interpoleerOpX(hfPunten, drempels.obla.x) : null,
+  }
+
   // Fail-visible randen (ADR-0002).
   if (r2 < 0.95) waarschuwingen.push(`Lage R² (${r2.toFixed(3)}) — beoordeel de curve kritisch.`)
   if (curve.some((p) => p.y < 0 || p.y > 15))
@@ -171,6 +201,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
     drempels,
     lt2Methode: config.lt2Methode,
     lt2Lijn,
+    hr,
     waarschuwingen,
   }
 }

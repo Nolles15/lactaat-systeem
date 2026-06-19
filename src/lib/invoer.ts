@@ -55,3 +55,11 @@ export function parseLactaat(raw: string): number | null {
   const n = Number(s.replace(',', '.'))
   return Number.isFinite(n) && n >= 0 ? n : null
 }
+
+/** Parse een hartslag (bpm). Optioneel veld; null = leeg/ongeldig. */
+export function parseHartslag(raw: string): number | null {
+  const s = raw.trim()
+  if (s === '') return null
+  const n = Number(s.replace(',', '.'))
+  return Number.isFinite(n) && n > 0 ? n : null
+}
