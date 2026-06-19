@@ -44,6 +44,14 @@ export function Grafiek({ sport, analyse }: Props) {
   // De ruststap (x=0) is baseline/tabel, niet de intensiteit-as (ADR-0008).
   const scatterPunten = meetpunten.filter((p) => p.x > 0)
 
+  // LT2-label alleen verhogen als het dicht op LT1 ligt (anders gelijk uitlijnen).
+  const reeksBreedte = dmaxEind.x - dmaxStart.x || 1
+  const drempelsDicht =
+    drempels.lt1 !== null &&
+    drempels.lt2 !== null &&
+    Math.abs(drempels.lt2.x - drempels.lt1.x) / reeksBreedte < 0.09
+  const lt2Offset = drempelsDicht ? 22 : 6
+
   return (
     <ResponsiveContainer width="100%" height={360}>
       <ComposedChart data={curve} margin={{ top: 36, right: 24, bottom: 24, left: 8 }}>
@@ -98,7 +106,7 @@ export function Grafiek({ sport, analyse }: Props) {
           <ReferenceLine
             x={drempels.lt2.x}
             stroke={PAARS}
-            label={{ value: 'LT2', fill: PAARS, position: 'top', offset: 22, fontWeight: 'bold', fontSize: 12 }}
+            label={{ value: 'LT2', fill: PAARS, position: 'top', offset: lt2Offset, fontWeight: 'bold', fontSize: 12 }}
           />
         )}
         {drempels.obla && (
