@@ -98,9 +98,18 @@ Resterend, bewust in deze volgorde:
 3. **PDF-export + JSON-opslag/inladen** — in één keer, op een stabiel datamodel (JSON mét
    `versie`-veld).
 4. **Niet-gekoppelde polish** (mag tussendoor): tooltip opschonen, grafiek lazy-loaden.
+5. **Toekomstige scope (geparkeerd): VO2max-test + combinatierapport** — grote uitbreiding, alleen
+   op expliciet besluit van de eigenaar. Zie §6.
 
 ## 6. Open beslissingen
 
+- **VO2max-test + combinatierapport — TOEKOMSTIGE SCOPE (geparkeerd; eigenaar beslist).** Het lab
+  combineert de lactaattest soms met een VO2max-test (eerder als losse tool geprobeerd). Wens: later
+  onderzoeken of deze app ook de VO2max-test ondersteunt, en bij een combinatietest één
+  **gecombineerd rapport** maakt. Groot: VO2max is een ander datatype (gaswisseling — VO2/VCO2/VE,
+  RER, ventilatoire drempels VT1/VT2, VO2max-waarde), dus het sessiemodel (ADR-0012) en het rapport
+  moeten een **tweede testtype** aankunnen. **Niet nu bouwen** — bij oppakken: eigen planronde +
+  ADR('s).
 - **Layout/prominentie review** — eigenaar heeft vragen over hoe prominent het invoerscherm komt;
   vormgeving bewust uitgesteld (ADR-0006 maakt restyle goedkoop). Logo + huisstijl: akkoord.
 - **Chart lazy-loaden** — Recharts maakt de bundel ~554 KB; later code-splitten. Trigger: als
