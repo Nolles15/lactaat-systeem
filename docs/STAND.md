@@ -13,8 +13,10 @@
 > (`.claude/plans/polished-napping-dream.md`), in slices A→D. **Slice A (eenheidsmodel) is af en
 > live**: lopen-invoer = snelheid (km/u) met pace eronder; uitvoer pace-primair (ADR-0010).
 > **Slice B (intake + datamodel) is af en live**: intake-paneel (verplichte naam + velden +
-> apparatuur-stub), in-sessie model in `src/lib/sessie.ts` (ADR-0012). Volgende = **Slice C**
-> (analyse-uitbreiding: Dmax/ModDmax, OBLA-niveau, LT1-delta, AIC, HR, outlier; ADR-0011).
+> apparatuur-stub), in-sessie model in `src/lib/sessie.ts` (ADR-0012). **Slice C1 is af en live**:
+> instelbare analyse (Modified-Dmax standaard + Dmax, OBLA 2/3/4, LT1-delta, graad/AIC-advies) +
+> uitleg-blok met "Meer informatie"-link (ADR-0011). Volgende: **C2** (HF-kolom + HR bij drempels)
+> en **C-outlier** (meetpunt uitsluiten), daarna **Slice D** (layout-herontwerp).
 > Geparkeerd tot na het datamodel/design: PDF-rapport en JSON-opslag (zie §6).
 
 ## 1. Doel
@@ -38,6 +40,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0009 (zone-model: drempelzones + 5-zone) — Geaccepteerd.
 - ADR-0010 (eenheidsmodel: snelheid invoer / pace uitvoer) — Geaccepteerd.
 - ADR-0012 (in-sessie datamodel + intake) — Geaccepteerd.
+- ADR-0011 (analyse-uitbreiding: methodes/instellingen/uitleg) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -61,6 +64,9 @@ zonder dat de app persoonsgegevens bewaart.
 - **Slice B — intake + datamodel** (ADR-0012): `Intake.tsx` (naam* + testdatum + geb./geslacht +
   gewicht + testleider + notities + apparatuur-auto), `src/lib/sessie.ts` + `apparatuur.ts` (stub),
   in-sessie state in `App`. 29 tests. Live.
+- **Slice C1 — analyse-methodes** (ADR-0011): `analyse.ts` met config (Mod)Dmax / OBLA-niveau /
+  LT1-delta / graad+AIC; `AnalyseControls.tsx`; `uitleg.ts` (uitleg-blok + MEER_INFO_URL, nu
+  algemene bron — vervangbaar). 32 tests. Live.
 
 ## 3. Tech-stack — kort
 
