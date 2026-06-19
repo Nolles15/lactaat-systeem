@@ -138,6 +138,14 @@
   width: 2rem;
   color: var(--kleur-tekst-zwak);
 }
+
+.rij-rust {
+  background: var(--kleur-achtergrond);
+}
+.rust-label {
+  font-weight: bold;
+  color: var(--kleur-tekst-zwak);
+}
 .col-actie {
   width: 2.5rem;
   text-align: right;

@@ -18,20 +18,34 @@ export function legeRijen(n: number): Rij[] {
 
 interface Props {
   sport: SportType
+  /** Lactaat in rust (vóór de eerste belastingsstap); intensiteit is per definitie 0. */
+  rust: string
   rijen: Rij[]
   onSportChange: (s: SportType) => void
+  onRustChange: (v: string) => void
   onRijenChange: (r: Rij[]) => void
 }
 
-export function Invoerpaneel({ sport, rijen, onSportChange, onRijenChange }: Props) {
+export function Invoerpaneel({
+  sport,
+  rust,
+  rijen,
+  onSportChange,
+  onRustChange,
+  onRijenChange,
+}: Props) {
   const updateRij = (i: number, veld: keyof Rij, waarde: string) =>
     onRijenChange(rijen.map((r, idx) => (idx === i ? { ...r, [veld]: waarde } : r)))
   const voegRijToe = () => onRijenChange([...rijen, { intensiteit: '', lactaat: '' }])
   const verwijderRij = (i: number) => onRijenChange(rijen.filter((_, idx) => idx !== i))
 
-  const geldigePunten = rijen.filter(
+  const rustWaarde = parseLactaat(rust)
+  const rustOk = rust.trim() === '' || rustWaarde !== null
+  const rustHoog = rustWaarde !== null && rustWaarde > LACTAAT_MAX
+  const geldigeStappen = rijen.filter(
     (r) => parseIntensiteit(sport, r.intensiteit) !== null && parseLactaat(r.lactaat) !== null,
   ).length
+  const geldigePunten = (rustWaarde !== null ? 1 : 0) + geldigeStappen
 
   return (
     <section className="paneel invoer">
@@ -69,6 +83,30 @@ export function Invoerpaneel({ sport, rijen, onSportChange, onRijenChange }: Pro
           </tr>
         </thead>
         <tbody>
+          {/* Vaste ruststap vóór de eerste belasting (intensiteit = 0). */}
+          <tr className="rij-rust">
+            <td className="col-nr">R</td>
+            <td>
+              <span className="rust-label">
+                Rust <span className="afgeleid">· 0 {sport === 'running' ? 'km/u' : 'W'}</span>
+              </span>
+            </td>
+            <td>
+              <input
+                className={rustOk ? '' : 'is-ongeldig'}
+                inputMode="decimal"
+                placeholder="bijv. 1,2"
+                value={rust}
+                onChange={(e) => onRustChange(e.target.value)}
+                aria-invalid={!rustOk}
+                aria-label="Lactaat in rust"
+              />
+              {!rustOk && <span className="veld-fout">ongeldig</span>}
+              {rustHoog && <span className="veld-waarschuwing">controleer: &gt; {LACTAAT_MAX}</span>}
+            </td>
+            <td className="col-actie"></td>
+          </tr>
+
           {rijen.map((rij, i) => {
             const intensiteitLeeg = rij.intensiteit.trim() === ''
             const intensiteitOk = intensiteitLeeg || parseIntensiteit(sport, rij.intensiteit) !== null
@@ -88,7 +126,8 @@ export function Invoerpaneel({ sport, rijen, onSportChange, onRijenChange }: Pro
                     onChange={(e) => updateRij(i, 'intensiteit', e.target.value)}
                     aria-invalid={!intensiteitOk}
                   />
-                  {kmh !== null && <span className="afgeleid">{kmh.toFixed(1)} km/u</span>}
+                  {/* Lopen: pace (invoer) én km/u tonen. */}
+                  {kmh !== null && <span className="afgeleid">= {kmh.toFixed(1).replace('.', ',')} km/u</span>}
                   {!intensiteitOk && <span className="veld-fout">ongeldig</span>}
                 </td>
                 <td>
@@ -109,7 +148,7 @@ export function Invoerpaneel({ sport, rijen, onSportChange, onRijenChange }: Pro
                     className="knop-verwijder"
                     onClick={() => verwijderRij(i)}
                     disabled={rijen.length <= 1}
-                    aria-label={`Rij ${i + 1} verwijderen`}
+                    aria-label={`Stap ${i + 1} verwijderen`}
                   >
                     ×
                   </button>
@@ -122,10 +161,10 @@ export function Invoerpaneel({ sport, rijen, onSportChange, onRijenChange }: Pro
 
       <div className="invoer__voet">
         <button type="button" className="knop-secundair" onClick={voegRijToe}>
-          + Rij toevoegen
+          + Stap toevoegen
         </button>
         <span className="invoer__telling">
-          {geldigePunten} geldige meetpunt{geldigePunten === 1 ? '' : 'en'}
+          {geldigePunten} geldige meetpunt{geldigePunten === 1 ? '' : 'en'} (incl. rust)
         </span>
       </div>
     </section>
