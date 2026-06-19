@@ -15,9 +15,9 @@
 > **Slice B (intake + datamodel) is af en live**: intake-paneel (verplichte naam + velden +
 > apparatuur-stub), in-sessie model in `src/lib/sessie.ts` (ADR-0012). **Slice C1 is af en live**:
 > instelbare analyse (Modified-Dmax standaard + Dmax, OBLA 2/3/4, LT1-delta, graad/AIC-advies) +
-> uitleg-blok met "Meer informatie"-link (ADR-0011). Volgende: **C2** (HF-kolom + HR bij drempels)
-> en **C-outlier** (meetpunt uitsluiten), daarna **Slice D** (layout-herontwerp).
-> Geparkeerd tot na het datamodel/design: PDF-rapport en JSON-opslag (zie §6).
+> uitleg-blok met "Meer informatie"-link (ADR-0011). **C2 is af en live**: optionele HF-kolom + HR
+> bij de drempels. Volgende: **C-outlier** (meetpunt uitsluiten), daarna **Slice D**
+> (layout-herontwerp). Geparkeerd tot na het datamodel/design: PDF-rapport en JSON-opslag (zie §6).
 
 ## 1. Doel
 
@@ -67,6 +67,8 @@ zonder dat de app persoonsgegevens bewaart.
 - **Slice C1 — analyse-methodes** (ADR-0011): `analyse.ts` met config (Mod)Dmax / OBLA-niveau /
   LT1-delta / graad+AIC; `AnalyseControls.tsx`; `uitleg.ts` (uitleg-blok + MEER_INFO_URL, nu
   algemene bron — vervangbaar). 32 tests. Live.
+- **Slice C2 — hartslag**: optionele HF-kolom per meetstap; HR bij LT1/LT2/OBLA geïnterpoleerd
+  (`interpoleerOpX`), HR-kolom in de resultaten (alleen als HF ingevuld). 34 tests. Live.
 
 ## 3. Tech-stack — kort
 

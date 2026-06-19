@@ -7,9 +7,9 @@ import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { AnalyseControls } from './components/AnalyseControls'
 import { analyseer, STANDAARD_CONFIG, type AnalyseConfig } from './lib/analyse'
-import { parseIntensiteit, parseLactaat } from './lib/invoer'
+import { parseIntensiteit, parseLactaat, parseHartslag } from './lib/invoer'
 import { legeDeelnemer, legeTestMeta, type Deelnemer, type TestMeta } from './lib/sessie'
-import type { Point, SportType } from './lib/types'
+import type { SportType } from './lib/types'
 import './App.css'
 
 function App() {
@@ -25,8 +25,12 @@ function App() {
   const analyse = useMemo(() => {
     const rustVal = parseLactaat(rust)
     const stappen = rijen
-      .map((r) => ({ x: parseIntensiteit(sport, r.intensiteit), y: parseLactaat(r.lactaat) }))
-      .filter((p): p is Point => p.x !== null && p.y !== null)
+      .map((r) => ({
+        x: parseIntensiteit(sport, r.intensiteit),
+        y: parseLactaat(r.lactaat),
+        hf: parseHartslag(r.hf),
+      }))
+      .filter((p): p is { x: number; y: number; hf: number | null } => p.x !== null && p.y !== null)
     return analyseer({ rust: rustVal, stappen, config })
   }, [sport, rust, rijen, config])
 

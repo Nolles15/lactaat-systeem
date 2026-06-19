@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { analyseer, kiesGraad, kiesGraadAIC, STANDAARD_CONFIG, type AnalyseConfig } from './analyse'
+import {
+  analyseer,
+  kiesGraad,
+  kiesGraadAIC,
+  interpoleerOpX,
+  STANDAARD_CONFIG,
+  type AnalyseConfig,
+} from './analyse'
 
 const cfg = (over: Partial<AnalyseConfig> = {}): AnalyseConfig => ({ ...STANDAARD_CONFIG, ...over })
 
@@ -63,6 +70,29 @@ describe('analyseer', () => {
     const mod = analyseer({ rust: 1, stappen: data, config: cfg({ lt2Methode: 'moddmax' }) })
     expect(dmax.lt2Lijn!.start.x).toBe(100)
     expect(mod.lt2Lijn!.start.x).toBe(200)
+  })
+
+  it('interpoleert HR bij de drempels als HF is ingevoerd', () => {
+    const metHf = [100, 150, 200, 250, 300, 350].map((x, i) => ({
+      x,
+      y: 1 + 0.0001 * (x - 100) ** 2,
+      hf: 110 + i * 15,
+    }))
+    const a = analyseer({ rust: 1.0, stappen: metHf, config: cfg() })
+    expect(a.hr.lt2).not.toBeNull()
+    expect(a.hr.lt2!).toBeGreaterThan(110)
+    expect(a.hr.lt2!).toBeLessThan(185)
+  })
+})
+
+describe('interpoleerOpX', () => {
+  it('lineair binnen het bereik, null erbuiten', () => {
+    const p = [
+      { x: 0, v: 100 },
+      { x: 10, v: 200 },
+    ]
+    expect(interpoleerOpX(p, 5)).toBeCloseTo(150, 6)
+    expect(interpoleerOpX(p, 20)).toBeNull()
   })
 })
 

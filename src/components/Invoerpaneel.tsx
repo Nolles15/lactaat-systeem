@@ -5,16 +5,18 @@ import {
   intensiteitAfgeleid,
   parseIntensiteit,
   parseLactaat,
+  parseHartslag,
   LACTAAT_MAX,
 } from '../lib/invoer'
 
 export interface Rij {
   intensiteit: string
   lactaat: string
+  hf: string
 }
 
 export function legeRijen(n: number): Rij[] {
-  return Array.from({ length: n }, () => ({ intensiteit: '', lactaat: '' }))
+  return Array.from({ length: n }, () => ({ intensiteit: '', lactaat: '', hf: '' }))
 }
 
 interface Props {
@@ -37,7 +39,7 @@ export function Invoerpaneel({
 }: Props) {
   const updateRij = (i: number, veld: keyof Rij, waarde: string) =>
     onRijenChange(rijen.map((r, idx) => (idx === i ? { ...r, [veld]: waarde } : r)))
-  const voegRijToe = () => onRijenChange([...rijen, { intensiteit: '', lactaat: '' }])
+  const voegRijToe = () => onRijenChange([...rijen, { intensiteit: '', lactaat: '', hf: '' }])
   const verwijderRij = (i: number) => onRijenChange(rijen.filter((_, idx) => idx !== i))
 
   const rustWaarde = parseLactaat(rust)
@@ -78,6 +80,7 @@ export function Invoerpaneel({
             <th className="col-nr">#</th>
             <th>{intensiteitLabel(sport)}</th>
             <th>Lactaat (mmol/L)</th>
+            <th>HF (bpm)</th>
             <th className="col-actie">
               <span className="sr-only">Acties</span>
             </th>
@@ -105,6 +108,7 @@ export function Invoerpaneel({
               {!rustOk && <span className="veld-fout">ongeldig</span>}
               {rustHoog && <span className="veld-waarschuwing">controleer: &gt; {LACTAAT_MAX}</span>}
             </td>
+            <td></td>
             <td className="col-actie"></td>
           </tr>
 
@@ -116,6 +120,7 @@ export function Invoerpaneel({
             const lactaatHoog = lactaatWaarde !== null && lactaatWaarde > LACTAAT_MAX
             const ingevoerd = parseIntensiteit(sport, rij.intensiteit)
             const afgeleid = ingevoerd !== null ? intensiteitAfgeleid(sport, ingevoerd) : null
+            const hfOk = rij.hf.trim() === '' || parseHartslag(rij.hf) !== null
             return (
               <tr key={i}>
                 <td className="col-nr">{i + 1}</td>
@@ -143,6 +148,17 @@ export function Invoerpaneel({
                   />
                   {!lactaatOk && <span className="veld-fout">ongeldig</span>}
                   {lactaatHoog && <span className="veld-waarschuwing">controleer: &gt; {LACTAAT_MAX}</span>}
+                </td>
+                <td>
+                  <input
+                    className={hfOk ? '' : 'is-ongeldig'}
+                    inputMode="numeric"
+                    placeholder="optioneel"
+                    value={rij.hf}
+                    onChange={(e) => updateRij(i, 'hf', e.target.value)}
+                    aria-invalid={!hfOk}
+                  />
+                  {!hfOk && <span className="veld-fout">ongeldig</span>}
                 </td>
                 <td className="col-actie">
                   <button
