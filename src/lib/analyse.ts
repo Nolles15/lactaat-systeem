@@ -28,7 +28,8 @@ export interface Drempels {
 }
 
 export interface Analyse {
-  meetpunten: Point[] // incl. rust (x=0) indien aanwezig — voor de scatter
+  meetpunten: Point[] // incl. rust (x=0) indien aanwezig — meetellende punten voor de scatter
+  uitgeslotenPunten: Point[] // wel getoond, niet in de fit (ADR-0011)
   coef: number[] | null
   graad: number | null
   graadAdvies: number | null // R²/AIC-aanbeveling
@@ -45,6 +46,7 @@ export interface StapInput {
   x: number // intensiteit (W of km/u)
   y: number // lactaat (mmol/L)
   hf?: number | null // hartslag (bpm), optioneel
+  uitgesloten?: boolean // true = wel tonen, niet meefitten
 }
 
 export interface AnalyseInput {
@@ -116,7 +118,11 @@ function eersteStijgingX(xs: number[], ys: number[], drempel = 0.4): number {
 }
 
 export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
-  const gesorteerd = [...stappen].sort((a, b) => a.x - b.x)
+  const gesorteerd = stappen.filter((s) => s.uitgesloten !== true).sort((a, b) => a.x - b.x)
+  const uitgeslotenPunten = stappen
+    .filter((s) => s.uitgesloten === true)
+    .map((s) => ({ x: s.x, y: s.y }))
+    .sort((a, b) => a.x - b.x)
   const meetpunten = rust !== null ? [{ x: 0, y: rust }, ...gesorteerd] : [...gesorteerd]
   const waarschuwingen: string[] = []
   const xs = gesorteerd.map((p) => p.x)
@@ -134,6 +140,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
     waarschuwingen.push('Te weinig meetpunten voor een betrouwbare curve.')
     return {
       meetpunten,
+      uitgeslotenPunten,
       coef: null,
       graad,
       graadAdvies,
@@ -193,6 +200,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
 
   return {
     meetpunten,
+    uitgeslotenPunten,
     coef,
     graad,
     graadAdvies,

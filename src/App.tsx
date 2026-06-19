@@ -29,8 +29,12 @@ function App() {
         x: parseIntensiteit(sport, r.intensiteit),
         y: parseLactaat(r.lactaat),
         hf: parseHartslag(r.hf),
+        uitgesloten: r.uitgesloten,
       }))
-      .filter((p): p is { x: number; y: number; hf: number | null } => p.x !== null && p.y !== null)
+      .filter(
+        (p): p is { x: number; y: number; hf: number | null; uitgesloten: boolean } =>
+          p.x !== null && p.y !== null,
+      )
     return analyseer({ rust: rustVal, stappen, config })
   }, [sport, rust, rijen, config])
 

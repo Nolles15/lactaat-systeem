@@ -210,6 +210,13 @@
   width: 2.5rem;
   text-align: right;
 }
+.col-fit {
+  width: 3rem;
+  text-align: center;
+}
+.rij-uitgesloten {
+  opacity: 0.55;
+}
 
 .invoer__tabel input {
   width: 100%;

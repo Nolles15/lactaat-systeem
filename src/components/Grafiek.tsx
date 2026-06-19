@@ -34,7 +34,7 @@ interface Props {
 }
 
 export function Grafiek({ sport, analyse }: Props) {
-  const { curve, meetpunten, drempels, coef, lt2Lijn } = analyse
+  const { curve, meetpunten, uitgeslotenPunten, drempels, coef, lt2Lijn } = analyse
   if (coef === null || curve.length === 0) {
     return <p className="leeg-melding">Voer minimaal 3 belastingsstappen in voor een curve.</p>
   }
@@ -100,6 +100,16 @@ export function Grafiek({ sport, analyse }: Props) {
           isAnimationActive={false}
         />
         <Scatter data={scatterPunten} dataKey="y" fill={BLAUW} name="Meting" isAnimationActive={false} />
+        {uitgeslotenPunten.length > 0 && (
+          <Scatter
+            data={uitgeslotenPunten}
+            dataKey="y"
+            fill="#ffffff"
+            stroke={GRIJS}
+            name="Uitgesloten"
+            isAnimationActive={false}
+          />
+        )}
         {drempels.lt1 && (
           <ReferenceLine
             x={drempels.lt1.x}
