@@ -5,13 +5,14 @@
 > merge/deploy of bij een pauze.
 
 > **Laatst herzien**: 2026-06-19 — fundament compleet (ADR-0001 t/m 0005), slice 1 (rekenkern)
-> gebouwd en getest, en de §11-muren staan live op GitHub: CI-test-gate + secret-scan + branch
-> protection (incl. enforce_admins). Repo: https://github.com/Nolles15/lactaat-systeem.
+> gebouwd/getest, §11-muren live, én de deploy-pijplijn staat: elke merge naar `main` publiceert
+> naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
-> **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI.
-> Volgende stap = UI-slices (header+logo → invoerpaneel → grafiek → drempels → zones → PDF).
-> Eerst nog twee kleine beslissingen openzetten: het zone-model (briefing 3.5 vs simpel) en
-> Recharts v2 vs v3. Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
+> **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
+> merge = automatische deploy. Volgende stap = UI-slices (header+logo → invoerpaneel → grafiek →
+> drempels → zones → PDF). Klein restant: paginatitel staat nog op `scaffold` (fix in header-slice).
+> Geparkeerde keuzes: zone-model (briefing 3.5 vs simpel), Recharts v2 vs v3, PDF-aanpak.
+> Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
 
 ## 1. Doel
 
@@ -33,6 +34,8 @@ zonder dat de app persoonsgegevens bewaart.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
   protection op `main` (strict, enforce_admins, PR vereist).
 - Repo: https://github.com/Nolles15/lactaat-systeem (publiek).
+- **Deploy-pijplijn live**: merge naar `main` → GitHub Pages. URL:
+  https://nolles15.github.io/lactaat-systeem/ (toont nu het Vite-skelet).
 
 ## 3. Tech-stack — kort
 
@@ -42,8 +45,8 @@ zonder dat de app persoonsgegevens bewaart.
 ## 4. Fundament-status (CLAUDE.md §1/§6)
 
 - [x] Premisse vastgelegd (ADR-0003)
-- [ ] Monitoring / health-check — verkleind voor een statische app: deploy-status (Actions) +
-      later een simpele check dat de Pages-URL laadt. Nog te regelen bij de deploy.
+- [~] Monitoring / health-check — verkleind voor een statische app: deploy-status zichtbaar via
+      Actions (faalt → geen deploy). Optioneel later een simpele uptime-check op de Pages-URL.
 - [x] Verplichte CI-test-gate + branch protection = muur (§11) — live
 - [x] Backups — belegd buiten de app: beheerde Hanze-schijf is system of record (ADR-0001)
 - [x] Correctheid + fail-visible-strategie — ADR-0002 (oracle + zichtbare randen)
