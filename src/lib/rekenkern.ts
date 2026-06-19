@@ -68,9 +68,15 @@ export function dmax(c: number[], x0: number, x1: number): Point {
  * LT1: eerste punt waar de gefitte curve 1,0 mmol/L boven de baseline uitkomt.
  * Baseline = laagste van de eerste (max 3) gemeten lactaatwaarden. null = niet bereikt.
  */
-export function findLT1(c: number[], ys: number[], x0: number, xStop: number): LT1Result | null {
+export function findLT1(
+  c: number[],
+  ys: number[],
+  x0: number,
+  xStop: number,
+  delta = 1.0,
+): LT1Result | null {
   const baseline = Math.min(...ys.slice(0, Math.min(3, ys.length)))
-  const thr = baseline + 1.0
+  const thr = baseline + delta
   for (let i = 0; i <= 1000; i++) {
     const x = x0 + ((xStop - x0) * i) / 1000
     if (poly(c, x) >= thr) return { x, y: poly(c, x), baseline, thr }
@@ -82,14 +88,14 @@ export function findLT1(c: number[], ys: number[], x0: number, xStop: number): L
  * OBLA: eerste kruising van de gefitte curve met 4,0 mmol/L (lineair geïnterpoleerd
  * tussen de bemonsterde punten). null = niet bereikt binnen het testbereik.
  */
-export function findOBLA(c: number[], x0: number, x1: number): Point | null {
+export function findOBLA(c: number[], x0: number, x1: number, niveau = 4): Point | null {
   let prev = poly(c, x0)
   for (let i = 1; i <= 1000; i++) {
     const x = x0 + ((x1 - x0) * i) / 1000
     const y = poly(c, x)
-    if (prev < 4 && y >= 4) {
-      const t = (4 - prev) / (y - prev)
-      return { x: x0 + ((x1 - x0) * (i - 1 + t)) / 1000, y: 4 }
+    if (prev < niveau && y >= niveau) {
+      const t = (niveau - prev) / (y - prev)
+      return { x: x0 + ((x1 - x0) * (i - 1 + t)) / 1000, y: niveau }
     }
     prev = y
   }

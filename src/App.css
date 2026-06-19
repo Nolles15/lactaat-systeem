@@ -374,3 +374,44 @@
   width: 3.5rem;
   font-weight: bold;
 }
+
+/* ---- Analyse-controls ---- */
+.analyse-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ruimte-3);
+  margin-bottom: var(--ruimte-3);
+}
+.analyse-controls .veld {
+  min-width: 150px;
+}
+
+/* ---- Uitleg ---- */
+.uitleg {
+  margin-top: var(--ruimte-3);
+  border-top: 1px solid var(--kleur-rand);
+  padding-top: var(--ruimte-2);
+}
+.uitleg summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--hanze-donkerblauw);
+}
+.uitleg dl {
+  margin: var(--ruimte-2) 0 0;
+}
+.uitleg dt {
+  font-weight: bold;
+  margin-top: var(--ruimte-1);
+}
+.uitleg dd {
+  margin: 0 0 var(--ruimte-1);
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.9rem;
+}
+.uitleg a {
+  display: inline-block;
+  margin-top: var(--ruimte-2);
+  color: var(--kleur-accent);
+  font-weight: bold;
+}

@@ -34,7 +34,7 @@ interface Props {
 }
 
 export function Grafiek({ sport, analyse }: Props) {
-  const { curve, meetpunten, drempels, coef } = analyse
+  const { curve, meetpunten, drempels, coef, lt2Lijn } = analyse
   if (coef === null || curve.length === 0) {
     return <p className="leeg-melding">Voer minimaal 3 belastingsstappen in voor een curve.</p>
   }
@@ -82,15 +82,14 @@ export function Grafiek({ sport, analyse }: Props) {
               : `${Math.round(v)} W`
           }}
         />
-        {/* D-max referentielijn (eerste→laatste gefitte punt). */}
-        <ReferenceLine
-          segment={[
-            { x: dmaxStart.x, y: dmaxStart.y },
-            { x: dmaxEind.x, y: dmaxEind.y },
-          ]}
-          stroke={GRIJS}
-          strokeDasharray="4 4"
-        />
+        {/* (Modified-)Dmax-referentielijn — de werkelijk gebruikte lijn (ADR-0011). */}
+        {lt2Lijn && (
+          <ReferenceLine
+            segment={[lt2Lijn.start, lt2Lijn.eind]}
+            stroke={GRIJS}
+            strokeDasharray="4 4"
+          />
+        )}
         <Line
           type="monotone"
           dataKey="y"
