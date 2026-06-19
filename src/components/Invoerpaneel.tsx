@@ -2,6 +2,7 @@ import type { SportType } from '../lib/types'
 import {
   intensiteitLabel,
   intensiteitPlaceholder,
+  intensiteitAfgeleid,
   parseIntensiteit,
   parseLactaat,
   LACTAAT_MAX,
@@ -113,7 +114,8 @@ export function Invoerpaneel({
             const lactaatWaarde = parseLactaat(rij.lactaat)
             const lactaatOk = rij.lactaat.trim() === '' || lactaatWaarde !== null
             const lactaatHoog = lactaatWaarde !== null && lactaatWaarde > LACTAAT_MAX
-            const kmh = sport === 'running' ? parseIntensiteit('running', rij.intensiteit) : null
+            const ingevoerd = parseIntensiteit(sport, rij.intensiteit)
+            const afgeleid = ingevoerd !== null ? intensiteitAfgeleid(sport, ingevoerd) : null
             return (
               <tr key={i}>
                 <td className="col-nr">{i + 1}</td>
@@ -127,7 +129,7 @@ export function Invoerpaneel({
                     aria-invalid={!intensiteitOk}
                   />
                   {/* Lopen: pace (invoer) én km/u tonen. */}
-                  {kmh !== null && <span className="afgeleid">= {kmh.toFixed(1).replace('.', ',')} km/u</span>}
+                  {afgeleid && <span className="afgeleid">= {afgeleid}</span>}
                   {!intensiteitOk && <span className="veld-fout">ongeldig</span>}
                 </td>
                 <td>

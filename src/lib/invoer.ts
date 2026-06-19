@@ -1,42 +1,45 @@
 // Invoer-helpers: parsen/valideren van wat de testleider intikt, naar de rekeneenheid.
 // Pure functies, los testbaar — zodat de validatie hard te verifiëren is (ADR-0002).
+// Eenheden: lopen → snelheid (km/u) bij invoer, pace bij uitvoer (ADR-0010). Intern: km/u.
 
-import { paceToKmh, kmhToPace } from './rekenkern'
+import { kmhToPace } from './rekenkern'
 import type { SportType } from './types'
-
-// "m:ss" of "mm:ss", seconden 0–59.
-const PACE_RE = /^(\d{1,2}):([0-5]\d)$/
 
 /** Bovengrens voor een plausibele lactaatwaarde; daarboven fail-visible waarschuwen (ADR-0002). */
 export const LACTAAT_MAX = 15
 
-/** Label voor de intensiteitskolom, afhankelijk van de sport. */
+/** Label voor de intensiteitskolom (invoer), afhankelijk van de sport. */
 export function intensiteitLabel(sport: SportType): string {
-  return sport === 'running' ? 'Tempo (min/km)' : 'Vermogen (W)'
+  return sport === 'running' ? 'Snelheid (km/u)' : 'Vermogen (W)'
 }
 
 /** Voorbeeld-invoer (placeholder) per sport. */
 export function intensiteitPlaceholder(sport: SportType): string {
-  return sport === 'running' ? 'bijv. 5:30' : 'bijv. 250'
+  return sport === 'running' ? 'bijv. 12,5' : 'bijv. 250'
 }
 
 /**
- * Parse de ingevoerde intensiteit naar de rekeneenheid: Watt (fietsen) of km/h (lopen,
- * via pace-conversie). Geeft null bij ongeldige of niet-positieve invoer.
+ * Parse de ingevoerde intensiteit naar de rekeneenheid: Watt (fietsen) of km/u (lopen — snelheid,
+ * direct ingevoerd; ADR-0010). Geeft null bij ongeldige of niet-positieve invoer.
  */
-export function parseIntensiteit(sport: SportType, raw: string): number | null {
+export function parseIntensiteit(_sport: SportType, raw: string): number | null {
   const s = raw.trim()
   if (s === '') return null
-  if (sport === 'running') {
-    if (!PACE_RE.test(s)) return null
-    return paceToKmh(s)
-  }
   const n = Number(s.replace(',', '.'))
   return Number.isFinite(n) && n > 0 ? n : null
 }
 
 /**
- * Toon een intensiteit leesbaar: Watt (fietsen) of pace + km/u (lopen, beide; feedback).
+ * Afgeleide weergave bij de invoer: bij lopen de pace naast de ingevoerde snelheid (ADR-0010).
+ * Geeft null als er niets af te leiden valt (fietsen).
+ */
+export function intensiteitAfgeleid(sport: SportType, x: number): string | null {
+  return sport === 'running' ? `${kmhToPace(x)} /km` : null
+}
+
+/**
+ * Uitvoer-weergave van een intensiteit: Watt (fietsen) of pace primair + snelheid secundair
+ * (lopen; ADR-0010).
  */
 export function formatIntensiteit(sport: SportType, x: number): string {
   if (sport === 'running') {

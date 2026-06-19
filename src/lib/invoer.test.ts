@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseIntensiteit, parseLactaat, intensiteitLabel } from './invoer'
+import { parseIntensiteit, parseLactaat, intensiteitLabel, intensiteitAfgeleid } from './invoer'
 
 describe('parseIntensiteit — fietsen (Watt)', () => {
   it('leest een geheel getal', () => {
@@ -16,13 +16,14 @@ describe('parseIntensiteit — fietsen (Watt)', () => {
   })
 })
 
-describe('parseIntensiteit — lopen (pace → km/h)', () => {
-  it('zet 5:30 om naar km/h', () => {
-    expect(parseIntensiteit('running', '5:30')).toBeCloseTo(10.909, 3)
+describe('parseIntensiteit — lopen (snelheid km/u)', () => {
+  it('leest een snelheid-getal (komma toegestaan)', () => {
+    expect(parseIntensiteit('running', '12,5')).toBeCloseTo(12.5, 6)
   })
-  it('weigert ongeldige pace (seconden > 59, geen dubbele punt)', () => {
-    expect(parseIntensiteit('running', '5:75')).toBeNull()
-    expect(parseIntensiteit('running', '550')).toBeNull()
+  it('weigert pace-notatie, nul, negatief en leeg', () => {
+    expect(parseIntensiteit('running', '5:30')).toBeNull()
+    expect(parseIntensiteit('running', '0')).toBeNull()
+    expect(parseIntensiteit('running', '-3')).toBeNull()
     expect(parseIntensiteit('running', '')).toBeNull()
   })
 })
@@ -38,9 +39,13 @@ describe('parseLactaat', () => {
   })
 })
 
-describe('intensiteitLabel', () => {
-  it('verschilt per sport', () => {
+describe('intensiteitLabel / afgeleid', () => {
+  it('label verschilt per sport (lopen = km/u)', () => {
     expect(intensiteitLabel('cycling')).toMatch(/W/)
-    expect(intensiteitLabel('running')).toMatch(/min\/km/)
+    expect(intensiteitLabel('running')).toMatch(/km\/u/)
+  })
+  it('afgeleide bij lopen toont pace, bij fietsen niets', () => {
+    expect(intensiteitAfgeleid('running', 12)).toMatch(/\/km/)
+    expect(intensiteitAfgeleid('cycling', 250)).toBeNull()
   })
 })

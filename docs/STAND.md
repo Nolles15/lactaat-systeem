@@ -9,12 +9,11 @@
 > naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. De app is **functioneel compleet** (invoer → curve → drempels →
-> zones), live op https://nolles15.github.io/lactaat-systeem/. **Bewust gepauzeerd** zodat de
-> eigenaar het totaal kan beoordelen. **PDF-export én JSON-opslag zijn bewust geparkeerd** tot het
-> datamodel + design vaststaan (zie §6 — beide hangen aan keuzes die nog niet rijp zijn). Volgende
-> sessie: ofwel een design-/datamodel-ronde, ofwel de kleine niet-gekoppelde polish (tooltip,
-> lazy-load). Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
+> merge = automatische deploy. **Goedgekeurd plan loopt**: expert-niveau + top-tier layout
+> (`.claude/plans/polished-napping-dream.md`), in slices A→D. **Slice A (eenheidsmodel) is af en
+> live**: lopen-invoer = snelheid (km/u) met pace eronder; uitvoer pace-primair (ADR-0010).
+> Volgende = **Slice B** (intake + in-sessie datamodel, verplichte naam, apparatuur-stub; ADR-0012).
+> Geparkeerd tot na het datamodel/design: PDF-rapport en JSON-opslag (zie §6).
 
 ## 1. Doel
 
@@ -35,6 +34,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0007 (grafiek-library: Recharts v3) — Geaccepteerd.
 - ADR-0008 (ruststap = baseline, niet in de fit) — Geaccepteerd.
 - ADR-0009 (zone-model: drempelzones + 5-zone) — Geaccepteerd.
+- ADR-0010 (eenheidsmodel: snelheid invoer / pace uitvoer) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -53,6 +53,8 @@ zonder dat de app persoonsgegevens bewaart.
   + resultatentabel met waarschuwingen. Live. (Labels boven de lijn, gestaggerd.)
 - **Trainingszones-slice**: `src/lib/zones.ts` (drempelzones + 5-zone, 3 tests); twee zonetabellen
   met intensiteitsgrenzen (Watt of pace+km/u). Live.
+- **Slice A — eenheidsmodel** (ADR-0010): lopen-invoer = **snelheid (km/u)** met afgeleide pace;
+  uitvoer pace-primair (grafiek-tooltip toont beide). `src/lib/invoer.ts` aangepast (25 tests). Live.
 
 ## 3. Tech-stack — kort
 

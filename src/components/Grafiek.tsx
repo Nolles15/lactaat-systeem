@@ -74,7 +74,13 @@ export function Grafiek({ sport, analyse }: Props) {
         />
         <Tooltip
           formatter={(v) => [`${(v as number).toFixed(2)} mmol/L`, 'Lactaat']}
-          labelFormatter={(x) => xTick(sport, x as number) + (sport === 'running' ? ' /km' : ' W')}
+          labelFormatter={(x) => {
+            const v = x as number
+            // Uitvoer: pace primair, snelheid secundair bij lopen (ADR-0010).
+            return sport === 'running'
+              ? `${kmhToPace(v)} /km · ${v.toFixed(1).replace('.', ',')} km/u`
+              : `${Math.round(v)} W`
+          }}
         />
         {/* D-max referentielijn (eerste→laatste gefitte punt). */}
         <ReferenceLine
