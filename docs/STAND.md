@@ -24,17 +24,19 @@ zonder dat de app persoonsgegevens bewaart.
 - Startkit-documenten (CLAUDE.md, START.md, deze STAND, ADR-proces).
 - ADR-0001 (privacy-architectuur) — Geaccepteerd.
 - ADR-0002 (verificatiestrategie rekenkern) — Geaccepteerd.
+- ADR-0003 (premisse en scope) — Geaccepteerd.
+- ADR-0004 (stack: Vite + React + TypeScript) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Nog geen applicatiecode.**
 
 ## 3. Tech-stack — kort
 
-- Nog niet besloten. **Randvoorwaarde uit ADR-0001**: client-side uitvoerbaar, geen backend nodig
-  voor v1, statisch hostbaar. Bestaande logica is React/JSX + Recharts (overnemen of niet = ADR).
+- **Vite + React + TypeScript**, Recharts voor de grafiek (ADR-0004). Client-side, geen backend,
+  statisch hostbaar (ADR-0001). Hosting-platform nog te kiezen.
 
 ## 4. Fundament-status (CLAUDE.md §1/§6)
 
-- [~] Premisse vastgelegd (scherp; nog te formaliseren als ADR-0002)
+- [x] Premisse vastgelegd (ADR-0003)
 - [ ] Monitoring / health-check
 - [ ] Verplichte CI-test-gate (+ branch protection = muur, §11)
 - [x] Backups — belegd buiten de app: beheerde Hanze-schijf is system of record (ADR-0001)
@@ -52,8 +54,8 @@ zonder dat de app persoonsgegevens bewaart.
 
 ## 6. Open beslissingen
 
-- **ADR-0002 premisse** — premisse formeel vastleggen (incl. succescriterium).
-- **Stack & hosting** — React behouden of niet; bouwtool; statische host. Trigger: vóór eerste code.
+- **Hosting & repo-remote** — waar host je de statische app, en waar leeft de repo (GitHub/GitLab)
+  — dat bepaalt waar de §11-muren (branch protection, secret-scan, CI-gate) komen. Trigger: nu.
 - **PDF-aanpak** — client-side (jsPDF/html2canvas) vs anders. Trigger: bij de export-feature.
 - **Testfixtures aanleveren** — 2–3 echte testdatasets + huidige-tool-uitkomsten (ADR-0002).
   Trigger: nodig vóór de rekenkern "af" heet.
