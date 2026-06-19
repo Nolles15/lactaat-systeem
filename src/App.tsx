@@ -1,16 +1,22 @@
 import { useMemo, useState } from 'react'
 import { Header } from './components/Header'
+import { Intake } from './components/Intake'
 import { Invoerpaneel, legeRijen, type Rij } from './components/Invoerpaneel'
 import { Grafiek } from './components/Grafiek'
 import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { analyseer } from './lib/analyse'
 import { parseIntensiteit, parseLactaat } from './lib/invoer'
+import { legeDeelnemer, legeTestMeta, type Deelnemer, type TestMeta } from './lib/sessie'
 import type { Point, SportType } from './lib/types'
 import './App.css'
 
 function App() {
   const [sport, setSport] = useState<SportType>('cycling')
+  const [deelnemer, setDeelnemer] = useState<Deelnemer>(legeDeelnemer)
+  const [testmeta, setTestmeta] = useState<TestMeta>(() =>
+    legeTestMeta(new Date().toISOString().slice(0, 10)),
+  )
   const [rust, setRust] = useState('')
   const [rijen, setRijen] = useState<Rij[]>(() => legeRijen(5))
 
@@ -26,6 +32,13 @@ function App() {
     <div className="app">
       <Header />
       <main className="app-main">
+        <Intake
+          sport={sport}
+          deelnemer={deelnemer}
+          testmeta={testmeta}
+          onDeelnemerChange={setDeelnemer}
+          onTestMetaChange={setTestmeta}
+        />
         <Invoerpaneel
           sport={sport}
           rust={rust}
