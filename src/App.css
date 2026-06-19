@@ -65,6 +65,60 @@
   margin-bottom: var(--ruimte-3);
 }
 
+/* ---- Intake ---- */
+.intake__privacy {
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.85rem;
+  margin: 0 0 var(--ruimte-3);
+}
+.intake-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--ruimte-2) var(--ruimte-3);
+}
+.veld {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.veld > span {
+  font-size: 0.85rem;
+  color: var(--kleur-tekst-zwak);
+}
+.veld--breed {
+  grid-column: 1 / -1;
+}
+.veld input,
+.veld select,
+.veld textarea {
+  font: inherit;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--kleur-rand);
+  border-radius: 6px;
+  background: var(--kleur-paneel);
+}
+.veld input:focus,
+.veld select:focus,
+.veld textarea:focus {
+  outline: 2px solid var(--kleur-accent);
+  outline-offset: 1px;
+  border-color: var(--kleur-accent);
+}
+.veld input.is-ongeldig {
+  border-color: #c0392b;
+  background: #fdecea;
+}
+.verplicht {
+  color: var(--kleur-accent);
+}
+.apparatuur {
+  padding: 0.45rem 0.55rem;
+  border: 1px dashed var(--kleur-rand);
+  border-radius: 6px;
+  color: var(--kleur-tekst-zwak);
+  background: var(--kleur-achtergrond);
+}
+
 .paneel__tekst {
   color: var(--kleur-tekst-zwak);
   max-width: 60ch;
