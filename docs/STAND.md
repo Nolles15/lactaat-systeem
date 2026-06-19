@@ -9,10 +9,10 @@
 > naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. Grafiek + drempels-slice is af en live (lactaatcurve, LT1/LT2/OBLA,
-> R², fail-visible randen). Volgende UI-slice = **trainingszones** — die triggert de zone-model-keuze
-> (briefing 3.5 vs simpel). Daarna PDF-export. Geparkeerde keuzes: zone-model, PDF-aanpak,
-> chart lazy-loaden (bundel ~554 KB). Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
+> merge = automatische deploy. Trainingszones-slice is af en live (drempelzones + 5-zone model).
+> Volgende (laatste minimum-item, briefing §7) = **PDF-export**. Geparkeerde keuzes/polish:
+> PDF-aanpak, tooltip opschonen (toont soms curve-overschot), chart lazy-loaden (bundel ~554 KB),
+> layout/prominentie-review. Rekenkern-fixtures wachten op 2–3 echte testdatasets (ADR-0002).
 
 ## 1. Doel
 
@@ -32,6 +32,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0006 (UI-werkwijze: code-first + gecentraliseerd Hanze-thema) — Geaccepteerd.
 - ADR-0007 (grafiek-library: Recharts v3) — Geaccepteerd.
 - ADR-0008 (ruststap = baseline, niet in de fit) — Geaccepteerd.
+- ADR-0009 (zone-model: drempelzones + 5-zone) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -47,7 +48,9 @@ zonder dat de app persoonsgegevens bewaart.
   - Feedback verwerkt: vaste **ruststap** (intensiteit 0) bovenaan; bij lopen **pace én km/u** getoond.
 - **Grafiek + drempels-slice**: `src/lib/analyse.ts` (polyfit + graadkeuze + R² + LT1/LT2/OBLA +
   fail-visible randen, 4 tests). Recharts v3-grafiek (curve, scatter, D-max-lijn, referentielijnen)
-  + resultatentabel met waarschuwingen. Live.
+  + resultatentabel met waarschuwingen. Live. (Labels boven de lijn, gestaggerd.)
+- **Trainingszones-slice**: `src/lib/zones.ts` (drempelzones + 5-zone, 3 tests); twee zonetabellen
+  met intensiteitsgrenzen (Watt of pace+km/u). Live.
 
 ## 3. Tech-stack — kort
 
@@ -79,8 +82,8 @@ zonder dat de app persoonsgegevens bewaart.
   vormgeving bewust uitgesteld (ADR-0006 maakt restyle goedkoop). Logo + huisstijl: akkoord.
 - **Chart lazy-loaden** — Recharts maakt de bundel ~554 KB; later code-splitten. Trigger: als
   laadtijd merkbaar wordt.
-- **Zone-model** — de uitgebreide briefing-tabel 3.5 (A1/A2/A2+/B/C met −10% en midpoints) vs een
-  simpeler model. Domeinkeuze met ADR. Trigger: vóór de zones-slice.
+- **Tooltip opschonen** — toont soms een derde, verwarrende waarde (curve-overschot/extrapolatie).
+  Trigger: bij een polish-ronde van de grafiek.
 - **Recharts v2 vs v3** — v2 is end-of-life; v3 heeft API-wijzigingen. Trigger: bij de grafiek-slice.
 - **PDF-aanpak** — client-side (jsPDF/html2canvas) vs anders. Trigger: bij de export-feature.
 - **Tolerantie testfixtures** — hoe strak moeten de drempels matchen (ADR-0002). Trigger: bij het

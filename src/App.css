@@ -294,3 +294,29 @@
 .waarschuwingen li + li {
   margin-top: var(--ruimte-1);
 }
+
+/* ---- Trainingszones ---- */
+.zones h3 {
+  margin: var(--ruimte-3) 0 var(--ruimte-1);
+}
+.zones h3:first-child {
+  margin-top: 0;
+}
+.zone-tabel {
+  width: 100%;
+  border-collapse: collapse;
+}
+.zone-tabel th,
+.zone-tabel td {
+  text-align: left;
+  padding: var(--ruimte-1) var(--ruimte-2);
+  border-bottom: 1px solid var(--kleur-rand);
+}
+.zone-tabel th {
+  font-size: 0.85rem;
+  color: var(--kleur-tekst-zwak);
+}
+.zone-code {
+  width: 3.5rem;
+  font-weight: bold;
+}
