@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { parseIntensiteit, parseLactaat, intensiteitLabel, intensiteitAfgeleid } from './invoer'
+import {
+  parseIntensiteit,
+  parseLactaat,
+  parseGewicht,
+  intensiteitLabel,
+  intensiteitAfgeleid,
+  formatIntensiteit,
+} from './invoer'
 
 describe('parseIntensiteit — fietsen (Watt)', () => {
   it('leest een geheel getal', () => {
@@ -36,6 +43,25 @@ describe('parseLactaat', () => {
   it('weigert negatief en leeg', () => {
     expect(parseLactaat('-1')).toBeNull()
     expect(parseLactaat('')).toBeNull()
+  })
+})
+
+describe('parseGewicht', () => {
+  it('leest gewicht, weigert leeg/negatief', () => {
+    expect(parseGewicht('72,5')).toBeCloseTo(72.5, 6)
+    expect(parseGewicht('')).toBeNull()
+    expect(parseGewicht('-1')).toBeNull()
+  })
+})
+
+describe('formatIntensiteit', () => {
+  it('fietsen toont W; met gewicht ook W/kg', () => {
+    expect(formatIntensiteit('cycling', 250)).toBe('250 W')
+    expect(formatIntensiteit('cycling', 250, 80)).toMatch(/W\/kg/)
+  })
+  it('lopen toont pace + km/u (geen W/kg)', () => {
+    expect(formatIntensiteit('running', 12)).toMatch(/km\/u/)
+    expect(formatIntensiteit('running', 12, 80)).not.toMatch(/W\/kg/)
   })
 })
 

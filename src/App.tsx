@@ -7,7 +7,7 @@ import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { AnalyseControls } from './components/AnalyseControls'
 import { analyseer, type AnalyseConfig } from './lib/analyse'
-import { parseIntensiteit, parseLactaat, parseHartslag } from './lib/invoer'
+import { parseIntensiteit, parseLactaat, parseHartslag, parseGewicht } from './lib/invoer'
 import {
   legeSessie,
   type Sessie,
@@ -35,6 +35,7 @@ function App() {
   }
   const lactaat = sessie.modules.lactaat!
   const { rust, meetpunten: rijen, analyseConfig: config } = lactaat
+  const gewichtKg = parseGewicht(deelnemer.gewichtKg)
 
   const updateLactaat = (patch: Partial<LactaatModule>) =>
     setSessie((p) => ({
@@ -108,7 +109,7 @@ function App() {
           </header>
           <AnalyseControls config={config} graadAdvies={analyse.graadAdvies} onChange={setConfig} />
           <Grafiek sport={sport} analyse={analyse} />
-          <Resultaten sport={sport} analyse={analyse} />
+          <Resultaten sport={sport} analyse={analyse} gewichtKg={gewichtKg} />
         </section>
 
         <section className="paneel">
@@ -116,7 +117,7 @@ function App() {
             <span className="paneel__nr">4</span>
             <h2>Trainingszones</h2>
           </header>
-          <Zones sport={sport} analyse={analyse} />
+          <Zones sport={sport} analyse={analyse} gewichtKg={gewichtKg} />
         </section>
       </main>
       <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>

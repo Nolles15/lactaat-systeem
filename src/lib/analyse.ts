@@ -39,6 +39,7 @@ export interface Analyse {
   lt2Methode: LT2Methode
   lt2Lijn: { start: Point; eind: Point } | null // de gebruikte (Mod)Dmax-lijn
   hr: { lt1: number | null; lt2: number | null; obla: number | null } // HR bij de drempels (bpm)
+  hfPunten: { x: number; v: number }[] // HF per meetstap (voor HR op zonegrenzen)
   waarschuwingen: string[]
 }
 
@@ -150,6 +151,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
       lt2Methode: config.lt2Methode,
       lt2Lijn: null,
       hr: { lt1: null, lt2: null, obla: null },
+      hfPunten: [],
       waarschuwingen,
     }
   }
@@ -210,6 +212,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
     lt2Methode: config.lt2Methode,
     lt2Lijn,
     hr,
+    hfPunten,
     waarschuwingen,
   }
 }

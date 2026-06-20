@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { drempelzones, trainingszones } from './zones'
+import { drempelzones, trainingszones, zoneHr } from './zones'
 
 describe('drempelzones', () => {
   it('drie zones, open onder/boven LT1/LT2', () => {
@@ -27,5 +27,24 @@ describe('trainingszones (5-zone)', () => {
     for (let i = 1; i < z.length; i++) {
       expect(z[i].min).toBe(z[i - 1].max)
     }
+  })
+})
+
+describe('zoneHr', () => {
+  const hf = [
+    { x: 100, v: 120 },
+    { x: 200, v: 150 },
+    { x: 300, v: 180 },
+  ]
+
+  it('interpoleert HR op de zonegrenzen', () => {
+    const r = zoneHr(hf, { code: '2', naam: '', min: 150, max: 250 })
+    expect(r.min!).toBeCloseTo(135, 1) // 120 + 0,5·(150−120)
+    expect(r.max!).toBeCloseTo(165, 1) // 150 + 0,5·(180−150)
+  })
+
+  it('open grens geeft null voor die kant', () => {
+    expect(zoneHr(hf, { code: '1', naam: '', min: null, max: 200 }).min).toBeNull()
+    expect(zoneHr(hf, { code: '3', naam: '', min: 200, max: null }).max).toBeNull()
   })
 })
