@@ -4,17 +4,17 @@
 > sessie (na [`CLAUDE.md`](../CLAUDE.md)). Houd 'm kort en actueel; werk 'm bij na elke
 > merge/deploy of bij een pauze.
 
-> **Laatst herzien**: 2026-06-20 — expert-/layout-plan (A→D) is af en live; **nieuw plan v3**
-> (modulair lab-platform) goedgekeurd. **Deel A loopt**; A.1 (modulair datamodel) is af.
-> https://nolles15.github.io/lactaat-systeem/. 36 tests groen.
+> **Laatst herzien**: 2026-06-20 — modulair lab-platform (plan v3). **Deel A compleet**; **Deel B
+> gestart**: VO2max-import uit Cortex MetaSoft werkt (geverifieerd tegen echte data).
+> https://nolles15.github.io/lactaat-systeem/. 52 tests groen.
 >
 > **▶️ HERVATTEN**: `main` is beschermd → branch + PR + groene CI; merge = auto-deploy. Koers:
-> **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide (plan v3 in
-> `.claude/plans/polished-napping-dream.md`). **Deel A is compleet** (A.1 datamodel · A.2
-> sporter-zones · A.3 RPE · A.4 JSON opslaan/inladen). Volgende = **Deel B** (VO2max +
-> combinatierapport + design) = **aparte uitgebreide ronde, later** — vergt eigenaar-inputs:
-> voorbeelden van de "lelijke" VO2max-labformats, apparatuur-mapping, en verificatie-fixtures
-> (ADR-0002). **Niets in uitvoering** tot Deel B gepland wordt.
+> **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide
+> (`.claude/plans/polished-napping-dream.md`). Deel A ✓. **Deel B**: B.0 .gitignore lab-exports ✓ ·
+> B.1+B.2 vo2max-module + **Cortex-parser** + import-UI ✓ (ADR-0017). Volgende = **B.3 rapport-
+> systeem** (design-led, vergt een rapport-voorbeeld) en **B.4 combinatie-uitlijning** (na echte
+> combi-data). ⚠️ Lab-exports (`docs/*.xml`) staan in `.gitignore` — gebruik met toestemming,
+> nooit naar git.
 
 ## 1. Doel
 
@@ -42,6 +42,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0014 (datamodel-evolutie: sessie met test-modules) — Geaccepteerd.
 - ADR-0015 (sporter-facing zones: HR-bereik + W/kg) — Geaccepteerd.
 - ADR-0016 (JSON opslaan/inladen: versioned, bestand-gebaseerd) — Geaccepteerd.
+- ADR-0017 (VO2max-module + Cortex-import, beautify) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -77,7 +78,9 @@ zonder dat de app persoonsgegevens bewaart.
   kaarten + Hanze-accent-badges. Live.
 - **Deel A — modulair lab-platform (plan v3)**: A.1 `Sessie` met modules (ADR-0014) · A.2 zones in
   HR + W/kg (ADR-0015) · A.3 RPE · A.4 JSON opslaan/inladen (ADR-0016, `src/lib/opslag.ts`). Live.
-  48 tests.
+- **Deel B.1+B.2 — VO2max-import** (ADR-0017): `modules.vo2max` (beautified), `src/lib/cortex.ts`
+  (SpreadsheetML-parser, adapter-patroon) + import-knop + VO2max-paneel. SESSIE_VERSIE→2 (lenient).
+  Geverifieerd tegen het echte Cortex-bestand. 52 tests. Live.
 
 ## 3. Tech-stack — kort
 

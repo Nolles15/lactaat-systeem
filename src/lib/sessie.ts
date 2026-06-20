@@ -51,17 +51,31 @@ export interface LactaatModule {
   analyseConfig: AnalyseConfig
 }
 
+/** VO2max-module: beautified samenvatting uit de kar (ADR-0017). Geen ruwe stroom. */
+export interface Vo2maxModule {
+  vo2max: {
+    lPerMin: number | null
+    mlPerKgMin: number | null
+    pctVoorspeld: number | null
+    hrPiek: number | null
+  }
+  vt1: { vo2LPerMin: number | null; vo2MlPerKgMin: number | null; hr: number | null }
+  vt2: { vo2LPerMin: number | null; vo2MlPerKgMin: number | null; hr: number | null }
+  veVco2: { vt2: number | null; piek: number | null }
+  bron: { apparaat: string; bestand: string }
+}
+
 export interface Sessie {
   versie: number
   deelnemer: Deelnemer
   test: TestData
   modules: {
     lactaat?: LactaatModule
-    // vo2max?: ... (Deel B — aparte ronde)
+    vo2max?: Vo2maxModule
   }
 }
 
-export const SESSIE_VERSIE = 1
+export const SESSIE_VERSIE = 2
 
 export function legeDeelnemer(): Deelnemer {
   return { naam: '', geboortedatum: '', geslacht: '', gewichtKg: '' }

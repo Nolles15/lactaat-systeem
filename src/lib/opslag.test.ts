@@ -23,6 +23,10 @@ describe('opslag round-trip', () => {
   it('onbekende versie → fout', () => {
     expect(jsonNaarSessie('{"versie":99,"deelnemer":{},"test":{},"modules":{}}').ok).toBe(false)
   })
+
+  it('laadt een v1-bestand (zonder vo2max) lenient', () => {
+    expect(jsonNaarSessie('{"versie":1,"deelnemer":{},"test":{},"modules":{}}').ok).toBe(true)
+  })
 })
 
 describe('bestandsnaam', () => {
