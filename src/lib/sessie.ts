@@ -30,11 +30,18 @@ export interface Rij {
   intensiteit: string
   lactaat: string
   hf: string
+  rpe: string
   uitgesloten: boolean
 }
 
 export function legeRijen(n: number): Rij[] {
-  return Array.from({ length: n }, () => ({ intensiteit: '', lactaat: '', hf: '', uitgesloten: false }))
+  return Array.from({ length: n }, () => ({
+    intensiteit: '',
+    lactaat: '',
+    hf: '',
+    rpe: '',
+    uitgesloten: false,
+  }))
 }
 
 /** De lactaat-testmodule binnen een sessie. */

@@ -73,3 +73,11 @@ export function parseHartslag(raw: string): number | null {
   const n = Number(s.replace(',', '.'))
   return Number.isFinite(n) && n > 0 ? n : null
 }
+
+/** Parse een RPE (Borg 6–20). Optioneel; geldig binnen 6–20, anders null. */
+export function parseRpe(raw: string): number | null {
+  const s = raw.trim()
+  if (s === '') return null
+  const n = Number(s.replace(',', '.'))
+  return Number.isFinite(n) && n >= 6 && n <= 20 ? n : null
+}
