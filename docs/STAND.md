@@ -10,10 +10,11 @@
 >
 > **▶️ HERVATTEN**: `main` is beschermd → branch + PR + groene CI; merge = auto-deploy. Koers:
 > **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide (plan v3 in
-> `.claude/plans/polished-napping-dream.md`). **Deel A** (nu te bouwen): A.1 datamodel ✓ ·
-> A.2 sporter-zones ✓ · A.3 RPE ✓ → **A.4 JSON opslaan/inladen** (laatste Deel A-item). **Deel B** (VO2max
-> + combinatierapport + design) = aparte uitgebreide ronde, later. Eigenaar-inputs: apparatuur-
-> mapping, verificatie-fixtures (ADR-0002), VO2max-voorbeeldformats (Deel B).
+> `.claude/plans/polished-napping-dream.md`). **Deel A is compleet** (A.1 datamodel · A.2
+> sporter-zones · A.3 RPE · A.4 JSON opslaan/inladen). Volgende = **Deel B** (VO2max +
+> combinatierapport + design) = **aparte uitgebreide ronde, later** — vergt eigenaar-inputs:
+> voorbeelden van de "lelijke" VO2max-labformats, apparatuur-mapping, en verificatie-fixtures
+> (ADR-0002). **Niets in uitvoering** tot Deel B gepland wordt.
 
 ## 1. Doel
 
@@ -40,6 +41,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0013 (layout-herontwerp: gepolijste één-koloms cockpit) — Geaccepteerd.
 - ADR-0014 (datamodel-evolutie: sessie met test-modules) — Geaccepteerd.
 - ADR-0015 (sporter-facing zones: HR-bereik + W/kg) — Geaccepteerd.
+- ADR-0016 (JSON opslaan/inladen: versioned, bestand-gebaseerd) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -73,6 +75,9 @@ zonder dat de app persoonsgegevens bewaart.
 - **Slice D — layout-herontwerp** (ADR-0013): gepolijste één-koloms cockpit; App bezit de genummerde
   sectie-koppen (1 Intake → 2 Meetpunten → 3 Analyse → 4 Zones), componenten leveren inhoud;
   kaarten + Hanze-accent-badges. Live.
+- **Deel A — modulair lab-platform (plan v3)**: A.1 `Sessie` met modules (ADR-0014) · A.2 zones in
+  HR + W/kg (ADR-0015) · A.3 RPE · A.4 JSON opslaan/inladen (ADR-0016, `src/lib/opslag.ts`). Live.
+  48 tests.
 
 ## 3. Tech-stack — kort
 
