@@ -55,9 +55,8 @@ export function Invoerpaneel({
   const geldigePunten = (rustWaarde !== null ? 1 : 0) + geldigeStappen
 
   return (
-    <section className="paneel invoer">
-      <div className="invoer__kop">
-        <h2>Meetpunten</h2>
+    <div className="invoer">
+      <div className="invoer-toolbar">
         <div className="sport-toggle" role="group" aria-label="Sport">
           <button
             type="button"
@@ -199,6 +198,6 @@ export function Invoerpaneel({
           {geldigePunten} geldige meetpunt{geldigePunten === 1 ? '' : 'en'} (incl. rust)
         </span>
       </div>
-    </section>
+    </div>
   )
 }

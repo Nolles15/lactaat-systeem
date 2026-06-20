@@ -17,8 +17,7 @@ export function Intake({ sport, deelnemer, testmeta, onDeelnemerChange, onTestMe
   const setT = (patch: Partial<TestMeta>) => onTestMetaChange({ ...testmeta, ...patch })
 
   return (
-    <section className="paneel intake">
-      <h2>Intake</h2>
+    <div className="intake">
       <p className="intake__privacy">
         Deze gegevens blijven in deze sessie en worden niet opgeslagen; ze verlaten de app alleen via
         een export (ADR-0001).
@@ -100,6 +99,6 @@ export function Intake({ sport, deelnemer, testmeta, onDeelnemerChange, onTestMe
           <output className="apparatuur">{apparatuurVoor(sport)}</output>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

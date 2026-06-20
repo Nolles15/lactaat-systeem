@@ -4,21 +4,16 @@
 > sessie (na [`CLAUDE.md`](../CLAUDE.md)). Houd 'm kort en actueel; werk 'm bij na elke
 > merge/deploy of bij een pauze.
 
-> **Laatst herzien**: 2026-06-19 — fundament compleet (ADR-0001 t/m 0005), slice 1 (rekenkern)
-> gebouwd/getest, §11-muren live, én de deploy-pijplijn staat: elke merge naar `main` publiceert
-> naar GitHub Pages. **Live: https://nolles15.github.io/lactaat-systeem/** (skelet).
+> **Laatst herzien**: 2026-06-19 — fundament (ADR-0001 t/m 0005) + muren + deploy staan, en het
+> **goedgekeurde expert-/layout-plan (slices A→D) is volledig af en live** op
+> https://nolles15.github.io/lactaat-systeem/. 35 tests groen.
 >
 > **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. **Goedgekeurd plan loopt**: expert-niveau + top-tier layout
-> (`.claude/plans/polished-napping-dream.md`), in slices A→D. **Slice A (eenheidsmodel) is af en
-> live**: lopen-invoer = snelheid (km/u) met pace eronder; uitvoer pace-primair (ADR-0010).
-> **Slice B (intake + datamodel) is af en live**: intake-paneel (verplichte naam + velden +
-> apparatuur-stub), in-sessie model in `src/lib/sessie.ts` (ADR-0012). **Slice C1 is af en live**:
-> instelbare analyse (Modified-Dmax standaard + Dmax, OBLA 2/3/4, LT1-delta, graad/AIC-advies) +
-> uitleg-blok met "Meer informatie"-link (ADR-0011). **C2 is af en live**: optionele HF-kolom + HR
-> bij de drempels. **C-outlier is af en live**: meetpunt uit de fit sluiten (toggle per rij; punt
-> blijft zichtbaar als open marker). Daarmee is **Slice C compleet**. Volgende = **Slice D**
-> (top-tier layout-herontwerp). Geparkeerd tot na datamodel/design: PDF-rapport en JSON-opslag (§6).
+> merge = automatische deploy. De app is een functioneel-complete, expert-grade tool met top-tier
+> één-koloms layout. **Niets in uitvoering.** Open werk (zie §5/§6): **geparkeerd** — PDF-rapport
+> en JSON-opslag (wachten op datamodel/design-ronde) en de **VO2max-scope** (toekomst); plus
+> niet-gekoppelde **polish** (tooltip opschonen, grafiek lazy-loaden). Plan-detail staat in
+> `.claude/plans/polished-napping-dream.md`.
 
 ## 1. Doel
 
@@ -42,6 +37,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0010 (eenheidsmodel: snelheid invoer / pace uitvoer) — Geaccepteerd.
 - ADR-0012 (in-sessie datamodel + intake) — Geaccepteerd.
 - ADR-0011 (analyse-uitbreiding: methodes/instellingen/uitleg) — Geaccepteerd.
+- ADR-0013 (layout-herontwerp: gepolijste één-koloms cockpit) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -72,6 +68,9 @@ zonder dat de app persoonsgegevens bewaart.
   (`interpoleerOpX`), HR-kolom in de resultaten (alleen als HF ingevuld). 34 tests. Live.
 - **Slice C-outlier**: toggle "In fit" per meetstap; uitgesloten punten tellen niet in de fit maar
   blijven zichtbaar (open marker) — `analyse.uitgeslotenPunten`. 35 tests. Live. (Slice C compleet.)
+- **Slice D — layout-herontwerp** (ADR-0013): gepolijste één-koloms cockpit; App bezit de genummerde
+  sectie-koppen (1 Intake → 2 Meetpunten → 3 Analyse → 4 Zones), componenten leveren inhoud;
+  kaarten + Hanze-accent-badges. Live.
 
 ## 3. Tech-stack — kort
 

@@ -47,7 +47,7 @@
 .app-main {
   flex: 1;
   width: 100%;
-  max-width: 960px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: var(--ruimte-4);
 }
@@ -57,12 +57,36 @@
   border: 1px solid var(--kleur-rand);
   border-radius: var(--radius);
   padding: var(--ruimte-4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .paneel + .paneel {
   margin-top: var(--ruimte-4);
 }
-.paneel > h2 {
+
+.paneel__kop {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-2);
   margin-bottom: var(--ruimte-3);
+  padding-bottom: var(--ruimte-2);
+  border-bottom: 1px solid var(--kleur-rand);
+}
+.paneel__kop h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.paneel__nr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--kleur-accent);
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+  flex: none;
 }
 
 /* ---- Intake ---- */
@@ -147,10 +171,10 @@
 }
 
 /* ---- Invoerpaneel ---- */
-.invoer__kop {
+.invoer-toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--ruimte-2);
   margin-bottom: var(--ruimte-3);
   flex-wrap: wrap;
