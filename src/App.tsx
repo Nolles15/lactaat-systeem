@@ -5,6 +5,7 @@ import { Invoerpaneel } from './components/Invoerpaneel'
 import { Grafiek } from './components/Grafiek'
 import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
+import { Vo2max } from './components/Vo2max'
 import { AnalyseControls } from './components/AnalyseControls'
 import { analyseer, type AnalyseConfig } from './lib/analyse'
 import { parseIntensiteit, parseLactaat, parseHartslag, parseRpe, parseGewicht } from './lib/invoer'
@@ -18,6 +19,7 @@ import {
   type Rij,
 } from './lib/sessie'
 import { sessieNaarJson, jsonNaarSessie, bestandsnaam } from './lib/opslag'
+import { parseCortexXml } from './lib/cortex'
 import type { SportType } from './lib/types'
 import './App.css'
 
@@ -82,6 +84,34 @@ function App() {
     }
     reader.readAsText(file)
   }
+  // CPET-export (Cortex MetaSoft XML) inladen → vo2max-module + deelnemer (ADR-0017).
+  const importeerCpet = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      const res = parseCortexXml(String(reader.result), file.name)
+      if (!res.ok) {
+        setImportFout(res.fout)
+        return
+      }
+      const d = res.data
+      setSessie((p) => ({
+        ...p,
+        deelnemer: {
+          ...p.deelnemer,
+          naam: d.deelnemer.naam || p.deelnemer.naam,
+          geslacht: d.deelnemer.geslacht || p.deelnemer.geslacht,
+          geboortedatum: d.deelnemer.geboortedatum || p.deelnemer.geboortedatum,
+          gewichtKg: d.deelnemer.gewichtKg || p.deelnemer.gewichtKg,
+        },
+        modules: { ...p.modules, vo2max: d.vo2max },
+      }))
+      setImportFout(null)
+    }
+    reader.readAsText(file)
+  }
 
   const analyse = useMemo(() => {
     const rustVal = parseLactaat(rust)
@@ -116,6 +146,10 @@ function App() {
           <label className="knop-secundair acties__inladen">
             Inladen (.json)
             <input type="file" accept="application/json,.json" onChange={importeer} hidden />
+          </label>
+          <label className="knop-secundair acties__inladen">
+            Inladen CPET (.xml)
+            <input type="file" accept=".xml,application/xml,text/xml" onChange={importeerCpet} hidden />
           </label>
           {!naamGeldig(deelnemer.naam) && (
             <span className="acties__hint">Vul een naam in om op te slaan</span>
@@ -169,6 +203,16 @@ function App() {
           </header>
           <Zones sport={sport} analyse={analyse} gewichtKg={gewichtKg} />
         </section>
+
+        {sessie.modules.vo2max && (
+          <section className="paneel">
+            <header className="paneel__kop">
+              <span className="paneel__nr">5</span>
+              <h2>VO₂max</h2>
+            </header>
+            <Vo2max module={sessie.modules.vo2max} />
+          </section>
+        )}
       </main>
       <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>
     </div>

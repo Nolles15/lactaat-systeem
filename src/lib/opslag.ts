@@ -25,7 +25,7 @@ export function jsonNaarSessie(tekst: string): ImportResultaat {
   if (typeof d.versie !== 'number') {
     return { ok: false, fout: 'Geen geldig sessiebestand (versie ontbreekt).' }
   }
-  if (d.versie !== SESSIE_VERSIE) {
+  if (d.versie < 1 || d.versie > SESSIE_VERSIE) {
     return { ok: false, fout: `Onbekende bestandsversie (${d.versie}).` }
   }
   if (!d.deelnemer || !d.test || !d.modules) {
