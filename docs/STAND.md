@@ -11,10 +11,11 @@
 > **▶️ HERVATTEN**: `main` is beschermd → branch + PR + groene CI; merge = auto-deploy. Koers:
 > **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide
 > (`.claude/plans/polished-napping-dream.md`). Deel A ✓. **Deel B**: B.0 .gitignore lab-exports ✓ ·
-> B.1+B.2 vo2max-module + **Cortex-parser** + import-UI ✓ (ADR-0017). Volgende = **B.3 rapport-
-> systeem** (design-led, vergt een rapport-voorbeeld) en **B.4 combinatie-uitlijning** (na echte
-> combi-data). ⚠️ Lab-exports (`docs/*.xml`) staan in `.gitignore` — gebruik met toestemming,
-> nooit naar git.
+> B.1+B.2 vo2max-module + **Cortex-parser** + import-UI ✓ (ADR-0017) · **B.3a module-gestuurd scherm**
+> ✓ (twee toggles Lactaat/VO2max; dynamische secties; gecombineerde conclusie LT1↔VT1 / LT2↔VT2;
+> ADR-0018). Volgende = **B.3 rapport-systeem** (design-led, vergt een rapport-voorbeeld) en
+> **B.4 combinatie-uitlijning** (na echte combi-data). ⚠️ Lab-exports (`docs/*.xml`) staan in
+> `.gitignore` — gebruik met toestemming, nooit naar git.
 
 ## 1. Doel
 
@@ -43,6 +44,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0015 (sporter-facing zones: HR-bereik + W/kg) — Geaccepteerd.
 - ADR-0016 (JSON opslaan/inladen: versioned, bestand-gebaseerd) — Geaccepteerd.
 - ADR-0017 (VO2max-module + Cortex-import, beautify) — Geaccepteerd.
+- ADR-0018 (module-gestuurd scherm + gecombineerde conclusie) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -80,7 +82,10 @@ zonder dat de app persoonsgegevens bewaart.
   HR + W/kg (ADR-0015) · A.3 RPE · A.4 JSON opslaan/inladen (ADR-0016, `src/lib/opslag.ts`). Live.
 - **Deel B.1+B.2 — VO2max-import** (ADR-0017): `modules.vo2max` (beautified), `src/lib/cortex.ts`
   (SpreadsheetML-parser, adapter-patroon) + import-knop + VO2max-paneel. SESSIE_VERSIE→2 (lenient).
-  Geverifieerd tegen het echte Cortex-bestand. 52 tests. Live.
+  Geverifieerd tegen het echte Cortex-bestand. Live.
+- **Deel B.3a — module-gestuurd scherm** (ADR-0018): twee toggles (Lactaat/VO2max); secties
+  dynamisch genummerd en alleen getoond wat actief is; `Combinatie.tsx` (LT1↔VT1 / LT2↔VT2).
+  `Sessie.actief` scheidt zichtbaarheid van data. 54 tests. Live.
 
 ## 3. Tech-stack — kort
 
