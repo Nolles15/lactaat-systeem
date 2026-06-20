@@ -84,6 +84,18 @@ describe('analyseer', () => {
     expect(a.hr.lt2!).toBeLessThan(185)
   })
 
+  it('interpoleert RPE bij de drempels als RPE is ingevuld', () => {
+    const metRpe = [100, 150, 200, 250, 300, 350].map((x, i) => ({
+      x,
+      y: 1 + 0.0001 * (x - 100) ** 2,
+      rpe: 8 + i,
+    }))
+    const a = analyseer({ rust: 1.0, stappen: metRpe, config: cfg() })
+    expect(a.rpe.lt2).not.toBeNull()
+    expect(a.rpe.lt2!).toBeGreaterThan(8)
+    expect(a.rpe.lt2!).toBeLessThan(13)
+  })
+
   it('sluit een meetpunt uit de fit (wel zichtbaar, niet meegerekend)', () => {
     const metOutlier = [
       ...stappen,

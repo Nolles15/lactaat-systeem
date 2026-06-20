@@ -7,7 +7,7 @@ import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { AnalyseControls } from './components/AnalyseControls'
 import { analyseer, type AnalyseConfig } from './lib/analyse'
-import { parseIntensiteit, parseLactaat, parseHartslag, parseGewicht } from './lib/invoer'
+import { parseIntensiteit, parseLactaat, parseHartslag, parseRpe, parseGewicht } from './lib/invoer'
 import {
   legeSessie,
   type Sessie,
@@ -60,10 +60,11 @@ function App() {
         x: parseIntensiteit(sport, r.intensiteit),
         y: parseLactaat(r.lactaat),
         hf: parseHartslag(r.hf),
+        rpe: parseRpe(r.rpe),
         uitgesloten: r.uitgesloten,
       }))
       .filter(
-        (p): p is { x: number; y: number; hf: number | null; uitgesloten: boolean } =>
+        (p): p is { x: number; y: number; hf: number | null; rpe: number | null; uitgesloten: boolean } =>
           p.x !== null && p.y !== null,
       )
     return analyseer({ rust: rustVal, stappen, config })

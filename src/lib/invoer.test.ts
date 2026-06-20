@@ -3,6 +3,7 @@ import {
   parseIntensiteit,
   parseLactaat,
   parseGewicht,
+  parseRpe,
   intensiteitLabel,
   intensiteitAfgeleid,
   formatIntensiteit,
@@ -51,6 +52,15 @@ describe('parseGewicht', () => {
     expect(parseGewicht('72,5')).toBeCloseTo(72.5, 6)
     expect(parseGewicht('')).toBeNull()
     expect(parseGewicht('-1')).toBeNull()
+  })
+})
+
+describe('parseRpe', () => {
+  it('accepteert Borg 6–20, weigert buiten bereik en leeg', () => {
+    expect(parseRpe('14')).toBe(14)
+    expect(parseRpe('5')).toBeNull()
+    expect(parseRpe('21')).toBeNull()
+    expect(parseRpe('')).toBeNull()
   })
 })
 

@@ -11,7 +11,7 @@
 > **▶️ HERVATTEN**: `main` is beschermd → branch + PR + groene CI; merge = auto-deploy. Koers:
 > **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide (plan v3 in
 > `.claude/plans/polished-napping-dream.md`). **Deel A** (nu te bouwen): A.1 datamodel ✓ ·
-> A.2 sporter-zones ✓ → **A.3 RPE (Borg 6–20)** → A.4 JSON opslaan/inladen. **Deel B** (VO2max
+> A.2 sporter-zones ✓ · A.3 RPE ✓ → **A.4 JSON opslaan/inladen** (laatste Deel A-item). **Deel B** (VO2max
 > + combinatierapport + design) = aparte uitgebreide ronde, later. Eigenaar-inputs: apparatuur-
 > mapping, verificatie-fixtures (ADR-0002), VO2max-voorbeeldformats (Deel B).
 

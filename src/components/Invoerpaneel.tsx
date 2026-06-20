@@ -6,9 +6,10 @@ import {
   parseIntensiteit,
   parseLactaat,
   parseHartslag,
+  parseRpe,
   LACTAAT_MAX,
 } from '../lib/invoer'
-import type { Rij } from '../lib/sessie'
+import { legeRijen, type Rij } from '../lib/sessie'
 
 interface Props {
   sport: SportType
@@ -30,8 +31,7 @@ export function Invoerpaneel({
 }: Props) {
   const updateRij = (i: number, veld: keyof Rij, waarde: string) =>
     onRijenChange(rijen.map((r, idx) => (idx === i ? { ...r, [veld]: waarde } : r)))
-  const voegRijToe = () =>
-    onRijenChange([...rijen, { intensiteit: '', lactaat: '', hf: '', uitgesloten: false }])
+  const voegRijToe = () => onRijenChange([...rijen, legeRijen(1)[0]])
   const verwijderRij = (i: number) => onRijenChange(rijen.filter((_, idx) => idx !== i))
   const setUitgesloten = (i: number, val: boolean) =>
     onRijenChange(rijen.map((r, idx) => (idx === i ? { ...r, uitgesloten: val } : r)))
@@ -74,6 +74,7 @@ export function Invoerpaneel({
             <th>{intensiteitLabel(sport)}</th>
             <th>Lactaat (mmol/L)</th>
             <th>HF (bpm)</th>
+            <th>RPE</th>
             <th className="col-fit">In fit</th>
             <th className="col-actie">
               <span className="sr-only">Acties</span>
@@ -103,6 +104,7 @@ export function Invoerpaneel({
               {rustHoog && <span className="veld-waarschuwing">controleer: &gt; {LACTAAT_MAX}</span>}
             </td>
             <td></td>
+            <td></td>
             <td className="col-fit"></td>
             <td className="col-actie"></td>
           </tr>
@@ -116,6 +118,7 @@ export function Invoerpaneel({
             const ingevoerd = parseIntensiteit(sport, rij.intensiteit)
             const afgeleid = ingevoerd !== null ? intensiteitAfgeleid(sport, ingevoerd) : null
             const hfOk = rij.hf.trim() === '' || parseHartslag(rij.hf) !== null
+            const rpeOk = rij.rpe.trim() === '' || parseRpe(rij.rpe) !== null
             return (
               <tr key={i} className={rij.uitgesloten ? 'rij-uitgesloten' : undefined}>
                 <td className="col-nr">{i + 1}</td>
@@ -154,6 +157,17 @@ export function Invoerpaneel({
                     aria-invalid={!hfOk}
                   />
                   {!hfOk && <span className="veld-fout">ongeldig</span>}
+                </td>
+                <td>
+                  <input
+                    className={rpeOk ? '' : 'is-ongeldig'}
+                    inputMode="numeric"
+                    placeholder="6–20"
+                    value={rij.rpe}
+                    onChange={(e) => updateRij(i, 'rpe', e.target.value)}
+                    aria-invalid={!rpeOk}
+                  />
+                  {!rpeOk && <span className="veld-fout">6–20</span>}
                 </td>
                 <td className="col-fit">
                   <input

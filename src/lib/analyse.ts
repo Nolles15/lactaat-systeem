@@ -39,6 +39,7 @@ export interface Analyse {
   lt2Methode: LT2Methode
   lt2Lijn: { start: Point; eind: Point } | null // de gebruikte (Mod)Dmax-lijn
   hr: { lt1: number | null; lt2: number | null; obla: number | null } // HR bij de drempels (bpm)
+  rpe: { lt1: number | null; lt2: number | null; obla: number | null } // RPE bij de drempels (Borg)
   hfPunten: { x: number; v: number }[] // HF per meetstap (voor HR op zonegrenzen)
   waarschuwingen: string[]
 }
@@ -47,6 +48,7 @@ export interface StapInput {
   x: number // intensiteit (W of km/u)
   y: number // lactaat (mmol/L)
   hf?: number | null // hartslag (bpm), optioneel
+  rpe?: number | null // RPE (Borg 6–20), optioneel
   uitgesloten?: boolean // true = wel tonen, niet meefitten
 }
 
@@ -151,6 +153,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
       lt2Methode: config.lt2Methode,
       lt2Lijn: null,
       hr: { lt1: null, lt2: null, obla: null },
+      rpe: { lt1: null, lt2: null, obla: null },
       hfPunten: [],
       waarschuwingen,
     }
@@ -190,6 +193,12 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
     lt2: drempels.lt2 ? interpoleerOpX(hfPunten, drempels.lt2.x) : null,
     obla: drempels.obla ? interpoleerOpX(hfPunten, drempels.obla.x) : null,
   }
+  const rpePunten = gesorteerd.filter((s) => s.rpe != null).map((s) => ({ x: s.x, v: s.rpe as number }))
+  const rpe = {
+    lt1: drempels.lt1 ? interpoleerOpX(rpePunten, drempels.lt1.x) : null,
+    lt2: drempels.lt2 ? interpoleerOpX(rpePunten, drempels.lt2.x) : null,
+    obla: drempels.obla ? interpoleerOpX(rpePunten, drempels.obla.x) : null,
+  }
 
   // Fail-visible randen (ADR-0002).
   if (r2 < 0.95) waarschuwingen.push(`Lage R² (${r2.toFixed(3)}) — beoordeel de curve kritisch.`)
@@ -212,6 +221,7 @@ export function analyseer({ rust, stappen, config }: AnalyseInput): Analyse {
     lt2Methode: config.lt2Methode,
     lt2Lijn,
     hr,
+    rpe,
     hfPunten,
     waarschuwingen,
   }
