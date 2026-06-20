@@ -8,17 +8,7 @@ import {
   parseHartslag,
   LACTAAT_MAX,
 } from '../lib/invoer'
-
-export interface Rij {
-  intensiteit: string
-  lactaat: string
-  hf: string
-  uitgesloten: boolean
-}
-
-export function legeRijen(n: number): Rij[] {
-  return Array.from({ length: n }, () => ({ intensiteit: '', lactaat: '', hf: '', uitgesloten: false }))
-}
+import type { Rij } from '../lib/sessie'
 
 interface Props {
   sport: SportType

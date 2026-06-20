@@ -4,16 +4,16 @@
 > sessie (na [`CLAUDE.md`](../CLAUDE.md)). Houd 'm kort en actueel; werk 'm bij na elke
 > merge/deploy of bij een pauze.
 
-> **Laatst herzien**: 2026-06-19 — fundament (ADR-0001 t/m 0005) + muren + deploy staan, en het
-> **goedgekeurde expert-/layout-plan (slices A→D) is volledig af en live** op
-> https://nolles15.github.io/lactaat-systeem/. 35 tests groen.
+> **Laatst herzien**: 2026-06-20 — expert-/layout-plan (A→D) is af en live; **nieuw plan v3**
+> (modulair lab-platform) goedgekeurd. **Deel A loopt**; A.1 (modulair datamodel) is af.
+> https://nolles15.github.io/lactaat-systeem/. 36 tests groen.
 >
-> **▶️ HERVATTEN**: `main` is beschermd → élke wijziging gaat via een branch + PR + groene CI;
-> merge = automatische deploy. De app is een functioneel-complete, expert-grade tool met top-tier
-> één-koloms layout. **Niets in uitvoering.** Open werk (zie §5/§6): **geparkeerd** — PDF-rapport
-> en JSON-opslag (wachten op datamodel/design-ronde) en de **VO2max-scope** (toekomst); plus
-> niet-gekoppelde **polish** (tooltip opschonen, grafiek lazy-loaden). Plan-detail staat in
-> `.claude/plans/polished-napping-dream.md`.
+> **▶️ HERVATTEN**: `main` is beschermd → branch + PR + groene CI; merge = auto-deploy. Koers:
+> **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide (plan v3 in
+> `.claude/plans/polished-napping-dream.md`). **Deel A** (nu te bouwen): A.1 datamodel ✓ →
+> **A.2 sporter-zones (HR-bereik + W/kg)** → A.3 RPE → A.4 JSON opslaan/inladen. **Deel B** (VO2max
+> + combinatierapport + design) = aparte uitgebreide ronde, later. Eigenaar-inputs: apparatuur-
+> mapping, verificatie-fixtures (ADR-0002), VO2max-voorbeeldformats (Deel B).
 
 ## 1. Doel
 
@@ -38,6 +38,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0012 (in-sessie datamodel + intake) — Geaccepteerd.
 - ADR-0011 (analyse-uitbreiding: methodes/instellingen/uitleg) — Geaccepteerd.
 - ADR-0013 (layout-herontwerp: gepolijste één-koloms cockpit) — Geaccepteerd.
+- ADR-0014 (datamodel-evolutie: sessie met test-modules) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch

@@ -1,26 +1,56 @@
 import { useMemo, useState } from 'react'
 import { Header } from './components/Header'
 import { Intake } from './components/Intake'
-import { Invoerpaneel, legeRijen, type Rij } from './components/Invoerpaneel'
+import { Invoerpaneel } from './components/Invoerpaneel'
 import { Grafiek } from './components/Grafiek'
 import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { AnalyseControls } from './components/AnalyseControls'
-import { analyseer, STANDAARD_CONFIG, type AnalyseConfig } from './lib/analyse'
+import { analyseer, type AnalyseConfig } from './lib/analyse'
 import { parseIntensiteit, parseLactaat, parseHartslag } from './lib/invoer'
-import { legeDeelnemer, legeTestMeta, type Deelnemer, type TestMeta } from './lib/sessie'
+import {
+  legeSessie,
+  type Sessie,
+  type LactaatModule,
+  type Deelnemer,
+  type TestMeta,
+  type Rij,
+} from './lib/sessie'
 import type { SportType } from './lib/types'
 import './App.css'
 
 function App() {
-  const [sport, setSport] = useState<SportType>('cycling')
-  const [deelnemer, setDeelnemer] = useState<Deelnemer>(legeDeelnemer)
-  const [testmeta, setTestmeta] = useState<TestMeta>(() =>
-    legeTestMeta(new Date().toISOString().slice(0, 10)),
+  // Eén bron van waarheid: de hele sessie (ADR-0014). In-sessie, niets opgeslagen (ADR-0001).
+  const [sessie, setSessie] = useState<Sessie>(() =>
+    legeSessie(new Date().toISOString().slice(0, 10)),
   )
-  const [rust, setRust] = useState('')
-  const [rijen, setRijen] = useState<Rij[]>(() => legeRijen(5))
-  const [config, setConfig] = useState<AnalyseConfig>(STANDAARD_CONFIG)
+
+  // Afgeleide views voor de componenten (interfaces blijven gelijk).
+  const { deelnemer } = sessie
+  const sport = sessie.test.sport
+  const testmeta: TestMeta = {
+    datum: sessie.test.datum,
+    testleider: sessie.test.testleider,
+    notities: sessie.test.notities,
+  }
+  const lactaat = sessie.modules.lactaat!
+  const { rust, meetpunten: rijen, analyseConfig: config } = lactaat
+
+  const updateLactaat = (patch: Partial<LactaatModule>) =>
+    setSessie((p) => ({
+      ...p,
+      modules: { ...p.modules, lactaat: { ...p.modules.lactaat!, ...patch } },
+    }))
+  const setSport = (s: SportType) => setSessie((p) => ({ ...p, test: { ...p.test, sport: s } }))
+  const setDeelnemer = (d: Deelnemer) => setSessie((p) => ({ ...p, deelnemer: d }))
+  const setTestmeta = (t: TestMeta) =>
+    setSessie((p) => ({
+      ...p,
+      test: { ...p.test, datum: t.datum, testleider: t.testleider, notities: t.notities },
+    }))
+  const setRust = (v: string) => updateLactaat({ rust: v })
+  const setRijen = (r: Rij[]) => updateLactaat({ meetpunten: r })
+  const setConfig = (c: AnalyseConfig) => updateLactaat({ analyseConfig: c })
 
   const analyse = useMemo(() => {
     const rustVal = parseLactaat(rust)
