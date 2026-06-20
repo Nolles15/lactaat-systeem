@@ -303,6 +303,33 @@
   border-radius: var(--radius);
   cursor: pointer;
 }
+.knop-primair {
+  border: 1px solid var(--kleur-accent);
+  background: var(--kleur-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: bold;
+  padding: var(--ruimte-1) var(--ruimte-3);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.knop-primair:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- Actiebalk (opslaan/inladen) ---- */
+.acties {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-2);
+  margin-bottom: var(--ruimte-3);
+  flex-wrap: wrap;
+}
+.acties__hint {
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.85rem;
+}
 
 .invoer__voet {
   display: flex;
