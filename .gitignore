@@ -3,6 +3,12 @@
 .env.*
 !.env.example
 
+# Lab-exports met persoonsgegevens — NOOIT in git (ADR-0001). Bevatten namen/geboortedatum;
+# alleen lokaal gebruiken (met toestemming), nooit naar de publieke repo.
+docs/*.xml
+docs/*.xlsx
+docs/*.csv
+
 # Dependencies & build
 node_modules
 dist
