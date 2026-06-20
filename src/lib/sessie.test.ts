@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { naamGeldig, legeDeelnemer, legeSessie, SESSIE_VERSIE } from './sessie'
+import { naamGeldig, legeDeelnemer, legeSessie, actieveModules, SESSIE_VERSIE } from './sessie'
 import { apparatuurVoor } from './apparatuur'
 
 describe('naamGeldig', () => {
@@ -24,6 +24,16 @@ describe('legeSessie', () => {
     expect(s.modules.lactaat).toBeDefined()
     expect(s.modules.lactaat!.meetpunten).toHaveLength(5)
     expect(naamGeldig(s.deelnemer.naam)).toBe(false)
+  })
+})
+
+describe('actieveModules', () => {
+  it('gebruikt de expliciete vlag', () => {
+    expect(actieveModules(legeSessie('2026-06-20'))).toEqual({ lactaat: true, vo2max: false })
+  })
+  it('valt zonder vlag terug op aanwezige modules', () => {
+    const zonderVlag = { ...legeSessie('2026-06-20'), actief: undefined }
+    expect(actieveModules(zonderVlag)).toEqual({ lactaat: true, vo2max: false })
   })
 })
 
