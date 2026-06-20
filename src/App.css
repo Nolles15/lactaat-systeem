@@ -331,6 +331,33 @@
   font-size: 0.85rem;
 }
 
+/* ---- Test-toggle (welke test(en) tonen) ---- */
+.test-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-2);
+  margin-bottom: var(--ruimte-4);
+}
+.test-toggle__label {
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.9rem;
+}
+.test-toggle button {
+  border: 1px solid var(--kleur-rand);
+  background: var(--kleur-paneel);
+  color: var(--kleur-tekst);
+  font: inherit;
+  padding: var(--ruimte-1) var(--ruimte-3);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.test-toggle button.is-actief {
+  background: var(--kleur-accent);
+  color: #fff;
+  font-weight: bold;
+  border-color: var(--kleur-accent);
+}
+
 .invoer__voet {
   display: flex;
   align-items: center;

@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent } from 'react'
+import { useMemo, useState, type ChangeEvent, type ReactNode } from 'react'
 import { Header } from './components/Header'
 import { Intake } from './components/Intake'
 import { Invoerpaneel } from './components/Invoerpaneel'
@@ -6,12 +6,14 @@ import { Grafiek } from './components/Grafiek'
 import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { Vo2max } from './components/Vo2max'
+import { Combinatie } from './components/Combinatie'
 import { AnalyseControls } from './components/AnalyseControls'
 import { analyseer, type AnalyseConfig } from './lib/analyse'
 import { parseIntensiteit, parseLactaat, parseHartslag, parseRpe, parseGewicht } from './lib/invoer'
 import {
   legeSessie,
   naamGeldig,
+  actieveModules,
   type Sessie,
   type LactaatModule,
   type Deelnemer,
@@ -24,13 +26,11 @@ import type { SportType } from './lib/types'
 import './App.css'
 
 function App() {
-  // Eén bron van waarheid: de hele sessie (ADR-0014). In-sessie, niets opgeslagen (ADR-0001).
   const [sessie, setSessie] = useState<Sessie>(() =>
     legeSessie(new Date().toISOString().slice(0, 10)),
   )
   const [importFout, setImportFout] = useState<string | null>(null)
 
-  // Afgeleide views voor de componenten (interfaces blijven gelijk).
   const { deelnemer } = sessie
   const sport = sessie.test.sport
   const testmeta: TestMeta = {
@@ -41,6 +41,7 @@ function App() {
   const lactaat = sessie.modules.lactaat!
   const { rust, meetpunten: rijen, analyseConfig: config } = lactaat
   const gewichtKg = parseGewicht(deelnemer.gewichtKg)
+  const actief = actieveModules(sessie)
 
   const updateLactaat = (patch: Partial<LactaatModule>) =>
     setSessie((p) => ({
@@ -57,8 +58,10 @@ function App() {
   const setRust = (v: string) => updateLactaat({ rust: v })
   const setRijen = (r: Rij[]) => updateLactaat({ meetpunten: r })
   const setConfig = (c: AnalyseConfig) => updateLactaat({ analyseConfig: c })
+  const zetActief = (mod: 'lactaat' | 'vo2max', val: boolean) =>
+    setSessie((p) => ({ ...p, actief: { ...actieveModules(p), [mod]: val } }))
 
-  // Opslaan/inladen als versioned JSON (ADR-0016) — client-side, geen server (ADR-0001).
+  // Opslaan/inladen (ADR-0016) — client-side, geen server (ADR-0001).
   const exporteer = () => {
     const blob = new Blob([sessieNaarJson(sessie)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -70,7 +73,7 @@ function App() {
   }
   const importeer = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    e.target.value = '' // zelfde bestand opnieuw kunnen kiezen
+    e.target.value = ''
     if (!file) return
     const reader = new FileReader()
     reader.onload = () => {
@@ -106,6 +109,7 @@ function App() {
           geboortedatum: d.deelnemer.geboortedatum || p.deelnemer.geboortedatum,
           gewichtKg: d.deelnemer.gewichtKg || p.deelnemer.gewichtKg,
         },
+        actief: { ...actieveModules(p), vo2max: true },
         modules: { ...p.modules, vo2max: d.vo2max },
       }))
       setImportFout(null)
@@ -129,6 +133,67 @@ function App() {
       )
     return analyseer({ rust: rustVal, stappen, config })
   }, [sport, rust, rijen, config])
+
+  // Module-gestuurde secties, dynamisch genummerd (ADR-0018): toon alleen wat bij de test hoort.
+  const secties: { titel: string; node: ReactNode }[] = [
+    {
+      titel: 'Intake',
+      node: (
+        <Intake
+          sport={sport}
+          deelnemer={deelnemer}
+          testmeta={testmeta}
+          onDeelnemerChange={setDeelnemer}
+          onTestMetaChange={setTestmeta}
+        />
+      ),
+    },
+  ]
+  if (actief.lactaat) {
+    secties.push({
+      titel: 'Meetpunten',
+      node: (
+        <Invoerpaneel
+          sport={sport}
+          rust={rust}
+          rijen={rijen}
+          onSportChange={setSport}
+          onRustChange={setRust}
+          onRijenChange={setRijen}
+        />
+      ),
+    })
+    secties.push({
+      titel: 'Lactaatcurve & drempels',
+      node: (
+        <>
+          <AnalyseControls config={config} graadAdvies={analyse.graadAdvies} onChange={setConfig} />
+          <Grafiek sport={sport} analyse={analyse} />
+          <Resultaten sport={sport} analyse={analyse} gewichtKg={gewichtKg} />
+        </>
+      ),
+    })
+    secties.push({
+      titel: 'Trainingszones',
+      node: <Zones sport={sport} analyse={analyse} gewichtKg={gewichtKg} />,
+    })
+  }
+  if (actief.vo2max) {
+    secties.push({
+      titel: 'VO₂max',
+      node: sessie.modules.vo2max ? (
+        <Vo2max module={sessie.modules.vo2max} />
+      ) : (
+        <p className="leeg-melding">Importeer een CPET-bestand (.xml) om de VO₂max-resultaten te tonen.</p>
+      ),
+    })
+  }
+  if (actief.lactaat && actief.vo2max && sessie.modules.vo2max && analyse.drempels.lt1 && analyse.drempels.lt2) {
+    secties.push({
+      titel: 'Gecombineerde conclusie',
+      node: <Combinatie sport={sport} gewichtKg={gewichtKg} analyse={analyse} vo2max={sessie.modules.vo2max} />,
+    })
+  }
 
   return (
     <div className="app">
@@ -157,62 +222,35 @@ function App() {
           {importFout && <span className="veld-fout">{importFout}</span>}
         </div>
 
-        <section className="paneel">
-          <header className="paneel__kop">
-            <span className="paneel__nr">1</span>
-            <h2>Intake</h2>
-          </header>
-          <Intake
-            sport={sport}
-            deelnemer={deelnemer}
-            testmeta={testmeta}
-            onDeelnemerChange={setDeelnemer}
-            onTestMetaChange={setTestmeta}
-          />
-        </section>
+        <div className="test-toggle" role="group" aria-label="Welke test(en)">
+          <span className="test-toggle__label">Test:</span>
+          <button
+            type="button"
+            className={actief.lactaat ? 'is-actief' : ''}
+            aria-pressed={actief.lactaat}
+            onClick={() => zetActief('lactaat', !actief.lactaat)}
+          >
+            Lactaat
+          </button>
+          <button
+            type="button"
+            className={actief.vo2max ? 'is-actief' : ''}
+            aria-pressed={actief.vo2max}
+            onClick={() => zetActief('vo2max', !actief.vo2max)}
+          >
+            VO₂max
+          </button>
+        </div>
 
-        <section className="paneel">
-          <header className="paneel__kop">
-            <span className="paneel__nr">2</span>
-            <h2>Meetpunten</h2>
-          </header>
-          <Invoerpaneel
-            sport={sport}
-            rust={rust}
-            rijen={rijen}
-            onSportChange={setSport}
-            onRustChange={setRust}
-            onRijenChange={setRijen}
-          />
-        </section>
-
-        <section className="paneel">
-          <header className="paneel__kop">
-            <span className="paneel__nr">3</span>
-            <h2>Lactaatcurve &amp; drempels</h2>
-          </header>
-          <AnalyseControls config={config} graadAdvies={analyse.graadAdvies} onChange={setConfig} />
-          <Grafiek sport={sport} analyse={analyse} />
-          <Resultaten sport={sport} analyse={analyse} gewichtKg={gewichtKg} />
-        </section>
-
-        <section className="paneel">
-          <header className="paneel__kop">
-            <span className="paneel__nr">4</span>
-            <h2>Trainingszones</h2>
-          </header>
-          <Zones sport={sport} analyse={analyse} gewichtKg={gewichtKg} />
-        </section>
-
-        {sessie.modules.vo2max && (
-          <section className="paneel">
+        {secties.map((s, idx) => (
+          <section className="paneel" key={s.titel}>
             <header className="paneel__kop">
-              <span className="paneel__nr">5</span>
-              <h2>VO₂max</h2>
+              <span className="paneel__nr">{idx + 1}</span>
+              <h2>{s.titel}</h2>
             </header>
-            <Vo2max module={sessie.modules.vo2max} />
+            {s.node}
           </section>
-        )}
+        ))}
       </main>
       <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>
     </div>

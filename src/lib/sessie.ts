@@ -69,6 +69,8 @@ export interface Sessie {
   versie: number
   deelnemer: Deelnemer
   test: TestData
+  /** Welke testen tonen we (module-gestuurd scherm; ADR-0018). Optioneel → afleidbaar. */
+  actief?: { lactaat: boolean; vo2max: boolean }
   modules: {
     lactaat?: LactaatModule
     vo2max?: Vo2maxModule
@@ -76,6 +78,14 @@ export interface Sessie {
 }
 
 export const SESSIE_VERSIE = 2
+
+/** Effectief actieve modules: expliciete vlag, anders afgeleid van aanwezige data. */
+export function actieveModules(s: Sessie): { lactaat: boolean; vo2max: boolean } {
+  return {
+    lactaat: s.actief?.lactaat ?? s.modules.lactaat !== undefined,
+    vo2max: s.actief?.vo2max ?? s.modules.vo2max !== undefined,
+  }
+}
 
 export function legeDeelnemer(): Deelnemer {
   return { naam: '', geboortedatum: '', geslacht: '', gewichtKg: '' }
@@ -94,6 +104,7 @@ export function legeSessie(datum: string): Sessie {
     versie: SESSIE_VERSIE,
     deelnemer: legeDeelnemer(),
     test: { datum, sport: 'cycling', testleider: '', notities: '' },
+    actief: { lactaat: true, vo2max: false },
     modules: { lactaat: legeLactaatModule() },
   }
 }
