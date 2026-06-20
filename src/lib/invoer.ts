@@ -41,11 +41,21 @@ export function intensiteitAfgeleid(sport: SportType, x: number): string | null 
  * Uitvoer-weergave van een intensiteit: Watt (fietsen) of pace primair + snelheid secundair
  * (lopen; ADR-0010).
  */
-export function formatIntensiteit(sport: SportType, x: number): string {
+export function formatIntensiteit(sport: SportType, x: number, gewichtKg?: number | null): string {
   if (sport === 'running') {
     return `${kmhToPace(x)} /km (${x.toFixed(1).replace('.', ',')} km/u)`
   }
-  return `${Math.round(x)} W`
+  const wkg =
+    gewichtKg && gewichtKg > 0 ? ` (${(x / gewichtKg).toFixed(1).replace('.', ',')} W/kg)` : ''
+  return `${Math.round(x)} W${wkg}`
+}
+
+/** Parse een lichaamsgewicht (kg). Optioneel; null = leeg/ongeldig. */
+export function parseGewicht(raw: string): number | null {
+  const s = raw.trim()
+  if (s === '') return null
+  const n = Number(s.replace(',', '.'))
+  return Number.isFinite(n) && n > 0 ? n : null
 }
 
 /** Parse een lactaatwaarde (mmol/L). Komma of punt toegestaan. null = ongeldig. */

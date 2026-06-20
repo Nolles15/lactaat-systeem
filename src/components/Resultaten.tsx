@@ -6,11 +6,12 @@ import { UITLEG, MEER_INFO_URL } from '../lib/uitleg'
 interface Props {
   sport: SportType
   analyse: Analyse
+  gewichtKg: number | null
 }
 
 const komma = (n: number) => n.toFixed(1).replace('.', ',')
 
-export function Resultaten({ sport, analyse }: Props) {
+export function Resultaten({ sport, analyse, gewichtKg }: Props) {
   const { drempels, r2, graad, coef, lt2Methode, hr, waarschuwingen } = analyse
   const lt1Sub = drempels.lt1 ? `baseline + ${komma(drempels.lt1.thr - drempels.lt1.baseline)}` : ''
   const lt2Sub = lt2Methode === 'moddmax' ? 'Modified-Dmax' : 'Dmax'
@@ -31,9 +32,9 @@ export function Resultaten({ sport, analyse }: Props) {
               </tr>
             </thead>
             <tbody>
-              <Drempelrij naam="LT1" sub={lt1Sub} sport={sport} punt={drempels.lt1} toonHF={toonHF} hr={hr.lt1} />
-              <Drempelrij naam="LT2" sub={lt2Sub} sport={sport} punt={drempels.lt2} toonHF={toonHF} hr={hr.lt2} />
-              <Drempelrij naam="OBLA" sub={oblaSub} sport={sport} punt={drempels.obla} toonHF={toonHF} hr={hr.obla} />
+              <Drempelrij naam="LT1" sub={lt1Sub} sport={sport} gewichtKg={gewichtKg} punt={drempels.lt1} toonHF={toonHF} hr={hr.lt1} />
+              <Drempelrij naam="LT2" sub={lt2Sub} sport={sport} gewichtKg={gewichtKg} punt={drempels.lt2} toonHF={toonHF} hr={hr.lt2} />
+              <Drempelrij naam="OBLA" sub={oblaSub} sport={sport} gewichtKg={gewichtKg} punt={drempels.obla} toonHF={toonHF} hr={hr.obla} />
             </tbody>
           </table>
           <p className="resultaten__meta">
@@ -72,6 +73,7 @@ function Drempelrij({
   naam,
   sub,
   sport,
+  gewichtKg,
   punt,
   toonHF,
   hr,
@@ -79,6 +81,7 @@ function Drempelrij({
   naam: string
   sub: string
   sport: SportType
+  gewichtKg: number | null
   punt: Point | null
   toonHF: boolean
   hr: number | null
@@ -89,7 +92,7 @@ function Drempelrij({
         {naam}
         <span className="drempel-sub">{sub}</span>
       </th>
-      <td>{punt ? formatIntensiteit(sport, punt.x) : 'niet bereikt'}</td>
+      <td>{punt ? formatIntensiteit(sport, punt.x, gewichtKg) : 'niet bereikt'}</td>
       <td>{punt ? `${punt.y.toFixed(1).replace('.', ',')} mmol/L` : '—'}</td>
       {toonHF && <td>{hr !== null ? `${Math.round(hr)} bpm` : '—'}</td>}
     </tr>

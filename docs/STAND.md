@@ -10,8 +10,8 @@
 >
 > **▶️ HERVATTEN**: `main` is beschermd → branch + PR + groene CI; merge = auto-deploy. Koers:
 > **modulair lab-platform** — een test levert óf lactaat, óf VO2max, óf beide (plan v3 in
-> `.claude/plans/polished-napping-dream.md`). **Deel A** (nu te bouwen): A.1 datamodel ✓ →
-> **A.2 sporter-zones (HR-bereik + W/kg)** → A.3 RPE → A.4 JSON opslaan/inladen. **Deel B** (VO2max
+> `.claude/plans/polished-napping-dream.md`). **Deel A** (nu te bouwen): A.1 datamodel ✓ ·
+> A.2 sporter-zones ✓ → **A.3 RPE (Borg 6–20)** → A.4 JSON opslaan/inladen. **Deel B** (VO2max
 > + combinatierapport + design) = aparte uitgebreide ronde, later. Eigenaar-inputs: apparatuur-
 > mapping, verificatie-fixtures (ADR-0002), VO2max-voorbeeldformats (Deel B).
 
@@ -39,6 +39,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0011 (analyse-uitbreiding: methodes/instellingen/uitleg) — Geaccepteerd.
 - ADR-0013 (layout-herontwerp: gepolijste één-koloms cockpit) — Geaccepteerd.
 - ADR-0014 (datamodel-evolutie: sessie met test-modules) — Geaccepteerd.
+- ADR-0015 (sporter-facing zones: HR-bereik + W/kg) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
