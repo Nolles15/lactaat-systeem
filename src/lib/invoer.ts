@@ -4,6 +4,7 @@
 
 import { kmhToPace } from './rekenkern'
 import type { SportType } from './types'
+import type { Rij } from './sessie'
 
 /** Bovengrens voor een plausibele lactaatwaarde; daarboven fail-visible waarschuwen (ADR-0002). */
 export const LACTAAT_MAX = 15
@@ -80,4 +81,30 @@ export function parseRpe(raw: string): number | null {
   if (s === '') return null
   const n = Number(s.replace(',', '.'))
   return Number.isFinite(n) && n >= 6 && n <= 20 ? n : null
+}
+
+/** Eén meetstap, geparsed naar rekeneenheden — invoer voor de analyse. */
+export interface RuweStap {
+  x: number
+  y: number
+  hf: number | null
+  rpe: number | null
+  uitgesloten: boolean
+}
+
+/**
+ * Zet ruwe invoer-rijen om naar meetstappen voor de analyse: parse intensiteit + lactaat (verplicht)
+ * en HF/RPE (optioneel), en laat rijen zonder geldige intensiteit óf lactaat vallen. Eén plek voor
+ * deze mapping, gedeeld door het invoerscherm en het rapport-model (geen dubbele waarheid).
+ */
+export function stappenUitRijen(rijen: Rij[], sport: SportType): RuweStap[] {
+  return rijen
+    .map((r) => ({
+      x: parseIntensiteit(sport, r.intensiteit),
+      y: parseLactaat(r.lactaat),
+      hf: parseHartslag(r.hf),
+      rpe: parseRpe(r.rpe),
+      uitgesloten: r.uitgesloten,
+    }))
+    .filter((p): p is RuweStap => p.x !== null && p.y !== null)
 }
