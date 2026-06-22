@@ -9,7 +9,7 @@ import { Vo2max } from './components/Vo2max'
 import { Combinatie } from './components/Combinatie'
 import { AnalyseControls } from './components/AnalyseControls'
 import { analyseer, type AnalyseConfig } from './lib/analyse'
-import { parseIntensiteit, parseLactaat, parseHartslag, parseRpe, parseGewicht } from './lib/invoer'
+import { parseLactaat, parseGewicht, stappenUitRijen } from './lib/invoer'
 import {
   legeSessie,
   naamGeldig,
@@ -119,18 +119,7 @@ function App() {
 
   const analyse = useMemo(() => {
     const rustVal = parseLactaat(rust)
-    const stappen = rijen
-      .map((r) => ({
-        x: parseIntensiteit(sport, r.intensiteit),
-        y: parseLactaat(r.lactaat),
-        hf: parseHartslag(r.hf),
-        rpe: parseRpe(r.rpe),
-        uitgesloten: r.uitgesloten,
-      }))
-      .filter(
-        (p): p is { x: number; y: number; hf: number | null; rpe: number | null; uitgesloten: boolean } =>
-          p.x !== null && p.y !== null,
-      )
+    const stappen = stappenUitRijen(rijen, sport)
     return analyseer({ rust: rustVal, stappen, config })
   }, [sport, rust, rijen, config])
 

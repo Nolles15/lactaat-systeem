@@ -13,9 +13,16 @@
 > (`.claude/plans/polished-napping-dream.md`). Deel A ✓. **Deel B**: B.0 .gitignore lab-exports ✓ ·
 > B.1+B.2 vo2max-module + **Cortex-parser** + import-UI ✓ (ADR-0017) · **B.3a module-gestuurd scherm**
 > ✓ (twee toggles Lactaat/VO2max; dynamische secties; gecombineerde conclusie LT1↔VT1 / LT2↔VT2;
-> ADR-0018). Volgende = **B.3 rapport-systeem** (design-led, vergt een rapport-voorbeeld) en
-> **B.4 combinatie-uitlijning** (na echte combi-data). ⚠️ Lab-exports (`docs/*.xml`) staan in
-> `.gitignore` — gebruik met toestemming, nooit naar git.
+> ADR-0018). **B.3 rapport-systeem — ontwerp-discovery LOOPT, GEPAUZEERD** (eigenaar legt voor aan
+> collega's vóór de richtingkeuze). Nog géén code; eerst ontwerp. Procesplan + werkdocumenten staan
+> lokaal in `.claude/plans/` (niet in repo): `distributed-crunching-spring.md` (proces),
+> `rapport-eisen.md`, `rapport-benchmark.md`, `rapport-fase3-jury.md`, en `mockups/` (A Cockpit /
+> B Reisverhaal / C Speeltuin). Fase 0–3 klaar (eisen + multi-agent benchmark + 3 mockups + jury).
+> **Open keuze = Fase 4 richting → wordt ADR-0020.** Advies: A-basis + C-interacties op de echte
+> fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
+> single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
+> **B.4 combinatie-uitlijning** (na echte combi-data). ⚠️ Lab-exports (`docs/*.xml`)
+> staan in `.gitignore` — gebruik met toestemming, nooit naar git.
 
 ## 1. Doel
 
@@ -45,6 +52,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0016 (JSON opslaan/inladen: versioned, bestand-gebaseerd) — Geaccepteerd.
 - ADR-0017 (VO2max-module + Cortex-import, beautify) — Geaccepteerd.
 - ADR-0018 (module-gestuurd scherm + gecombineerde conclusie) — Geaccepteerd.
+- ADR-0019 (rapport-model: één afgeleide single source of truth, anti-fabricatie) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -133,10 +141,14 @@ Resterend, bewust in deze volgorde:
   laadtijd merkbaar wordt.
 - **Tooltip opschonen** — toont soms een derde, verwarrende waarde (curve-overschot/extrapolatie).
   Trigger: bij een polish-ronde van de grafiek.
-- **PDF-export — GEPARKEERD** tot een design-/inhoudsronde (welke gegevens, layout, branding;
-  evt. via Claude Design). Meest ontwerp-afhankelijke deliverable → nu bouwen = weggegooid werk.
-  Aanpak-opties besproken (jsPDF+html2canvas / jsPDF programmatisch / print-stylesheet); nog niet
-  gekozen. Client-side verplicht (ADR-0001).
+- **Rapport (web + PDF) — ONTWERP-DISCOVERY LOOPT** (B.3, zie HERVATTEN). Eisen opgehaald: doel
+  sporter+coach, web + PDF (beide, client-side, geen nieuwe opslag), kern+verdieping, performance-
+  toon, Hanze-basis-vrij. Benchmark + 3 mockups + jury klaar. Fundament-laag `rapportmodel.ts`
+  gebouwd (ADR-0019, richting-agnostisch). **Open**: (1) Fase 4 richtingkeuze →
+  ADR-0020; (2) rendering-techniek nog niet gekozen (jsPDF+html2canvas / jsPDF programmatisch /
+  print-stylesheet) → Fase 6-ADR; (3) grafiek-tech voor het rapport: Recharts v3 (ADR-0007) vs
+  eigen SVG — annotatielaag/scrubber/combi-overlay kunnen 0007's trigger raken. Client-side
+  verplicht (ADR-0001).
 - **JSON-opslag/inladen — GEPARKEERD** tot het datamodel stabiel is. Reden: het bestandsformaat
   groeit mee met elke modelwijziging (deelnemer/HF/RPE…) → bouw het in één keer, **mét een
   `versie`-veld** zodat oude exports blijven werken. Past op de bestand-gebaseerde premisse (ADR-0001).
