@@ -1,4 +1,4 @@
-import logo from '../assets/hanze-logo.png'
+import logo from '../assets/hanze-logo.svg'
 
 /**
  * App-header met het Hanze-logo (briefing 3.5). Presentatie-licht: alle

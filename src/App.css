@@ -55,9 +55,10 @@
 .paneel {
   background: var(--kleur-paneel);
   border: 1px solid var(--kleur-rand);
+  /* Hanze-signatuur: oranje accentbalk bovenaan, scherpe hoeken, geen zachte schaduw. */
+  border-top: 4px solid var(--kleur-accent);
   border-radius: var(--radius);
   padding: var(--ruimte-4);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .paneel + .paneel {
   margin-top: var(--ruimte-4);
@@ -81,7 +82,7 @@
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: 50%;
+  border-radius: var(--radius);
   background: var(--kleur-accent);
   color: #fff;
   font-weight: bold;
@@ -118,7 +119,7 @@
   font: inherit;
   padding: 0.45rem 0.55rem;
   border: 1px solid var(--kleur-rand);
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--kleur-paneel);
 }
 .veld input:focus,
@@ -138,7 +139,7 @@
 .apparatuur {
   padding: 0.45rem 0.55rem;
   border: 1px dashed var(--kleur-rand);
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--kleur-tekst-zwak);
   background: var(--kleur-achtergrond);
 }
@@ -247,7 +248,7 @@
   font: inherit;
   padding: 0.4rem 0.5rem;
   border: 1px solid var(--kleur-rand);
-  border-radius: 6px;
+  border-radius: var(--radius);
 }
 .invoer__tabel input:focus {
   outline: 2px solid var(--kleur-accent);
@@ -282,7 +283,7 @@
   border: 1px solid var(--kleur-rand);
   background: var(--kleur-paneel);
   color: var(--kleur-tekst-zwak);
-  border-radius: 6px;
+  border-radius: var(--radius);
   width: 1.9rem;
   height: 1.9rem;
   cursor: pointer;
