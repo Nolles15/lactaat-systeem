@@ -18,9 +18,11 @@
 > lokaal in `.claude/plans/` (niet in repo): `distributed-crunching-spring.md` (proces),
 > `rapport-eisen.md`, `rapport-benchmark.md`, `rapport-fase3-jury.md`, en `mockups/` (A Cockpit /
 > B Reisverhaal / C Speeltuin). Fase 0–3 klaar (eisen + multi-agent benchmark + 3 mockups + jury).
-> **Richting gekozen** (combi B+C; ADR-0021 volgt bij de bouw). **Online-plan ligt er**
-> (`.claude/plans/distributed-crunching-spring.md`): invoering→uitvoer→delen, slices. **Slice 3b**
-> (Playwright visuele-check) ✓ #29; **Slice 1** Hanze Design System ✓ ADR-0020. Advies: A-basis + C-interacties op de echte
+> **Richting gekozen** (combi B+C; ADR-0022 volgt bij de bouw van `Rapport.tsx`). **Online-plan
+> ligt er** (`.claude/plans/distributed-crunching-spring.md`): invoering→uitvoer→delen, slices.
+> Geshipt: **Slice 3b** Playwright visuele-check ✓ #29; **Slice 1** Hanze Design System ✓ ADR-0020;
+> **Slice 2** `rapporttekst.ts` (templates, geen AI) ✓ ADR-0021. Volgende = **Slice 3** het
+> rapportscherm. Advies: A-basis + C-interacties op de echte
 > fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
 > single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
 > **B.4 combinatie-uitlijning** (na echte combi-data). ⚠️ Lab-exports (`docs/*.xml`)
@@ -56,6 +58,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0018 (module-gestuurd scherm + gecombineerde conclusie) — Geaccepteerd.
 - ADR-0019 (rapport-model: één afgeleide single source of truth, anti-fabricatie) — Geaccepteerd.
 - ADR-0020 (Hanze Design System adoptie: tokens, scherpe vormtaal, SVG-logo) — Geaccepteerd.
+- ADR-0021 (rapport-teksten via deterministische templates, geen AI) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
@@ -148,7 +151,7 @@ Resterend, bewust in deze volgorde:
   sporter+coach, web + PDF (beide, client-side, geen nieuwe opslag), kern+verdieping, performance-
   toon, Hanze-basis-vrij. Benchmark + 3 mockups + jury klaar. Fundament-laag `rapportmodel.ts`
   gebouwd (ADR-0019, richting-agnostisch). Hanze Design System geadopteerd (ADR-0020). **Open**:
-  (1) rapport-ontwerprichting vastleggen bij de bouw → ADR-0021; (2) rendering-techniek nog niet
+  (1) rapport-ontwerprichting vastleggen bij de bouw → ADR-0022; (2) rendering-techniek nog niet
   gekozen (jsPDF+html2canvas / jsPDF programmatisch /
   print-stylesheet) → Fase 6-ADR; (3) grafiek-tech voor het rapport: Recharts v3 (ADR-0007) vs
   eigen SVG — annotatielaag/scrubber/combi-overlay kunnen 0007's trigger raken. Client-side
