@@ -2,7 +2,7 @@
 // rapport-model (ADR-0019) + de template-teksten (ADR-0021) — één bron van waarheid, geen
 // eigen berekening, geen AI. Functioneel-correct; de world-leading designlaag komt in Slice 3c.
 
-import { Grafiek } from './Grafiek'
+import { LactaatGrafiek } from './LactaatGrafiek'
 import { formatIntensiteit } from '../lib/invoer'
 import type { RapportModel, RapportZone } from '../lib/rapportmodel'
 import type { SportType } from '../lib/types'
@@ -126,7 +126,7 @@ export function Rapport({ model }: { model: RapportModel }) {
       <section className="rap-sectie">
         <h2>Je inspanningscurve</h2>
         <p className="rap-lead">{curveBeschrijving(model)}</p>
-        <Grafiek sport={test.sport} analyse={lactaat.analyse} />
+        <LactaatGrafiek model={model} />
         {betrouwbaarheidZin(model) && <p className="rap-eerlijk">{betrouwbaarheidZin(model)}</p>}
       </section>
 

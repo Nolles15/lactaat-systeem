@@ -22,9 +22,10 @@
 > ligt er** (`.claude/plans/distributed-crunching-spring.md`): invoering→uitvoer→delen, slices.
 > Geshipt: **Slice 3b** Playwright visuele-check ✓ #29; **Slice 1** Hanze Design System ✓ ADR-0020;
 > **Slice 2** `rapporttekst.ts` (templates, geen AI) ✓ ADR-0021; **Slice 3** `Rapport.tsx`
-> (functioneel rapport, module-gestuurd, screenshot-geverifieerd) ✓ ADR-0022. Volgende =
-> **Slice 3c** design-elevation (wereldklasse: custom curve/scrollytelling/scrubber/motion), dan
-> Slice 4 PDF + Slice 5 delen. Advies: A-basis + C-interacties op de echte
+> (functioneel rapport, module-gestuurd, screenshot-geverifieerd) ✓ ADR-0022; **Slice 3c**
+> design-elevation — eigen interactieve SVG-lactaatcurve (annotatie + sleepbare scrubber + actieve
+> titel + draw-in motion, gevoed door `evalueerOpIntensiteit`) ✓ ADR-0023. Volgende = vervolg-
+> elevation (scrollytelling/typografie) of **Slice 4** PDF + **Slice 5** delen. Advies: A-basis + C-interacties op de echte
 > fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
 > single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
 > **B.4 combinatie-uitlijning** (na echte combi-data). ⚠️ Lab-exports (`docs/*.xml`)
@@ -62,6 +63,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0020 (Hanze Design System adoptie: tokens, scherpe vormtaal, SVG-logo) — Geaccepteerd.
 - ADR-0021 (rapport-teksten via deterministische templates, geen AI) — Geaccepteerd.
 - ADR-0022 (rapport-scherm: gekozen combi-richting, module-gestuurd, geen advies) — Geaccepteerd.
+- ADR-0023 (rapport design-elevation: eigen interactieve SVG-lactaatcurve) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
