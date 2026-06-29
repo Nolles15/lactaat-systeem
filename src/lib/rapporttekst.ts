@@ -10,10 +10,11 @@ import type { RapportModel } from './rapportmodel'
 import type { SportType } from './types'
 
 /**
- * Drempel-bpm waaronder we de lactaat- en ademgasdrempels "bevestigen elkaar" noemen.
- * Heuristiek — door het lab te ijken; bewust één plek (geen schijnprecisie verstopt in de tekst).
+ * Drempel-bpm waaronder we de lactaat- en ademgasdrempels "bevestigen elkaar" noemen. Fysiologisch
+ * is een afwijking tot ~8 bpm tussen LT en VT klein. Heuristiek — door het lab te ijken; bewust
+ * één plek (geen schijnprecisie verstopt in de tekst).
  */
-export const CONSISTENT_DREMPEL_BPM = 5
+export const CONSISTENT_DREMPEL_BPM = 8
 
 const heel = (n: number): string => String(Math.round(n))
 const een = (n: number): string => n.toFixed(1).replace('.', ',')

@@ -7,7 +7,9 @@ import { Resultaten } from './components/Resultaten'
 import { Zones } from './components/Zones'
 import { Vo2max } from './components/Vo2max'
 import { Combinatie } from './components/Combinatie'
+import { Rapport } from './components/Rapport'
 import { AnalyseControls } from './components/AnalyseControls'
+import { bouwRapportModel } from './lib/rapportmodel'
 import { analyseer, type AnalyseConfig } from './lib/analyse'
 import { parseLactaat, parseGewicht, stappenUitRijen } from './lib/invoer'
 import {
@@ -30,6 +32,7 @@ function App() {
     legeSessie(new Date().toISOString().slice(0, 10)),
   )
   const [importFout, setImportFout] = useState<string | null>(null)
+  const [toonRapport, setToonRapport] = useState(false)
 
   const { deelnemer } = sessie
   const sport = sessie.test.sport
@@ -205,12 +208,23 @@ function App() {
             Inladen CPET (.xml)
             <input type="file" accept=".xml,application/xml,text/xml" onChange={importeerCpet} hidden />
           </label>
+          <button
+            type="button"
+            className={toonRapport ? 'knop-secundair' : 'knop-primair'}
+            onClick={() => setToonRapport((v) => !v)}
+          >
+            {toonRapport ? '← Terug naar invoer' : 'Toon rapport'}
+          </button>
           {!naamGeldig(deelnemer.naam) && (
             <span className="acties__hint">Vul een naam in om op te slaan</span>
           )}
           {importFout && <span className="veld-fout">{importFout}</span>}
         </div>
 
+        {toonRapport && <Rapport model={bouwRapportModel(sessie)} />}
+
+        {!toonRapport && (
+        <>
         <div className="test-toggle" role="group" aria-label="Welke test(en)">
           <span className="test-toggle__label">Test:</span>
           <button
@@ -240,6 +254,8 @@ function App() {
             {s.node}
           </section>
         ))}
+        </>
+        )}
       </main>
       <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>
     </div>
