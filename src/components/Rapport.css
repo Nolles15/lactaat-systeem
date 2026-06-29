@@ -1,0 +1,235 @@
+/* Rapport-styling op de Hanze Design System-tokens (ADR-0020). Functioneel-correct;
+   de world-leading designlaag (motion, scrollytelling, signature-viz) komt in Slice 3c. */
+
+.rapport {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--kleur-paneel);
+}
+
+/* ---- Hero ---- */
+.rap-hero {
+  background: var(--grijs-90);
+  color: var(--hanze-wit);
+  padding: var(--ruimte-4);
+  border-top: 6px solid var(--kleur-accent);
+}
+.rap-naam {
+  color: var(--hanze-wit);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: var(--ruimte-1) 0 var(--ruimte-3);
+}
+.rap-eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--kleur-accent);
+}
+.rap-eyebrow--licht {
+  color: var(--hanze-geel);
+}
+.rap-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ruimte-1);
+  margin-bottom: var(--ruimte-3);
+}
+.rap-chip {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  border: 1px solid var(--grijs-70);
+  color: var(--grijs-20);
+}
+.rap-waarschuwingen {
+  list-style: none;
+  margin: 0 0 var(--ruimte-3);
+  padding: var(--ruimte-1) var(--ruimte-2);
+  background: var(--kleur-accent);
+  color: var(--hanze-zwart);
+  font-size: 0.85rem;
+}
+
+/* ---- KPI's: vier gelijke kaarten ---- */
+.rap-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--ruimte-2);
+}
+.rap-kpi {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6px;
+  background: var(--hanze-wit);
+  color: var(--kleur-tekst);
+  padding: var(--ruimte-2);
+  border-top: 4px solid var(--grijs-30);
+  min-height: 124px;
+}
+.rap-kpi--primair {
+  border-top-color: var(--kleur-accent);
+}
+.rap-kpi__label {
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--kleur-tekst-zwak);
+}
+.rap-kpi__getal {
+  font-size: 2.2rem;
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  align-self: end;
+}
+.rap-kpi__eenheid {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--kleur-tekst-zwak);
+}
+.rap-kpi__sub {
+  font-size: 0.8rem;
+  color: var(--kleur-tekst-zwak);
+}
+.rap-samenvatting {
+  margin: var(--ruimte-3) 0 0;
+  font-size: 1.15rem;
+  color: var(--hanze-wit);
+  max-width: 60ch;
+}
+
+/* ---- Secties ---- */
+.rap-sectie {
+  padding: var(--ruimte-4);
+  border-bottom: 1px solid var(--kleur-rand);
+}
+.rap-sectie h2 {
+  font-size: 1.6rem;
+  color: var(--kleur-accent);
+  margin: 0 0 var(--ruimte-2);
+}
+.rap-lead {
+  font-size: 1.1rem;
+  max-width: 68ch;
+  margin: 0 0 var(--ruimte-3);
+}
+.rap-info {
+  max-width: 68ch;
+  color: var(--kleur-tekst-zwak);
+}
+
+.rap-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ruimte-3);
+}
+.rap-kaart {
+  border: 1px solid var(--kleur-rand);
+  border-top: 4px solid var(--kleur-accent);
+  padding: var(--ruimte-3);
+}
+.rap-kaart__getal {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+}
+.rap-kaart__sub {
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.rap-betekenis {
+  margin: var(--ruimte-2) 0 0;
+  max-width: 68ch;
+}
+.rap-betekenis__kop {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--kleur-tekst-zwak);
+  margin-bottom: 2px;
+}
+.rap-eerlijk {
+  margin-top: var(--ruimte-2);
+  font-size: 0.9rem;
+  color: var(--kleur-tekst-zwak);
+}
+
+/* ---- Tabellen ---- */
+.rap-tabel {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--ruimte-2);
+}
+.rap-tabel th,
+.rap-tabel td {
+  text-align: left;
+  padding: var(--ruimte-1) var(--ruimte-2);
+  border-bottom: 1px solid var(--kleur-rand);
+  vertical-align: top;
+}
+.rap-tabel thead th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--kleur-tekst-zwak);
+}
+.rap-zoneduiding {
+  color: var(--kleur-tekst-zwak);
+  font-size: 0.9rem;
+}
+.rap-zones + .rap-zones {
+  margin-top: var(--ruimte-3);
+}
+.rap-zones h3 {
+  margin: 0 0 var(--ruimte-1);
+}
+
+.rap-zonecode {
+  display: inline-block;
+  min-width: 1.6rem;
+  text-align: center;
+  padding: 2px 6px;
+  font-weight: bold;
+  color: var(--hanze-wit);
+  background: var(--grijs-60);
+}
+.rap-zonecode[data-zone='1'],
+.rap-zonecode[data-zone='A1'] { background: var(--hanze-donkerblauw); }
+.rap-zonecode[data-zone='2'],
+.rap-zonecode[data-zone='A2'] { background: var(--hanze-donkergroen); }
+.rap-zonecode[data-zone='A2+'] { background: var(--hanze-lichtgroen); color: var(--hanze-zwart); }
+.rap-zonecode[data-zone='3'],
+.rap-zonecode[data-zone='B'] { background: var(--kleur-accent); }
+.rap-zonecode[data-zone='C'] { background: var(--hanze-paars); }
+
+/* ---- Disclaimer ---- */
+.rap-disclaimer {
+  padding: var(--ruimte-3) var(--ruimte-4);
+  background: var(--hanze-zwart);
+  color: var(--grijs-30);
+  font-size: 0.85rem;
+}
+.rap-disclaimer__concept {
+  display: inline-block;
+  margin-right: var(--ruimte-2);
+  padding: 2px 8px;
+  background: var(--hanze-geel);
+  color: var(--hanze-zwart);
+  font-weight: bold;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 760px) {
+  .rap-kpis { grid-template-columns: 1fr 1fr; }
+  .rap-grid2 { grid-template-columns: 1fr; }
+}
