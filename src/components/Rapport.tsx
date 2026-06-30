@@ -9,7 +9,6 @@ import type { RapportModel, RapportZone } from '../lib/rapportmodel'
 import type { SportType } from '../lib/types'
 import {
   samenvattingZin,
-  drempelBetekenis,
   betrouwbaarheidZin,
   vo2maxZin,
   combinatieDuiding,
@@ -33,16 +32,6 @@ interface Kpi {
   eenheid: string
   sub: string
   primair?: boolean
-}
-
-function Betekenis({ tekst }: { tekst: string | null }) {
-  if (!tekst) return null
-  return (
-    <p className="rap-betekenis">
-      <span className="rap-betekenis__kop">Wat dit betekent</span>
-      {tekst}
-    </p>
-  )
 }
 
 function ZoneTabel({ titel, zones, eenheid }: { titel: string; zones: RapportZone[]; eenheid: string }) {
@@ -124,12 +113,17 @@ export function Rapport({ model }: { model: RapportModel }) {
   const LactaatSecties = lactaat ? (
     <>
       <section className="rap-sectie">
+        <h2>Je test, stap voor stap</h2>
+        <p className="rap-lead rap-intro">
+          Hieronder lopen we samen door je test: van je inspanningscurve naar je twee drempels en je
+          trainingszones. Scroll rustig mee — de grafiek bouwt zich onderweg op.
+        </p>
         <RapportReis model={model} />
         {betrouwbaarheidZin(model) && <p className="rap-eerlijk">{betrouwbaarheidZin(model)}</p>}
       </section>
 
       <section className="rap-sectie">
-        <h2>Je drempels</h2>
+        <h2>De cijfers op een rij</h2>
         <div className="rap-grid2">
           {lt1 && (
             <article className="rap-kaart">
@@ -138,7 +132,6 @@ export function Rapport({ model }: { model: RapportModel }) {
               <div className="rap-kaart__sub">
                 {bpm(lt1.hr)} · {een(lt1.lactaat)} mmol/L
               </div>
-              <Betekenis tekst={drempelBetekenis(model, 'LT1')} />
             </article>
           )}
           {lt2 && (
@@ -148,27 +141,40 @@ export function Rapport({ model }: { model: RapportModel }) {
               <div className="rap-kaart__sub">
                 {bpm(lt2.hr)} · {een(lt2.lactaat)} mmol/L
               </div>
-              <Betekenis tekst={drempelBetekenis(model, 'LT2')} />
             </article>
           )}
         </div>
-        {drempelBetekenis(model, 'OBLA') && <Betekenis tekst={drempelBetekenis(model, 'OBLA')} />}
-      </section>
-
-      <section className="rap-sectie">
-        <h2>Je trainingszones</h2>
         <ZoneTabel titel="Op de drempels (3 zones)" zones={lactaat.drempelzones} eenheid={eenheid} />
         <ZoneTabel titel="Vijf trainingszones" zones={lactaat.trainingszones} eenheid={eenheid} />
       </section>
-
-      <section className="rap-sectie">
-        <h2>Verken je eigen curve</h2>
-        <p className="rap-lead">
-          Sleep over de grafiek om op elke intensiteit je lactaat, hartslag en zone af te lezen.
-        </p>
-        <LactaatGrafiek model={model} />
-      </section>
     </>
+  ) : null
+
+  const Primer = (
+    <section className="rap-sectie rap-primer">
+      <h2>Over deze test</h2>
+      <p className="rap-lead">
+        {actief.lactaat && vo2max
+          ? 'We hebben twee dingen gemeten: je lactaat — het stofje dat vrijkomt als je inspant — via een paar druppels bloed per stap, en je ademgas — hoeveel zuurstof je lichaam verwerkt. Samen geven ze een compleet beeld van je uithoudingsvermogen.'
+          : actief.lactaat
+            ? 'We hebben je lactaat gemeten — het stofje dat vrijkomt als je inspant — via een paar druppels bloed per belastingstap. Daaruit volgen je curve, je drempels en je trainingszones.'
+            : 'We hebben je ademgas gemeten: hoeveel zuurstof je lichaam maximaal verwerkt en waar je ventilatoire drempels liggen.'}
+      </p>
+      <p className="rap-info">
+        Je leest hieronder eerst je resultaten als verhaal, daarna de cijfers op een rij, en tot slot
+        kun je zelf door je eigen curve bewegen.
+      </p>
+    </section>
+  )
+
+  const VerkenSectie = lactaat ? (
+    <section className="rap-sectie">
+      <h2>Verken je eigen curve</h2>
+      <p className="rap-lead">
+        Sleep over de grafiek om op elke intensiteit je lactaat, hartslag en zone af te lezen.
+      </p>
+      <LactaatGrafiek model={model} />
+    </section>
   ) : null
 
   const AdemgasSectie =
@@ -244,6 +250,8 @@ export function Rapport({ model }: { model: RapportModel }) {
         )}
       </header>
 
+      {Primer}
+
       {lactaatPrimair ? (
         <>
           {LactaatSecties}
@@ -286,6 +294,8 @@ export function Rapport({ model }: { model: RapportModel }) {
           </table>
         </section>
       )}
+
+      {VerkenSectie}
 
       <footer className="rap-disclaimer">
         {/* TODO: definitieve tekst aanleveren door het lab (werk-/hygiëneprotocol). */}

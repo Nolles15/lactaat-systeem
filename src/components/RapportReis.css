@@ -9,7 +9,8 @@
 
 .reis__graphic {
   position: sticky;
-  top: var(--ruimte-3);
+  /* Verticaal gecentreerd in beeld zodat de grafiek met de gelezen stap meeloopt (minder leegte). */
+  top: max(var(--ruimte-3), calc(50vh - 180px));
   align-self: start;
 }
 .reis__svg {
@@ -50,12 +51,16 @@
   flex-direction: column;
 }
 .reis__stap {
-  min-height: 78vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: var(--ruimte-3) 0;
   opacity: 0.35;
   transition: opacity 0.4s ease;
+}
+.reis__stap:last-child {
+  min-height: auto;
 }
 .reis__stap.is-actief {
   opacity: 1;
