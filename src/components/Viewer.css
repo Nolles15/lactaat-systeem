@@ -1,0 +1,64 @@
+/* Sporter-viewer (Slice 5). Kale, rustige alleen-lezen weergave op de Hanze-tokens. */
+
+.viewer-main {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--ruimte-4) 0;
+}
+
+.viewer-intro {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--ruimte-4);
+  text-align: center;
+  border-top: 6px solid var(--kleur-accent);
+  background: var(--kleur-paneel);
+}
+.viewer-intro__eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--kleur-accent);
+}
+.viewer-intro__titel {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  margin: var(--ruimte-1) 0 var(--ruimte-3);
+  letter-spacing: -0.02em;
+}
+.viewer-intro__tekst {
+  color: var(--kleur-tekst-zwak);
+  max-width: 44ch;
+  margin: 0 auto var(--ruimte-4);
+}
+.viewer-intro__tekst code {
+  background: var(--grijs-10);
+  padding: 1px 5px;
+  font-size: 0.9em;
+}
+.viewer-intro__knop {
+  display: inline-block;
+  font-size: 1.05rem;
+  padding: var(--ruimte-2) var(--ruimte-4);
+}
+.viewer-intro__fout {
+  margin-top: var(--ruimte-3);
+  padding: var(--ruimte-1) var(--ruimte-2);
+  background: var(--kleur-accent);
+  color: var(--hanze-zwart);
+  font-weight: bold;
+}
+.viewer-intro__privacy {
+  margin-top: var(--ruimte-4);
+  font-size: 0.85rem;
+  color: var(--kleur-tekst-zwak);
+}
+
+.viewer-voet {
+  max-width: 1000px;
+  margin: var(--ruimte-3) auto 0;
+  padding: 0 var(--ruimte-4);
+  text-align: center;
+}
