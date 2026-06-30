@@ -94,6 +94,9 @@
   font-size: 0.8rem;
   color: var(--kleur-tekst-zwak);
 }
+.rap-primer {
+  background: var(--grijs-10);
+}
 .rap-samenvatting {
   margin: var(--ruimte-3) 0 0;
   font-size: 1.15rem;
@@ -167,6 +170,16 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: var(--ruimte-2);
+}
+/* compacte getal-cellen: niet afbreken, uitgelijnde cijfers */
+.rap-getalcel {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.rap-zonetabel th,
+.rap-zonetabel td {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
 }
 .rap-tabel th,
 .rap-tabel td {

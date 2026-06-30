@@ -9,6 +9,7 @@
 
 .reis__graphic {
   position: sticky;
+  /* Bovenaan vastgezet zodat de grafiek samen met de eerste stap-kop uitlijnt. */
   top: var(--ruimte-3);
   align-self: start;
 }
@@ -50,12 +51,19 @@
   flex-direction: column;
 }
 .reis__stap {
-  min-height: 78vh;
+  min-height: 64vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   opacity: 0.35;
   transition: opacity 0.4s ease;
+}
+/* Eerste stap-kop lijnt uit met de bovenkant van de grafiek. */
+.reis__stap:first-child {
+  padding-top: var(--ruimte-3);
+}
+.reis__stap:last-child {
+  min-height: auto;
 }
 .reis__stap.is-actief {
   opacity: 1;

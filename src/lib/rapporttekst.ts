@@ -30,12 +30,12 @@ export const SJABLONEN = {
   samenvattingLactaat:
     'Je anaerobe drempel ligt bij {lt2}. Daarboven stapelt je verzuring zich sneller op dan je lichaam die afvoert.',
   lt1:
-    'Tot {lt1} blijven de aanmaak en afvoer van lactaat ruim in balans — dit is je aerobe drempel.',
+    'Tot {lt1} blijven de aanmaak en de afvoer van lactaat ruim in balans: je lichaam ruimt het net zo snel op als het ontstaat, dus dit tempo kun je heel lang volhouden. Dit is je aerobe drempel — de bovengrens van je rustige duurinspanning.',
   lt2:
-    '{lt2} is het berekende kantelpunt van je lactaatcurve: het punt dat uit de vorm van je eigen curve volgt, niet uit een vaste standaardwaarde. Boven dit punt loopt het lactaat versneld op.',
-  obla: 'Bij {obla} bereikt je lactaat {niveau} mmol/L.',
+    '{lt2} is het berekende kantelpunt van je lactaatcurve: het punt dat uit de vorm van je eigen curve volgt, niet uit een vaste standaardwaarde. Vanaf hier maakt je lichaam meer lactaat aan dan het kan afvoeren, dus het stapelt zich op — dit tempo houd je maar kort vol.',
+  obla: 'Op {obla} bereikt je lactaat {niveau} mmol/L — een vaste referentiewaarde die labs gebruiken om tussen testen en sporters te kunnen vergelijken.',
   curve:
-    'Je lactaatcurve blijft tot ongeveer {knik} laag en vlak, en loopt daarboven steeds steiler op.',
+    'Bij elke stap zwaarder maakt je lichaam meer lactaat aan. Je lactaatcurve blijft tot ongeveer {knik} laag en vlak — je ruimt het lactaat nog moeiteloos op — en loopt daarboven steeds steiler op.',
   betrouwbaarHoog: 'De curve sluit nauw aan op je meetpunten (R² = {r2} van maximaal 1,000).',
   betrouwbaarLaag:
     'Let op: de curve sluit minder strak aan op je meetpunten (R² = {r2}). Beoordeel de drempels met enige voorzichtigheid.',

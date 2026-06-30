@@ -27,7 +27,11 @@
 > titel + draw-in motion, gevoed door `evalueerOpIntensiteit`) ✓ ADR-0023; **Slice 5 (Route A)**
 > sporter-viewer op `?rapport` (kale alleen-lezen pagina, laadt JSON → rapport; deel-hint in de app)
 > ✓ ADR-0024; **Slice 3d DE REIS** sticky-graphic scrollytelling (curve blijft staan + bouwt zich
-> op: curve→LT1→LT2→zones; scrubber verhuisd naar "Verken je eigen curve") ✓ ADR-0025. Volgende =
+> op: curve→LT1→LT2→zones; scrubber verhuisd naar "Verken je eigen curve") ✓ ADR-0025;
+> **reis-verbetering** — heldere herstructurering (primer "Over deze test" → reis → "De cijfers op
+> een rij" → ademgas → vergelijken → verken), ontdubbeld, rijkere reis-teksten, minder witruimte.
+> **Open tekst-werk** (eigenaar): klikbare jargon-uitleg/woordenlijst nog te bouwen; alle teksten
+> nog redigeren door het lab. Volgende =
 > **Slice 4** PDF (met statische reis-variant) of **Slice 5b** self-contained HTML-export. Advies: A-basis + C-interacties op de echte
 > fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
 > single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
