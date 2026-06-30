@@ -171,6 +171,16 @@
   border-collapse: collapse;
   margin-top: var(--ruimte-2);
 }
+/* compacte getal-cellen: niet afbreken, uitgelijnde cijfers */
+.rap-getalcel {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.rap-zonetabel th,
+.rap-zonetabel td {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
 .rap-tabel th,
 .rap-tabel td {
   text-align: left;

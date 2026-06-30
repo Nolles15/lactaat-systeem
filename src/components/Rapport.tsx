@@ -34,16 +34,24 @@ interface Kpi {
   primair?: boolean
 }
 
-function ZoneTabel({ titel, zones, eenheid }: { titel: string; zones: RapportZone[]; eenheid: string }) {
+function bereik(laag: number | null, hoog: number | null, fmt: (n: number) => string): string {
+  if (laag == null && hoog == null) return '—'
+  if (laag == null) return `< ${fmt(hoog as number)}`
+  if (hoog == null) return `> ${fmt(laag)}`
+  return `${fmt(laag)}–${fmt(hoog)}`
+}
+
+function ZoneTabel({ titel, zones, sport }: { titel: string; zones: RapportZone[]; sport: SportType }) {
   if (zones.length === 0) return null
+  const fx = (x: number) => formatIntensiteit(sport, x, null)
   return (
     <div className="rap-zones">
       <h3>{titel}</h3>
-      <table className="rap-tabel">
+      <table className="rap-tabel rap-zonetabel">
         <thead>
           <tr>
             <th>Zone</th>
-            <th>{eenheid}</th>
+            <th>Intensiteit</th>
             <th>Hartslag</th>
             <th>Wat er gebeurt</th>
           </tr>
@@ -57,11 +65,10 @@ function ZoneTabel({ titel, zones, eenheid }: { titel: string; zones: RapportZon
                 </span>{' '}
                 {z.naam}
               </th>
-              <td>
-                {z.minLabel} – {z.maxLabel}
-              </td>
-              <td>
-                {z.hrMin != null ? bpm(z.hrMin) : '—'} – {z.hrMax != null ? bpm(z.hrMax) : '—'}
+              <td className="rap-getalcel">{bereik(z.min, z.max, fx)}</td>
+              <td className="rap-getalcel">
+                {bereik(z.hrMin, z.hrMax, (n) => `${Math.round(n)}`)}
+                {(z.hrMin != null || z.hrMax != null) && ' bpm'}
               </td>
               <td className="rap-zoneduiding">{ZONE_BETEKENIS[z.code] ?? ''}</td>
             </tr>
@@ -74,7 +81,6 @@ function ZoneTabel({ titel, zones, eenheid }: { titel: string; zones: RapportZon
 
 export function Rapport({ model }: { model: RapportModel }) {
   const { lactaat, vo2max, combinatie, deelnemer, test, actief } = model
-  const eenheid = test.sport === 'running' ? 'Snelheid' : 'Vermogen'
   // Schoon kerngetal (zonder W/kg-toevoeging) voor de grote cijfers.
   const schoon = (x: number) => formatIntensiteit(test.sport, x, null)
 
@@ -113,11 +119,8 @@ export function Rapport({ model }: { model: RapportModel }) {
   const LactaatSecties = lactaat ? (
     <>
       <section className="rap-sectie">
-        <h2>Je test, stap voor stap</h2>
-        <p className="rap-lead rap-intro">
-          Hieronder lopen we samen door je test: van je inspanningscurve naar je twee drempels en je
-          trainingszones. Scroll rustig mee — de grafiek bouwt zich onderweg op.
-        </p>
+        <h2>Je resultaten, stap voor stap</h2>
+        <p className="rap-lead rap-intro">Scroll mee — de grafiek bouwt zich onderweg op.</p>
         <RapportReis model={model} />
         {betrouwbaarheidZin(model) && <p className="rap-eerlijk">{betrouwbaarheidZin(model)}</p>}
       </section>
@@ -144,8 +147,8 @@ export function Rapport({ model }: { model: RapportModel }) {
             </article>
           )}
         </div>
-        <ZoneTabel titel="Op de drempels (3 zones)" zones={lactaat.drempelzones} eenheid={eenheid} />
-        <ZoneTabel titel="Vijf trainingszones" zones={lactaat.trainingszones} eenheid={eenheid} />
+        <ZoneTabel titel="Op de drempels (3 zones)" zones={lactaat.drempelzones} sport={test.sport} />
+        <ZoneTabel titel="Vijf trainingszones" zones={lactaat.trainingszones} sport={test.sport} />
       </section>
     </>
   ) : null
