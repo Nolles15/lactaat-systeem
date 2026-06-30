@@ -3,13 +3,13 @@
 // eigen berekening, geen AI. Functioneel-correct; de world-leading designlaag komt in Slice 3c.
 
 import { LactaatGrafiek } from './LactaatGrafiek'
+import { RapportReis } from './RapportReis'
 import { formatIntensiteit } from '../lib/invoer'
 import type { RapportModel, RapportZone } from '../lib/rapportmodel'
 import type { SportType } from '../lib/types'
 import {
   samenvattingZin,
   drempelBetekenis,
-  curveBeschrijving,
   betrouwbaarheidZin,
   vo2maxZin,
   combinatieDuiding,
@@ -124,9 +124,7 @@ export function Rapport({ model }: { model: RapportModel }) {
   const LactaatSecties = lactaat ? (
     <>
       <section className="rap-sectie">
-        <h2>Je inspanningscurve</h2>
-        <p className="rap-lead">{curveBeschrijving(model)}</p>
-        <LactaatGrafiek model={model} />
+        <RapportReis model={model} />
         {betrouwbaarheidZin(model) && <p className="rap-eerlijk">{betrouwbaarheidZin(model)}</p>}
       </section>
 
@@ -161,6 +159,14 @@ export function Rapport({ model }: { model: RapportModel }) {
         <h2>Je trainingszones</h2>
         <ZoneTabel titel="Op de drempels (3 zones)" zones={lactaat.drempelzones} eenheid={eenheid} />
         <ZoneTabel titel="Vijf trainingszones" zones={lactaat.trainingszones} eenheid={eenheid} />
+      </section>
+
+      <section className="rap-sectie">
+        <h2>Verken je eigen curve</h2>
+        <p className="rap-lead">
+          Sleep over de grafiek om op elke intensiteit je lactaat, hartslag en zone af te lezen.
+        </p>
+        <LactaatGrafiek model={model} />
       </section>
     </>
   ) : null

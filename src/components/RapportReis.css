@@ -1,0 +1,112 @@
+/* De reis (Slice 3d): sticky-graphic scrollytelling op de Hanze-tokens. */
+
+.reis {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--ruimte-4);
+  align-items: start;
+}
+
+.reis__graphic {
+  position: sticky;
+  top: var(--ruimte-3);
+  align-self: start;
+}
+.reis__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--kleur-paneel);
+  border: 1px solid var(--kleur-rand);
+}
+
+/* highlights faden zachtjes in/uit terwijl je scrolt */
+.reis__hl {
+  transition: opacity 0.5s ease;
+}
+.reis__as {
+  font-size: 12px;
+  fill: var(--kleur-tekst-zwak);
+}
+.reis__drempeltxt {
+  font-size: 11px;
+  font-weight: bold;
+  fill: var(--hanze-wit);
+}
+.reis__curve {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: reis-draw 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes reis-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* de scrollende stappen */
+.reis__stappen {
+  display: flex;
+  flex-direction: column;
+}
+.reis__stap {
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+}
+.reis__stap.is-actief {
+  opacity: 1;
+}
+.reis__nr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--kleur-accent);
+  color: var(--hanze-wit);
+  font-weight: bold;
+  margin-bottom: var(--ruimte-2);
+}
+.reis__kop {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--ruimte-2);
+}
+.reis__tekst {
+  font-size: 1.15rem;
+  line-height: 1.55;
+  max-width: 46ch;
+  margin: 0;
+  color: var(--kleur-tekst);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reis__curve {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .reis__stap {
+    opacity: 1;
+  }
+}
+
+/* mobiel: één kolom, grafiek plakt bovenaan terwijl de tekst eronder scrolt */
+@media (max-width: 900px) {
+  .reis {
+    grid-template-columns: 1fr;
+    gap: var(--ruimte-2);
+  }
+  .reis__graphic {
+    top: 0;
+    padding: var(--ruimte-1) 0;
+    background: var(--kleur-paneel);
+    z-index: 2;
+  }
+  .reis__stap {
+    min-height: 60vh;
+  }
+}
