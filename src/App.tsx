@@ -221,7 +221,17 @@ function App() {
           {importFout && <span className="veld-fout">{importFout}</span>}
         </div>
 
-        {toonRapport && <Rapport model={bouwRapportModel(sessie)} />}
+        {toonRapport && (
+          <>
+            <p className="deel-hint">
+              <strong>Delen met de sporter:</strong> sla op als <code>.json</code> en stuur dat
+              bestand mét deze link:{' '}
+              <code>{`${window.location.origin}${window.location.pathname}?rapport`}</code> — de
+              sporter opent de link en laadt het bestand.
+            </p>
+            <Rapport model={bouwRapportModel(sessie)} />
+          </>
+        )}
 
         {!toonRapport && (
         <>
