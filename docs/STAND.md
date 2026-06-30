@@ -26,8 +26,9 @@
 > design-elevation — eigen interactieve SVG-lactaatcurve (annotatie + sleepbare scrubber + actieve
 > titel + draw-in motion, gevoed door `evalueerOpIntensiteit`) ✓ ADR-0023; **Slice 5 (Route A)**
 > sporter-viewer op `?rapport` (kale alleen-lezen pagina, laadt JSON → rapport; deel-hint in de app)
-> ✓ ADR-0024. Volgende = vervolg-elevation (scrollytelling/typografie), **Slice 4** PDF, of
-> **Slice 5b** self-contained HTML-export. Advies: A-basis + C-interacties op de echte
+> ✓ ADR-0024; **Slice 3d DE REIS** sticky-graphic scrollytelling (curve blijft staan + bouwt zich
+> op: curve→LT1→LT2→zones; scrubber verhuisd naar "Verken je eigen curve") ✓ ADR-0025. Volgende =
+> **Slice 4** PDF (met statische reis-variant) of **Slice 5b** self-contained HTML-export. Advies: A-basis + C-interacties op de echte
 > fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
 > single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
 > **B.4 combinatie-uitlijning** (na echte combi-data). ⚠️ Lab-exports (`docs/*.xml`)
@@ -67,6 +68,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0022 (rapport-scherm: gekozen combi-richting, module-gestuurd, geen advies) — Geaccepteerd.
 - ADR-0023 (rapport design-elevation: eigen interactieve SVG-lactaatcurve) — Geaccepteerd.
 - ADR-0024 (sporter-viewer: kale alleen-lezen rapportpagina op ?rapport, delen Route A) — Geaccepteerd.
+- ADR-0025 (de reis: sticky-graphic scrollytelling als opening van het rapport) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
