@@ -49,6 +49,17 @@ export const SJABLONEN = {
     'De lactaat- en de ademgasmeting bevestigen elkaar: de aerobe drempels liggen {d1} bpm uit elkaar, de anaerobe {d2} bpm.',
   combiUiteen:
     'De lactaat- en de ademgasdrempels liggen verder uit elkaar (aeroob {d1} bpm, anaeroob {d2} bpm). Dat kan komen door een verschil in meetmethode of door natuurlijke variatie tussen beide systemen.',
+  // Ademgas-reis (mijlpaal-vorm, ADR-0027): alleen écht gemeten waarden — geen verzonnen curve.
+  ademgasVo2max:
+    'Je lichaam verwerkt maximaal {mlkg} ml zuurstof per kilo per minuut ({lmin} L/min). Dit getal — je VO₂max — weerspiegelt je aerobe vermogen: hoeveel energie je met zuurstof kunt leveren.',
+  ademgasVoorspeld:
+    'Dat is {pct}% van de verwachte waarde voor iemand van jouw leeftijd, geslacht en gewicht.',
+  ademgasVt1:
+    'Rond {vt1} wordt je ademhaling merkbaar sneller: je eerste ventilatoire drempel (VT1). Tot hier is de inspanning goed vol te houden. VT1 hoort bij je eerste (aerobe) drempel.',
+  ademgasVt2:
+    'Rond {vt2} versnelt je ademhaling sterk: je tweede ventilatoire drempel (VT2). Daarboven loopt de belasting hoog op en houd je het maar kort vol. VT2 hoort bij je tweede (anaerobe) drempel.',
+  ademgasPiek:
+    'Bij maximale inspanning bereikte je een hartslagpiek van {piek} bpm — de top van je inspanning in deze test.',
 } as const
 
 /** Korte drempel-aanduiding voor in een zin: intensiteit + hartslag, zonder W/kg-ruis. */
@@ -107,6 +118,30 @@ export function vo2maxZin(model: RapportModel): string | null {
   let zin = vul(SJABLONEN.vo2max, { mlkg: heel(v.mlPerKgMin), lmin: een(v.lPerMin) })
   if (v.pctVoorspeld != null) zin += ' ' + vul(SJABLONEN.voorspeld, { pct: heel(v.pctVoorspeld) })
   return zin
+}
+
+/**
+ * Stappen voor de ademgas-reis (mijlpaal-vorm, ADR-0027). Elke stap = één écht gemeten mijlpaal
+ * (VO₂max → VT1 → VT2 → piek). Defensief: een stap verschijnt alleen als zijn data er is; geen
+ * verzonnen curve of getal. Leeg als er geen ademgasmodule is.
+ */
+export function ademgasReisStappen(model: RapportModel): { kop: string; tekst: string }[] {
+  const v = model.vo2max
+  if (!v) return []
+  const stappen: { kop: string; tekst: string }[] = []
+  const vm = v.vo2max
+  if (vm.mlPerKgMin != null && vm.lPerMin != null) {
+    let tekst = vul(SJABLONEN.ademgasVo2max, { mlkg: heel(vm.mlPerKgMin), lmin: een(vm.lPerMin) })
+    if (vm.pctVoorspeld != null) tekst += ' ' + vul(SJABLONEN.ademgasVoorspeld, { pct: heel(vm.pctVoorspeld) })
+    stappen.push({ kop: 'Je zuurstofopname', tekst })
+  }
+  if (v.vt1.hr != null)
+    stappen.push({ kop: 'Je eerste ademomslag', tekst: vul(SJABLONEN.ademgasVt1, { vt1: `${heel(v.vt1.hr)} bpm` }) })
+  if (v.vt2.hr != null)
+    stappen.push({ kop: 'Je tweede ademomslag', tekst: vul(SJABLONEN.ademgasVt2, { vt2: `${heel(v.vt2.hr)} bpm` }) })
+  if (vm.hrPiek != null)
+    stappen.push({ kop: 'Je piek', tekst: vul(SJABLONEN.ademgasPiek, { piek: heel(vm.hrPiek) }) })
+  return stappen
 }
 
 /** Of de lactaat- en ademgasdrempels binnen de drempel-bpm samenvallen. null als niet te bepalen. */
