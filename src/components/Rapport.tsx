@@ -12,6 +12,7 @@ import {
   samenvattingZin,
   samenvattingVo2maxZin,
   betrouwbaarheidZin,
+  drempelBetekenis,
   vo2maxZin,
   combinatieDuiding,
   drempelsConsistent,
@@ -151,6 +152,9 @@ export function Rapport({ model }: { model: RapportModel }) {
             </article>
           )}
         </div>
+        {drempelBetekenis(model, 'OBLA') && (
+          <p className="rap-obla">{drempelBetekenis(model, 'OBLA')}</p>
+        )}
         <ZoneTabel titel="Op de drempels (3 zones)" zones={lactaat.drempelzones} sport={test.sport} />
         <ZoneTabel titel="Vijf trainingszones" zones={lactaat.trainingszones} sport={test.sport} />
       </section>
@@ -323,8 +327,8 @@ export function Rapport({ model }: { model: RapportModel }) {
       <footer className="rap-disclaimer">
         {/* TODO: definitieve tekst aanleveren door het lab (werk-/hygiëneprotocol). */}
         <span className="rap-disclaimer__concept">Concept · definitieve tekst volgt</span>
-        Deze test is uitgevoerd volgens het werk- en hygiëneprotocol van het Hanze Inspanningslab ·
-        SportsFieldsLab Groningen.
+        Deze test is uitgevoerd volgens het werk- en hygiëneprotocol van het Hanze SportsFieldsLab
+        Groningen.
       </footer>
     </article>
   )

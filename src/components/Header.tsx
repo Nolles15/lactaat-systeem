@@ -14,7 +14,7 @@ export function Header() {
       />
       <div className="app-header__titel">
         <span className="app-header__product">Lactaattest</span>
-        <span className="app-header__sub">Inspanningslab · SportsFieldsLab Groningen</span>
+        <span className="app-header__sub">SportsFieldsLab Groningen</span>
       </div>
     </header>
   )

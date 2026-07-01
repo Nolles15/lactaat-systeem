@@ -267,7 +267,7 @@ function App() {
         </>
         )}
       </main>
-      <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>
+      <footer className="app-footer">Hanze SportsFieldsLab Groningen</footer>
     </div>
   )
 }
