@@ -4,11 +4,13 @@
 
 import { LactaatGrafiek } from './LactaatGrafiek'
 import { RapportReis } from './RapportReis'
+import { Term } from './Term'
 import { formatIntensiteit } from '../lib/invoer'
 import type { RapportModel, RapportZone } from '../lib/rapportmodel'
 import type { SportType } from '../lib/types'
 import {
   samenvattingZin,
+  samenvattingVo2maxZin,
   betrouwbaarheidZin,
   vo2maxZin,
   combinatieDuiding,
@@ -28,6 +30,7 @@ const SPORT_LABEL: Record<SportType, string> = {
 
 interface Kpi {
   label: string
+  term?: string
   waarde: string
   eenheid: string
   sub: string
@@ -92,20 +95,21 @@ export function Rapport({ model }: { model: RapportModel }) {
   const kpis: Kpi[] = []
   if (lactaat) {
     if (lt2)
-      kpis.push({ label: 'Anaerobe drempel', waarde: schoon(lt2.intensiteit), eenheid: '', sub: `${bpm(lt2.hr)} · ${een(lt2.lactaat)} mmol/L`, primair: lactaatPrimair })
+      kpis.push({ label: 'Anaerobe drempel', term: 'Anaerobe drempel', waarde: schoon(lt2.intensiteit), eenheid: '', sub: `${bpm(lt2.hr)} · ${een(lt2.lactaat)} mmol/L`, primair: lactaatPrimair })
     if (lt1)
-      kpis.push({ label: 'Aerobe drempel', waarde: schoon(lt1.intensiteit), eenheid: '', sub: `${bpm(lt1.hr)} · ${een(lt1.lactaat)} mmol/L` })
+      kpis.push({ label: 'Aerobe drempel', term: 'Aerobe drempel', waarde: schoon(lt1.intensiteit), eenheid: '', sub: `${bpm(lt1.hr)} · ${een(lt1.lactaat)} mmol/L` })
   }
   if (vo2max?.vo2max.mlPerKgMin != null)
     kpis.push({
       label: 'VO₂max',
+      term: 'VO₂max',
       waarde: String(Math.round(vo2max.vo2max.mlPerKgMin)),
       eenheid: 'ml/kg/min',
       sub: vo2max.vo2max.lPerMin != null ? `${een(vo2max.vo2max.lPerMin)} L/min` : '',
       primair: !lactaatPrimair,
     })
   if (vo2max?.vo2max.hrPiek != null)
-    kpis.push({ label: 'Hartslag-piek', waarde: String(Math.round(vo2max.vo2max.hrPiek)), eenheid: 'bpm', sub: 'Gemeten maximum' })
+    kpis.push({ label: 'Hartslagpiek', waarde: String(Math.round(vo2max.vo2max.hrPiek)), eenheid: 'bpm', sub: 'Gemeten maximum' })
 
   const chips = [
     deelnemer.leeftijd != null ? `${deelnemer.leeftijd} jaar` : null,
@@ -158,15 +162,22 @@ export function Rapport({ model }: { model: RapportModel }) {
       <h2>Over deze test</h2>
       <p className="rap-lead">
         {actief.lactaat && vo2max
-          ? 'We hebben twee dingen gemeten: je lactaat — het stofje dat vrijkomt als je inspant — via een paar druppels bloed per stap, en je ademgas — hoeveel zuurstof je lichaam verwerkt. Samen geven ze een compleet beeld van je uithoudingsvermogen.'
+          ? 'We hebben twee dingen gemeten. Je lactaat — een stofje dat je lichaam aanmaakt bij het verbranden van energie, en steeds meer naarmate je inspanning oploopt — via een paar druppels bloed per belastingstap. En je ademgas — hoeveel zuurstof je lichaam verwerkt. Samen geven ze een compleet beeld van je uithoudingsvermogen.'
           : actief.lactaat
-            ? 'We hebben je lactaat gemeten — het stofje dat vrijkomt als je inspant — via een paar druppels bloed per belastingstap. Daaruit volgen je curve, je drempels en je trainingszones.'
-            : 'We hebben je ademgas gemeten: hoeveel zuurstof je lichaam maximaal verwerkt en waar je ventilatoire drempels liggen.'}
+            ? 'We hebben je lactaat gemeten — een stofje dat je lichaam aanmaakt bij het verbranden van energie, en steeds meer naarmate je harder gaat — via een paar druppels bloed per belastingstap. Daaruit volgen je curve, je drempels en je trainingszones.'
+            : 'We hebben je ademgas gemeten: via je uitgeademde lucht bepalen we hoeveel zuurstof je lichaam maximaal verwerkt (je VO₂max) en waar je twee ventilatoire drempels liggen — de punten waarop je ademhaling omslaat.'}
       </p>
-      <p className="rap-info">
-        Je leest hieronder eerst je resultaten als verhaal, daarna de cijfers op een rij, en tot slot
-        kun je zelf door je eigen curve bewegen.
-      </p>
+      {lactaat ? (
+        <p className="rap-info">
+          Je leest hieronder eerst je resultaten als verhaal, daarna de cijfers op een rij, en tot
+          slot kun je zelf door je eigen curve bewegen.
+        </p>
+      ) : (
+        <p className="rap-info">
+          Je leest hieronder je resultaten en de cijfers op een rij. Omdat er bij deze test geen
+          lactaatcurve is gemeten, is er geen interactieve curve om doorheen te bewegen.
+        </p>
+      )}
     </section>
   )
 
@@ -186,9 +197,9 @@ export function Rapport({ model }: { model: RapportModel }) {
         <h2>Ademgasanalyse (VO₂max)</h2>
         <p className="rap-lead">{vo2maxZin(model)}</p>
         <p className="rap-info">
-          De ademgasanalyse meet via de uitgeademde lucht hoeveel zuurstof je lichaam maximaal
-          verwerkt (VO₂max) en bepaalt de ventilatoire drempels. Dit vult de lactaatmeting aan vanuit
-          een tweede meetmethode — ter informatie, niet als losse wetenschappelijke onderbouwing.
+          De ademgasanalyse meet via je uitgeademde lucht hoeveel zuurstof je lichaam maximaal
+          verwerkt (VO₂max) en bepaalt de twee ventilatoire drempels (VT1 en VT2). Zo kijkt deze
+          meting met een tweede, onafhankelijke methode naar dezelfde overgangen als de lactaattest.
         </p>
         <table className="rap-tabel">
           <thead>
@@ -200,12 +211,16 @@ export function Rapport({ model }: { model: RapportModel }) {
           </thead>
           <tbody>
             <tr>
-              <th>Ventilatoir 1 (VT1)</th>
+              <th>
+                <Term k="VT1">Ventilatoire drempel 1 (VT1)</Term>
+              </th>
               <td>{vo2max.vt1.vo2LPerMin != null ? `${een(vo2max.vt1.vo2LPerMin)} L/min` : '—'}</td>
               <td>{bpm(vo2max.vt1.hr)}</td>
             </tr>
             <tr>
-              <th>Ventilatoir 2 (VT2)</th>
+              <th>
+                <Term k="VT2">Ventilatoire drempel 2 (VT2)</Term>
+              </th>
               <td>{vo2max.vt2.vo2LPerMin != null ? `${een(vo2max.vt2.vo2LPerMin)} L/min` : '—'}</td>
               <td>{bpm(vo2max.vt2.hr)}</td>
             </tr>
@@ -239,7 +254,9 @@ export function Rapport({ model }: { model: RapportModel }) {
         <div className="rap-kpis">
           {kpis.map((k) => (
             <div className={`rap-kpi${k.primair ? ' rap-kpi--primair' : ''}`} key={k.label}>
-              <span className="rap-kpi__label">{k.label}</span>
+              <span className="rap-kpi__label">
+                {k.term ? <Term k={k.term}>{k.label}</Term> : k.label}
+              </span>
               <span className="rap-kpi__getal">
                 {k.waarde}
                 {k.eenheid && <span className="rap-kpi__eenheid"> {k.eenheid}</span>}
@@ -250,6 +267,9 @@ export function Rapport({ model }: { model: RapportModel }) {
         </div>
         {lactaatPrimair && samenvattingZin(model) && (
           <p className="rap-samenvatting">{samenvattingZin(model)}</p>
+        )}
+        {!lactaatPrimair && samenvattingVo2maxZin(model) && (
+          <p className="rap-samenvatting">{samenvattingVo2maxZin(model)}</p>
         )}
       </header>
 

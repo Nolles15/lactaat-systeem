@@ -29,7 +29,7 @@ export function trainingszones(lt1: number, lt2: number): Zone[] {
     { code: 'A2', naam: 'Aerobe basisduur', min: lt1 * 0.9, max: lt1 },
     { code: 'A2+', naam: 'Extensieve drempel', min: lt1, max: mid },
     { code: 'B', naam: 'Intensieve drempel', min: mid, max: lt2 },
-    { code: 'C', naam: 'VO2max / Interval', min: lt2, max: null },
+    { code: 'C', naam: 'VO₂max / interval', min: lt2, max: null },
   ]
 }
 

@@ -62,8 +62,8 @@ export function LactaatGrafiek({ model }: { model: RapportModel }) {
   const lt2 = lactaat.drempels.find((d) => d.code === 'LT2')
   const bovenDrempel = lt2 != null && scrubX > lt2.intensiteit
   const actieveTitel = bovenDrempel
-    ? `Boven ${formatIntensiteit(model.test.sport, lt2!.intensiteit, null)} stapelt je verzuring zich sneller op`
-    : 'Tot je drempel blijft je verzuring in balans'
+    ? `Boven ${formatIntensiteit(model.test.sport, lt2!.intensiteit, null)} stapelt je lactaat zich sneller op`
+    : 'Tot je drempel blijft je lactaat in balans'
 
   const yTicks = [0, 2, 4, 6, 8, 10, 12].filter((t) => t <= yMax)
   const xStep = maxX - minX > 200 ? 40 : 20
