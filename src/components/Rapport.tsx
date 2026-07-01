@@ -4,6 +4,7 @@
 
 import { LactaatGrafiek } from './LactaatGrafiek'
 import { RapportReis } from './RapportReis'
+import { AdemgasReis } from './AdemgasReis'
 import { Term } from './Term'
 import { formatIntensiteit } from '../lib/invoer'
 import type { RapportModel, RapportZone } from '../lib/rapportmodel'
@@ -14,6 +15,7 @@ import {
   betrouwbaarheidZin,
   drempelBetekenis,
   vo2maxZin,
+  ademgasReisStappen,
   combinatieDuiding,
   drempelsConsistent,
   ZONE_BETEKENIS,
@@ -178,8 +180,8 @@ export function Rapport({ model }: { model: RapportModel }) {
         </p>
       ) : (
         <p className="rap-info">
-          Je leest hieronder je resultaten en de cijfers op een rij. Omdat er bij deze test geen
-          lactaatcurve is gemeten, is er geen interactieve curve om doorheen te bewegen.
+          Je leest hieronder eerst je resultaten als verhaal en daarna de cijfers op een rij. Bij een
+          ademgasanalyse is er geen lactaatcurve om zelf doorheen te bewegen.
         </p>
       )}
     </section>
@@ -194,6 +196,15 @@ export function Rapport({ model }: { model: RapportModel }) {
       <LactaatGrafiek model={model} />
     </section>
   ) : null
+
+  const AdemgasReisSectie =
+    vo2max != null && ademgasReisStappen(model).length > 0 ? (
+      <section className="rap-sectie">
+        <h2>Je resultaten, stap voor stap</h2>
+        <p className="rap-lead rap-intro">Scroll mee — je zuurstofopname bouwt zich onderweg op.</p>
+        <AdemgasReis model={model} />
+      </section>
+    ) : null
 
   const AdemgasSectie =
     vo2max != null ? (
@@ -286,6 +297,7 @@ export function Rapport({ model }: { model: RapportModel }) {
         </>
       ) : (
         <>
+          {AdemgasReisSectie}
           {AdemgasSectie}
           {LactaatSecties}
         </>

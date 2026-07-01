@@ -34,9 +34,12 @@
 > hero-kerngetallen + VT1/VT2). **Rapport-teksten geredigeerd** (eigenaar leverde `rapport-teksten-
 > INGEVULD.md`; batch toegepast: "verzuring"→"lactaat", accuratere lactaat-uitleg, OBLA-tekst herzien,
 > zone-betekenissen, VT-labels voluit, ademgas gelijkwaardig i.p.v. "ter info", ademgas-primaire
-> samenvatting). **Nog open (eigenaar):** exacte disclaimer-tekst #49 + afzendernaam #50; plek voor
-> OBLA in het rapport (tekst klaar, nog niet in beeld); eigen lay-out voor een **alleen-ademgas**-
-> rapport (nu mager: geen reis/cijfers). Volgende =
+> samenvatting). **Merknaam** → "Hanze SportsFieldsLab Groningen" (overal consistent). **OBLA** terug
+> in "De cijfers op een rij". **Alleen-ademgas-rapport is nu een volwaardige reis** ✓ ADR-0027:
+> `AdemgasReis` — mijlpaal-scrollytelling (sticky VO₂-ladder die zich opbouwt; VT1/VT2/piek als écht
+> gemeten markeringen; géén verzonnen curve, ADR-0019). Opent wanneer ademgas de primaire test is; in
+> combi leidt de lactaat-reis. **Nog open (eigenaar):** exacte disclaimer-tekst #49 (concept staat).
+> Volgende =
 > **Slice 4** PDF (met statische reis-variant) of **Slice 5b** self-contained HTML-export. Advies: A-basis + C-interacties op de echte
 > fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
 > single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
@@ -79,6 +82,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0024 (sporter-viewer: kale alleen-lezen rapportpagina op ?rapport, delen Route A) — Geaccepteerd.
 - ADR-0025 (de reis: sticky-graphic scrollytelling als opening van het rapport) — Geaccepteerd.
 - ADR-0026 (klikbare jargon-uitleg via lab-beheerde woordenlijst) — Geaccepteerd.
+- ADR-0027 (ademgas-reis: mijlpaal-scrollytelling zonder verzonnen curve) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
