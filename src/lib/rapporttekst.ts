@@ -28,12 +28,15 @@ export function vul(sjabloon: string, data: Record<string, string>): string {
 /** Vaste zins-sjablonen — dit is de "pen" van het lab. Pas hier de bewoording aan, niet de logica. */
 export const SJABLONEN = {
   samenvattingLactaat:
-    'Je anaerobe drempel ligt bij {lt2}. Daarboven stapelt je verzuring zich sneller op dan je lichaam die afvoert.',
+    'Je anaerobe drempel ligt bij {lt2}. Daarboven stapelt je lactaat zich sneller op dan je lichaam het afvoert.',
+  samenvattingVo2max:
+    'Je VO₂max is {mlkg} ml/kg/min — een maat voor hoeveel zuurstof je lichaam maximaal kan verwerken, en daarmee voor je aerobe uithoudingsvermogen.',
   lt1:
     'Tot {lt1} blijven de aanmaak en de afvoer van lactaat ruim in balans: je lichaam ruimt het net zo snel op als het ontstaat, dus dit tempo kun je heel lang volhouden. Dit is je aerobe drempel — de bovengrens van je rustige duurinspanning.',
   lt2:
     '{lt2} is het berekende kantelpunt van je lactaatcurve: het punt dat uit de vorm van je eigen curve volgt, niet uit een vaste standaardwaarde. Vanaf hier maakt je lichaam meer lactaat aan dan het kan afvoeren, dus het stapelt zich op — dit tempo houd je maar kort vol.',
-  obla: 'Op {obla} bereikt je lactaat {niveau} mmol/L — een vaste referentiewaarde die labs gebruiken om tussen testen en sporters te kunnen vergelijken.',
+  obla:
+    'Bij {obla} bereikt je lactaat de vaste referentiewaarde van {niveau} mmol/L (OBLA). Dit is geen persoonlijke drempel, maar een vast ijkpunt waarmee labs testen en sporters onderling vergelijken.',
   curve:
     'Bij elke stap zwaarder maakt je lichaam meer lactaat aan. Je lactaatcurve blijft tot ongeveer {knik} laag en vlak — je ruimt het lactaat nog moeiteloos op — en loopt daarboven steeds steiler op.',
   betrouwbaarHoog: 'De curve sluit nauw aan op je meetpunten (R² = {r2} van maximaal 1,000).',
@@ -63,6 +66,13 @@ export function samenvattingZin(model: RapportModel): string | null {
   const lt2 = vindDrempel(model, 'LT2')
   if (!lt2) return null
   return vul(SJABLONEN.samenvattingLactaat, { lt2: drempelLabel(model.test.sport, lt2.intensiteit, lt2.hr) })
+}
+
+/** Kopzin wanneer ademgas de primaire test is (VO₂max als kerngetal). null zonder VO₂max-waarde. */
+export function samenvattingVo2maxZin(model: RapportModel): string | null {
+  const v = model.vo2max?.vo2max
+  if (!v || v.mlPerKgMin == null) return null
+  return vul(SJABLONEN.samenvattingVo2max, { mlkg: heel(v.mlPerKgMin) })
 }
 
 /** Neutrale fysiologische duiding per drempel ("Wat dit betekent"). null als de drempel ontbreekt. */
@@ -123,8 +133,26 @@ export const ZONE_BETEKENIS: Record<string, string> = {
   '3': 'Boven je anaerobe drempel: lactaat stapelt sneller op dan je lichaam afvoert.',
   // 5-zone
   A1: 'Herstel: zeer lage intensiteit, ruim onder de aerobe drempel.',
-  A2: 'Aerobe basis: duurinspanning met grotendeels vetverbranding.',
-  'A2+': 'Extensieve drempel: tegen de aerobe drempel aan.',
-  B: 'Intensieve drempel: tussen de aerobe en anaerobe drempel.',
+  A2: 'Aerobe basis: rustige duurinspanning met een grote bijdrage van vetverbranding.',
+  'A2+': 'Net tot tegen je aerobe drempel aan: nog goed vol te houden, lactaat blijft laag.',
+  B: 'Tussen je aerobe en anaerobe drempel: stevige inspanning, lactaat stijgt geleidelijk.',
   C: 'Boven de anaerobe drempel: hoge intensiteit, snel oplopend lactaat.',
+}
+
+/**
+ * Woordenlijst voor de aanklikbare jargon-uitleg in het rapport. Korte, formele leken-definities
+ * (geen "ModDmax"). Eén plek; het lab beheert de bewoording. De sleutel is de getoonde term.
+ */
+export const WOORDENLIJST: Record<string, string> = {
+  'Aerobe drempel':
+    'Het eerste omslagpunt. Tot hier blijven aanmaak en afvoer van lactaat in balans en kun je het tempo heel lang volhouden. In de lactaatmeting heet dit LT1; in de ademgasmeting het verwante punt VT1.',
+  'Anaerobe drempel':
+    'Het tweede omslagpunt, het "kantelpunt" van je curve. Daarboven loopt het lactaat sneller op dan je het afvoert en houd je het tempo maar kort vol. In de lactaatmeting LT2; in de ademgasmeting het verwante punt VT2. ("Anaeroob" is een ingeburgerde bijnaam; je stofwisseling is daarboven niet ineens zuurstofloos.)',
+  OBLA: 'Het punt waarop je lactaat de vaste referentiewaarde van 4 mmol/L bereikt. Geen persoonlijke drempel, maar een vast ijkpunt om testen en sporters te vergelijken.',
+  'VO₂max':
+    'De maximale hoeveelheid zuurstof die je lichaam per minuut kan verwerken (ml/kg/min). Een maat voor je aerobe uithoudingsvermogen.',
+  VT1: 'Eerste ventilatoire drempel: dezelfde eerste overgang, maar gevonden via je ademhaling in plaats van via bloed. VT1 ≈ je eerste (aerobe) drempel.',
+  VT2: 'Tweede ventilatoire drempel: dezelfde tweede overgang, gevonden via je ademhaling in plaats van via bloed. VT2 ≈ je tweede (anaerobe) drempel.',
+  'VE/VCO₂': 'Hoeveel lucht je verademt per liter uitgestoten koolstofdioxide. Een stijging hiervan helpt de ventilatoire drempels te bepalen.',
+  'R²': 'Een rapportcijfer voor hoe goed de berekende curve op je meetpunten past, van 0 tot 1,000. Hoe dichter bij 1,000, hoe betrouwbaarder de afgeleide drempels.',
 }

@@ -30,8 +30,13 @@
 > op: curve→LT1→LT2→zones; scrubber verhuisd naar "Verken je eigen curve") ✓ ADR-0025;
 > **reis-verbetering** — heldere herstructurering (primer "Over deze test" → reis → "De cijfers op
 > een rij" → ademgas → vergelijken → verken), ontdubbeld, rijkere reis-teksten, minder witruimte.
-> **Open tekst-werk** (eigenaar): klikbare jargon-uitleg/woordenlijst nog te bouwen; alle teksten
-> nog redigeren door het lab. Volgende =
+> **Klikbare jargon-uitleg** ✓ ADR-0026 (`Term`-component + lab-beheerde `WOORDENLIJST`; toegepast op
+> hero-kerngetallen + VT1/VT2). **Rapport-teksten geredigeerd** (eigenaar leverde `rapport-teksten-
+> INGEVULD.md`; batch toegepast: "verzuring"→"lactaat", accuratere lactaat-uitleg, OBLA-tekst herzien,
+> zone-betekenissen, VT-labels voluit, ademgas gelijkwaardig i.p.v. "ter info", ademgas-primaire
+> samenvatting). **Nog open (eigenaar):** exacte disclaimer-tekst #49 + afzendernaam #50; plek voor
+> OBLA in het rapport (tekst klaar, nog niet in beeld); eigen lay-out voor een **alleen-ademgas**-
+> rapport (nu mager: geen reis/cijfers). Volgende =
 > **Slice 4** PDF (met statische reis-variant) of **Slice 5b** self-contained HTML-export. Advies: A-basis + C-interacties op de echte
 > fit. **Achtergrond (richting-agnostisch, gemerged via PR):** `src/lib/rapportmodel.ts` —
 > single source of truth + `evalueerOpIntensiteit` (anti-fabricatie), ADR-0019. Daarna
@@ -73,6 +78,7 @@ zonder dat de app persoonsgegevens bewaart.
 - ADR-0023 (rapport design-elevation: eigen interactieve SVG-lactaatcurve) — Geaccepteerd.
 - ADR-0024 (sporter-viewer: kale alleen-lezen rapportpagina op ?rapport, delen Route A) — Geaccepteerd.
 - ADR-0025 (de reis: sticky-graphic scrollytelling als opening van het rapport) — Geaccepteerd.
+- ADR-0026 (klikbare jargon-uitleg via lab-beheerde woordenlijst) — Geaccepteerd.
 - Briefing van het lab als fundament-context (bestaande logica, huisstijl, protocollen, types).
 - **Slice 1**: Vite+React+TS skelet + getypte rekenkern (`src/lib/rekenkern.ts`) met 9 tests.
 - **Muren live** (GitHub Actions): test-gate (build+tests) + secret-scan (gitleaks) + branch
