@@ -48,7 +48,7 @@ export function Viewer() {
           </>
         ) : (
           <section className="viewer-intro">
-            <span className="viewer-intro__eyebrow">Hanze Inspanningslab</span>
+            <span className="viewer-intro__eyebrow">Hanze SportsFieldsLab Groningen</span>
             <h1 className="viewer-intro__titel">Bekijk je testrapport</h1>
             <p className="viewer-intro__tekst">
               Open het bestand dat je van het lab hebt gekregen (een <code>.json</code>-bestand).
@@ -65,7 +65,7 @@ export function Viewer() {
           </section>
         )}
       </main>
-      <footer className="app-footer">Hanze Inspanningslab · SportsFieldsLab Groningen</footer>
+      <footer className="app-footer">Hanze SportsFieldsLab Groningen</footer>
     </div>
   )
 }
